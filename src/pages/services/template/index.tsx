@@ -8,6 +8,7 @@ import ServiceCtaSection from './sections/ServiceCtaSection';
 export interface ServicePageProps {
   title: string;
   bannerImage: string;
+  subtitle?: string;
   intro: string;
   introDetail: string;
   benefits: { icon: ReactNode; title: string; description: string }[];
@@ -18,6 +19,7 @@ export interface ServicePageProps {
 export default function ServicePageTemplate({
   title,
   bannerImage,
+  subtitle,
   intro,
   introDetail,
   benefits,
@@ -28,8 +30,8 @@ export default function ServicePageTemplate({
     <>
       <PageBanner
         title={title}
-        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Services' }, { label: title }]}
         backgroundImage={bannerImage}
+        subtitle={subtitle}
       />
       <ServiceIntroSection
         title={title}

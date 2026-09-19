@@ -1,48 +1,87 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 interface PageBannerProps {
   title: string;
-  breadcrumbs: { label: string; path?: string }[];
+  breadcrumbs?: { label: string; path?: string }[];
   backgroundImage?: string;
+  subtitle?: string;
 }
 
-export default function PageBanner({ title, breadcrumbs, backgroundImage }: PageBannerProps) {
+export default function PageBanner({
+  title,
+  breadcrumbs,
+  backgroundImage,
+  subtitle,
+}: PageBannerProps) {
   return (
-    <section className="relative min-h-[260px] md:min-h-[300px] flex items-center overflow-hidden py-12 md:py-16">
-      {/* Background */}
-      <div className="absolute inset-0">
-        {backgroundImage ? (
-          <img src={backgroundImage} alt="" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-navy-900" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/95 via-navy-900/85 to-navy-900/70" />
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-10 right-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 left-20 w-32 h-32 bg-primary-500/5 rounded-full blur-2xl" />
+    <section 
+      className={`relative min-h-[300px] md:min-h-[400px] flex items-center justify-center overflow-hidden py-16 md:py-24 ${!backgroundImage ? 'bg-white border-b border-slate-100' : ''}`}
+    >
+      {backgroundImage ? (
+        <>
+          <div className="absolute inset-0">
+            <img 
+              src={backgroundImage} 
+              alt={title} 
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-brand-blue-950/75 mix-blend-multiply" />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-blue-900/90 via-brand-blue-900/40 to-transparent" />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Subtle ambient brand color glow */}
+          <div className="absolute top-0 right-10 w-96 h-96 bg-brand-blue-50/50 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
+          <div className="absolute bottom-0 left-10 w-80 h-80 bg-primary-50/40 rounded-full blur-3xl pointer-events-none translate-y-1/2" />
+        </>
+      )}
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
-        <nav className="flex items-center gap-2 text-sm mb-4">
-          {breadcrumbs.map((crumb, i) => (
-            <span key={crumb.label} className="flex items-center gap-2">
-              {i > 0 && (
-                <svg className="w-4 h-4 text-navy-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              )}
-              {crumb.path ? (
-                <Link to={crumb.path} className="text-navy-400 hover:text-primary-400 transition-colors">{crumb.label}</Link>
-              ) : (
-                <span className="text-primary-400">{crumb.label}</span>
-              )}
-            </span>
-          ))}
-        </nav>
-        <h1 className="text-4xl md:text-5xl font-heading font-bold text-white animate-fade-in">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 text-center">
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs sm:text-sm mb-5">
+            {breadcrumbs.map((crumb, i) => (
+              <span key={crumb.label} className="flex items-center gap-2">
+                {i > 0 && (
+                  <svg
+                    className={`w-3.5 h-3.5 ${backgroundImage ? 'text-white/50' : 'text-slate-400'}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                )}
+                {crumb.path ? (
+                  <Link
+                    to={crumb.path}
+                    className={`${backgroundImage ? 'text-white/70 hover:text-white' : 'text-slate-500 hover:text-brand-blue-500'} transition-colors font-medium`}
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className={`${backgroundImage ? 'text-white font-semibold' : 'text-brand-blue-500 font-semibold'}`}>{crumb.label}</span>
+                )}
+              </span>
+            ))}
+          </nav>
+        )}
+        <h1 className={`text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold tracking-tight ${backgroundImage ? 'text-white' : 'text-brand-blue-900'}`}>
           {title}
         </h1>
-        <div className="w-20 h-1 bg-primary-500 rounded-full mt-4 animate-slide-in-left" />
+        <div className="w-24 h-1.5 bg-gradient-to-r from-brand-blue-500 to-primary-500 rounded-full mx-auto mt-6" />
+        
+        {subtitle && (
+          <p className={`mt-6 max-w-2xl mx-auto text-lg md:text-xl font-medium leading-relaxed ${backgroundImage ? 'text-white/90' : 'text-slate-600'}`}>
+            {subtitle}
+          </p>
+        )}
       </div>
     </section>
   );

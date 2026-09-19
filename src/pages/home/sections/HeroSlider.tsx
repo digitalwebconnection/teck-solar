@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 interface Slide {
   badge: string;
@@ -14,34 +14,37 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    badge: 'Clean Solar Energy',
-    title: 'Power Your Home\nWith Solar Energy',
-    subtitle: 'Save up to 80% on power bills with premium residential solar systems.',
-    primaryCta: 'Get a Free Quote',
-    primaryLink: '/contact',
-    secondaryCta: 'About Us',
-    secondaryLink: '/about',
-    image: '/images/hero-residential.jpg',
+    badge: "Clean Solar Energy",
+    title: "Power Your Home\nWith Solar Energy",
+    subtitle:
+      "Save up to 80% on power bills with premium residential solar systems.",
+    primaryCta: "Get a Free Quote",
+    primaryLink: "/contact",
+    secondaryCta: "About Us",
+    secondaryLink: "/about",
+    image: "/images/hero-residential.jpg",
   },
   {
-    badge: 'Commercial Solutions',
-    title: 'Commercial Solar\nFor Your Business',
-    subtitle: 'Cut operational electricity costs with high-efficiency commercial solar.',
-    primaryCta: 'Get a Free Quote',
-    primaryLink: '/contact',
-    secondaryCta: 'Our Services',
-    secondaryLink: '/services',
-    image: '/images/hero-commercial.jpg',
+    badge: "Commercial Solutions",
+    title: "Commercial Solar\nFor Your Business",
+    subtitle:
+      "Cut operational electricity costs with high-efficiency commercial solar.",
+    primaryCta: "Get a Free Quote",
+    primaryLink: "/contact",
+    secondaryCta: "Our Services",
+    secondaryLink: "/services",
+    image: "/images/hero-commercial.jpg",
   },
   {
-    badge: 'CEC Accredited',
-    title: 'Expert Installation\nYou Can Trust',
-    subtitle: 'Certified Australian installers delivering top-tier quality and support.',
-    primaryCta: 'Request Call Back',
-    primaryLink: '/contact',
-    secondaryCta: 'Learn More',
-    secondaryLink: '/about',
-    image: '/images/hero-installation.jpg',
+    badge: "CEC Accredited",
+    title: "Expert Installation\nYou Can Trust",
+    subtitle:
+      "Certified Australian installers delivering top-tier quality and support.",
+    primaryCta: "Request Call Back",
+    primaryLink: "/contact",
+    secondaryCta: "Learn More",
+    secondaryLink: "/about",
+    image: "/images/hero-installation.jpg",
   },
 ];
 
@@ -76,14 +79,14 @@ export default function HeroSlider() {
         <div
           key={i}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            i === current ? 'opacity-100 z-0' : 'opacity-0 pointer-events-none'
+            i === current ? "opacity-100 z-0" : "opacity-0 pointer-events-none"
           }`}
         >
           <img
             src={slide.image}
             alt=""
             className={`w-full h-full object-cover transition-transform duration-7000 ease-out ${
-              i === current ? 'scale-105' : 'scale-100'
+              i === current ? "scale-105" : "scale-100"
             }`}
           />
           {/* High-contrast smooth gradients for optimal readability */}
@@ -117,7 +120,7 @@ export default function HeroSlider() {
             <p
               key={`sub-${current}`}
               className="mt-4 text-base sm:text-lg text-slate-200 max-w-lg leading-relaxed animate-slide-up"
-              style={{ animationDelay: '100ms' }}
+              style={{ animationDelay: "100ms" }}
             >
               {activeSlide.subtitle}
             </p>
@@ -126,15 +129,25 @@ export default function HeroSlider() {
             <div
               key={`cta-${current}`}
               className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4 animate-slide-up"
-              style={{ animationDelay: '200ms' }}
+              style={{ animationDelay: "200ms" }}
             >
               <Link
                 to={activeSlide.primaryLink}
                 className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
               >
                 <span>{activeSlide.primaryCta}</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
                 </svg>
               </Link>
 
@@ -156,8 +169,18 @@ export default function HeroSlider() {
         aria-label="Previous slide"
         className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white backdrop-blur-xs border border-white/20 transition-all cursor-pointer"
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
@@ -167,8 +190,18 @@ export default function HeroSlider() {
         aria-label="Next slide"
         className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white backdrop-blur-xs border border-white/20 transition-all cursor-pointer"
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
 
@@ -181,8 +214,8 @@ export default function HeroSlider() {
             onClick={() => setCurrent(i)}
             className={`transition-all duration-300 rounded-full cursor-pointer ${
               i === current
-                ? 'w-8 h-2.5 bg-primary-500'
-                : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'
+                ? "w-8 h-2.5 bg-primary-500"
+                : "w-2.5 h-2.5 bg-white/40 hover:bg-white/70"
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />
@@ -191,4 +224,3 @@ export default function HeroSlider() {
     </section>
   );
 }
-

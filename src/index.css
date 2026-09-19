@@ -1,17 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors */
-  --color-primary-50: #FFF7ED;
-  --color-primary-100: #FFEDD5;
-  --color-primary-200: #FED7AA;
-  --color-primary-300: #FDBA74;
-  --color-primary-400: #FB923C;
-  --color-primary-500: #F97316;
-  --color-primary-600: #EA580C;
-  --color-primary-700: #C2410C;
-  --color-primary-800: #9A3412;
-  --color-primary-900: #7C2D12;
+  /* Colors - Exact Brand Logo Palette */
+  /* Primary Solar Orange (#F38335) */
+  --color-primary-50: #FFF7EE;
+  --color-primary-100: #FEEDDC;
+  --color-primary-200: #FDD9B8;
+  --color-primary-300: #FBAF75;
+  --color-primary-400: #F7944A;
+  --color-primary-500: #F38335;
+  --color-primary-600: #DE6C1E;
+  --color-primary-700: #B85214;
+  --color-primary-800: #934215;
+  --color-primary-900: #773715;
+  --color-brand-orange: #F38335;
+
+  /* Brand Royal Blue (#14488C) */
+  --color-brand-blue-50: #F0F5FA;
+  --color-brand-blue-100: #DFEAF5;
+  --color-brand-blue-200: #BED5EC;
+  --color-brand-blue-300: #8EBBE0;
+  --color-brand-blue-400: #5299CF;
+  --color-brand-blue-500: #14488C;
+  --color-brand-blue-600: #103B74;
+  --color-brand-blue-700: #0D2E5B;
+  --color-brand-blue-800: #0B2448;
+  --color-brand-blue-900: #081C37;
+  --color-brand-blue-950: #051122;
+  --color-brand-blue: #14488C;
 
   --color-navy-50: #F8FAFC;
   --color-navy-100: #F1F5F9;
@@ -42,6 +58,18 @@
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animate-spin-slow: spin 20s linear infinite;
   --animate-counter: counter-up 2s ease-out both;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
 }
 
 @keyframes fade-in {
@@ -82,6 +110,27 @@
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes laser-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes stamp-bounce {
+  0% { opacity: 0; transform: scale(2) rotate(-15deg); }
+  60% { opacity: 1; transform: scale(0.95) rotate(-5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+@keyframes radar-ripple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes border-beam {
+  0%, 100% { offset-distance: 0%; }
+  50% { offset-distance: 100%; }
 }
 
 /* Base Styles */

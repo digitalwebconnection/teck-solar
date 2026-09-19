@@ -1,35 +1,99 @@
-# React + TypeScript + Vite
+# Teck Solar
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern, responsive web application for Teck Solar, a solar energy solutions provider. Built with React, TypeScript, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Responsive Design**: Fully responsive layout that looks great on all devices (mobile, tablet, desktop).
+- **Modern UI**: Clean, professional, and accessible interface built with Tailwind CSS.
+- **Client-Side Routing**: Fast and seamless navigation using React Router.
+- **Comprehensive Services**: Detailed pages showcasing core offerings:
+  - Residential Solar
+  - Commercial Solar
+  - Battery Storage
+  - EV Chargers
+- **Resource Center**: Easy access to important customer resources like product datasheets, WiFi monitoring guides, and CEC consumer guides.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Framework**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Bundler**: [Vite 8](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Routing**: [React Router 7](https://reactrouter.com/)
+- **Linting**: [Oxlint](https://oxc.rs/docs/guide/usage/linter)
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Project Structure
 
-## Expanding the Oxlint configuration
+The source code is organized as follows:
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```text
+src/
+├── assets/         # Static assets like images and icons
+├── components/     # Reusable UI components (e.g., layout elements, Header, Footer)
+├── hooks/          # Custom React hooks
+├── pages/          # Route components (Home, About, Services, Resources, Contact)
+├── utils/          # Helper and utility functions
+├── App.tsx         # Main application component and routing configuration
+├── index.css       # Global styles and Tailwind directives
+└── main.tsx        # Application entry point
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- Node.js (v18 or higher recommended)
+- npm (comes with Node.js)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd teck-solar
+   ```
+
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+### Development Server
+
+To start the local development server with Hot Module Replacement (HMR):
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+### Building for Production
+
+To create a production-ready build:
+
+```bash
+npm run build
+```
+
+This command runs the TypeScript compiler and uses Vite to bundle the application. The optimized output will be placed in the `dist` directory.
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+### Linting
+
+To analyze the code for potential errors using Oxlint:
+
+```bash
+npm run lint
+```
