@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+
 import { useQuoteModal } from '../../../../context/QuoteModalContext';
 import { useReveal } from '../../../../hooks/useReveal';
 
@@ -17,6 +17,7 @@ export default function ServiceIntroSection({
 }: ServiceIntroSectionProps) {
   const introReveal = useReveal();
   const imageReveal = useReveal();
+  const { openModal } = useQuoteModal();
 
   return (
     <section className="py-8 lg:py-14 bg-white relative overflow-hidden" ref={introReveal.ref}>
