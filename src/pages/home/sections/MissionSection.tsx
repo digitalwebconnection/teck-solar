@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useReveal } from "../../../hooks/useReveal";
+import { useQuoteModal } from "../../../context/QuoteModalContext";
 
 export default function MissionSection() {
   const { ref, visible } = useReveal(0.15);
+  const { openModal } = useQuoteModal();
 
   return (
     <section
@@ -61,9 +63,10 @@ export default function MissionSection() {
 
             {/* Premium Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link
-                to="/contact"
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#E56D00] text-white font-heading font-bold text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto overflow-hidden shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)]"
+              <button
+                type="button"
+                onClick={openModal}
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#E56D00] text-white font-heading font-bold text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto overflow-hidden shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)] cursor-pointer"
               >
                 <div className="absolute inset-0 bg-[#cc6100] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
                 <span className="relative z-10">Start Your Solar Journey</span>
@@ -80,7 +83,7 @@ export default function MissionSection() {
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
                   />
                 </svg>
-              </Link>
+              </button>
               <Link
                 to="/services/residential-solar"
                 className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:border-brand-blue-500 hover:text-brand-blue-600 hover:-translate-y-1 w-full sm:w-auto"

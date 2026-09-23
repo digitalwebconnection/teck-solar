@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
+import { useQuoteModal } from "../../context/QuoteModalContext";
+import { Button } from "../ui/button";
 
 interface NavChild {
   label: string;
@@ -207,6 +209,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const { openModal } = useQuoteModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -632,14 +635,11 @@ export default function Header() {
             {/* Desktop Right CTA Section */}
             
             <div className="flex items-center gap-3 xl:gap-4">
-              {/* Primary Get a Quote Button with Shine & Hover Lift */}
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-lg font-heading font-bold text-sm text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/35 hover:-translate-y-0.5 transition-all duration-300 group"
-              >
-                <span>Get a Free Quote</span>
+              {/* Primary Get a Quote Button */}
+              <Button onClick={openModal}>
+                Get a Free Quote
                 <svg
-                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                  className="w-4 h-4 transition-transform duration-200 group-hover/button:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -651,7 +651,7 @@ export default function Header() {
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
                   />
                 </svg>
-              </Link>
+              </Button>
 
               {/* Mobile Menu Toggle Button */}
               <button
@@ -854,12 +854,12 @@ export default function Header() {
 
           {/* Drawer Bottom Actions & Contacts */}
           <div className="p-4 border-t border-slate-200 bg-slate-50 space-y-2.5">
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-lg font-heading font-bold text-sm text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/20 transition-all"
+            <Button
+              onClick={() => { openModal(); setMobileOpen(false); }}
+              className="w-full"
             >
               Get a Free Quote
-            </Link>
+            </Button>
 
             <div className="grid grid-cols-2 gap-2 text-center text-xs">
               <a

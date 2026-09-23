@@ -91,7 +91,7 @@ export default function ServicesGrid() {
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
           }`}
         >
-          <div className="flex w-max animate-marquee gap-6 sm:gap-8 xl:gap-10 hover:[animation-play-state:paused]">
+          <div className="flex w-max animate-marquee [animation-duration:18s] gap-6 sm:gap-8 xl:gap-10 hover:[animation-play-state:paused]">
             {[...services, ...services].map((service, i) => (
               <Link
                 key={i}

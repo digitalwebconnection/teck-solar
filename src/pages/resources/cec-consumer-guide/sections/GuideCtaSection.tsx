@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useQuoteModal } from "../../../../context/QuoteModalContext";
 
 export default function GuideCtaSection() {
+  const { openModal } = useQuoteModal();
   return (
     <section className="py-20 lg:py-24 bg-white relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,9 +68,10 @@ export default function GuideCtaSection() {
               {/* Button Glow */}
               <div className="absolute inset-0 bg-amber-500 blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-300 rounded-full"></div>
 
-              <Link
-                to="/contact"
-                className="relative inline-flex items-center justify-center gap-3 px-8 py-5 rounded-full bg-white text-slate-900 font-heading font-bold text-lg transition-all duration-300 hover:scale-105 hover:bg-slate-50 active:scale-95 shadow-xl group/btn"
+              <button
+                type="button"
+                onClick={openModal}
+                className="relative inline-flex items-center justify-center gap-3 px-8 py-5 rounded-full bg-white text-slate-900 font-heading font-bold text-lg transition-all duration-300 hover:scale-105 hover:bg-slate-50 active:scale-95 shadow-xl group/btn cursor-pointer"
               >
                 Contact Our Team
                 <span className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover/btn:bg-amber-500 group-hover/btn:text-white transition-colors duration-300">
@@ -86,7 +89,7 @@ export default function GuideCtaSection() {
                     />
                   </svg>
                 </span>
-              </Link>
+              </button>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useQuoteModal } from "../../../context/QuoteModalContext";
 
 interface Slide {
   badge: string;
@@ -50,6 +51,7 @@ const slides: Slide[] = [
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
+  const { openModal } = useQuoteModal();
 
   const prevSlide = useCallback(() => {
     setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -131,25 +133,48 @@ export default function HeroSlider() {
               className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4 animate-slide-up"
               style={{ animationDelay: "200ms" }}
             >
-              <Link
-                to={activeSlide.primaryLink}
-                className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
-              >
-                <span>{activeSlide.primaryCta}</span>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              {activeSlide.primaryLink === "/contact" ? (
+                <button
+                  type="button"
+                  onClick={openModal}
+                  className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.2}
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
-              </Link>
+                  <span>{activeSlide.primaryCta}</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                </button>
+              ) : (
+                <Link
+                  to={activeSlide.primaryLink}
+                  className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
+                >
+                  <span>{activeSlide.primaryCta}</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                </Link>
+              )}
 
               <Link
                 to={activeSlide.secondaryLink}
