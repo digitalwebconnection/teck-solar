@@ -43,7 +43,7 @@ export default function OfficeLocationsSection() {
           className={`mb-24 max-w-4xl mx-auto text-center transition-all duration-1000 ${officesReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black text-slate-900 tracking-tighter leading-[1.05] mb-6">
-            Visit Our <span className="text-[#144E9A]">Offices.</span>
+            Visit Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">Offices.</span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-500 font-light leading-relaxed">
             Drop by for a coffee and discuss your solar potential with our local engineering teams across Australia.

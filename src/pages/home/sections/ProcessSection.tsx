@@ -134,67 +134,81 @@ export default function ProcessSection() {
 
   return (
     <section
-      className="py-16 sm:py-20 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white border-y border-navy-100/60 relative overflow-hidden"
+      className="py-12 sm:py-18 px-4 sm:px-6 lg:px-8 bg-slate-50/50 relative overflow-hidden"
       ref={ref}
     >
       {/* Subtle ambient light glows */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-50/50 rounded-full translate-x-1/3 -translate-y-1/3 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-slate-100/60 rounded-full -translate-x-1/3 translate-y-1/3 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-blue-50/50 rounded-full translate-x-1/3 -translate-y-1/3 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#E56D00]/5 rounded-full -translate-x-1/3 translate-y-1/3 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
-        {/* Header matching reference screenshot: 2-column layout */}
+        {/* Premium Section Header */}
         <div
-          className={` items-end mb-14 sm:mb-16 transition-all duration-700 ${
+          className={`flex flex-col items-center justify-center text-center mb-16 sm:mb-20 transition-all duration-700 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-center  font-heading font-extrabold text-navy-900 tracking-tight leading-tight">
-              Here's A Six-Step Process
-              <br className="hidden sm:inline" /> For Solar Installation.
-            </h2>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-10 h-0.5 bg-gradient-to-r from-transparent to-brand-blue-500 rounded-full" />
+            <span className="text-sm font-heading font-bold uppercase tracking-[0.2em] text-brand-blue-600">
+              Our Process
+            </span>
+            <span className="w-10 h-0.5 bg-gradient-to-l from-transparent to-brand-blue-500 rounded-full" />
           </div>
+          
+          <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-heading font-extrabold text-slate-900 tracking-tight leading-[1.1]">
+            A Simple{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
+              Six-Step
+            </span>{" "}
+            Process
+            <br className="hidden sm:inline" /> For Solar Installation
+          </h2>
         </div>
 
-        {/* 6 Steps in a clean, boxless timeline grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-12 gap-y-10 lg:gap-y-14">
-          {processSteps.map((step, i) => (
-            <div
-              key={i}
-              className={`group transition-all duration-500 relative flex flex-col ${
-                visible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              {/* Step indicator with number, icon, and dynamic accent line */}
-              <div className="flex items-center gap-3.5 mb-4">
-                <div className="w-11 h-11 rounded-xl bg-primary-50 text-primary-600 border border-primary-100/80 flex items-center justify-center group-hover:bg-primary-500 group-hover:text-white group-hover:border-primary-500 group-hover:shadow-md group-hover:shadow-primary-500/25 transition-all duration-300 flex-shrink-0">
-                  {step.icon("w-5 h-5")}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-12 gap-y-8 lg:gap-y-12">
+          {processSteps.map((step, i) => {
+            const isEven = i % 2 === 0;
+            const hoverBgClass = isEven ? "group-hover:bg-[#144E9A] group-hover:shadow-[#144E9A]/20" : "group-hover:bg-[#E56D00] group-hover:shadow-[#E56D00]/20";
+            const hoverTextClass = isEven ? "group-hover:text-[#144E9A]" : "group-hover:text-[#E56D00]";
+
+            return (
+              <div
+                key={i}
+                className={`transition-all duration-700 ${
+                  visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-12"
+                }`}
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                <div className="group relative flex flex-col h-full p-8 rounded-3xl transition-all duration-500 border border-transparent hover:bg-white hover:shadow-[0_20px_40px_-10px_rgba(20,78,154,0.08)] hover:-translate-y-2 hover:border-slate-100 cursor-default">
+                  {/* Step indicator with number, icon, and dynamic accent line */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-14 h-14 rounded-2xl bg-slate-50 text-slate-400 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 flex items-center justify-center group-hover:-translate-y-1 ${hoverBgClass} group-hover:text-white group-hover:border-transparent group-hover:shadow-lg transition-all duration-500 flex-shrink-0`}>
+                      {step.icon("w-6 h-6")}
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className={`text-3xl font-heading font-extrabold text-slate-300 ${hoverTextClass} transition-all duration-500`}>
+                        {step.step}
+                      </span>
+                    </div>
+                    <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent group-hover:from-brand-blue-200 group-hover:to-transparent transition-all duration-500" />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className={`text-xl font-heading font-extrabold text-slate-900 ${hoverTextClass} transition-all duration-300 mb-3`}>
+                    {step.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-slate-500 text-base leading-relaxed font-light">
+                    {step.description}
+                  </p>
                 </div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-[11px] font-heading font-bold text-primary-500 uppercase tracking-wider">
-                    STEP
-                  </span>
-                  <span className="text-2xl font-serif font-heading font-extrabold text-navy-900 group-hover:text-primary-600 transition-colors">
-                    {step.step}
-                  </span>
-                </div>
-                <div className="h-px flex-1 bg-gradient-to-r from-navy-200 via-navy-100 to-transparent group-hover:from-primary-500 group-hover:via-primary-300 transition-all duration-500" />
               </div>
-
-              {/* Title */}
-              <h3 className="text-lg sm:text-xl font-heading font-bold text-navy-900 group-hover:text-primary-600 transition-colors">
-                {step.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-navy-500 text-sm mt-2 leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

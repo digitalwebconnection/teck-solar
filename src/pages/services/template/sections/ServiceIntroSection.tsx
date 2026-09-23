@@ -22,9 +22,6 @@ export default function ServiceIntroSection({
       
       {/* Massive Watermark Text */}
       <div className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/4 pointer-events-none z-0">
-        <h2 className="text-[15vw] font-heading font-extrabold text-slate-50/80 tracking-tighter whitespace-nowrap">
-          OVERVIEW
-        </h2>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -77,7 +74,7 @@ export default function ServiceIntroSection({
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-brand-blue-900 leading-tight tracking-tight mb-8">
-              {title}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">{title}</span>
             </h2>
             
             <div className="w-full h-px bg-gradient-to-r from-brand-blue-100 to-transparent mb-8"></div>

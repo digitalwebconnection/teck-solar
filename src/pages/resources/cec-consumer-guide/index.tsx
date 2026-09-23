@@ -1,10 +1,10 @@
 import GuideOverviewSection from "./sections/GuideOverviewSection";
 import GuideTopicsSection from "./sections/GuideTopicsSection";
-import WiFiHelpSection from "../wifi-monitoring/sections/WiFiHelpSection";
+import SharedCTA from "../../../components/SharedCTA";
 
 export default function CECConsumerGuide() {
   return (
-    <div className="bg-slate-50 min-h-screen selection:bg-amber-500 selection:text-white font-sans">
+    <div className="bg-slate-50 min-h-screen selection:bg-amber-500 selection:text-white">
       {/* Dynamic Floating Documents Hero */}
       <div className="py-8 lg:py-12 border-b border-slate-200/50 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
@@ -165,7 +165,7 @@ export default function CECConsumerGuide() {
       </div>
 
       {/* Standalone CTA Section */}
-      <WiFiHelpSection />
+      <SharedCTA />
     </div>
   );
 }

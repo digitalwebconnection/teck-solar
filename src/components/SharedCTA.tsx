@@ -1,6 +1,6 @@
-import { useReveal } from '../../../../hooks/useReveal';
+import { useReveal } from '../hooks/useReveal';
 
-export default function WiFiHelpSection() {
+export default function SharedCTA() {
   const reveal = useReveal();
 
   return (
@@ -18,7 +18,7 @@ export default function WiFiHelpSection() {
           {/* Left Content */}
           <div className="lg:max-w-2xl text-center lg:text-left relative z-10">
             <h2 className="text-3xl sm:text-5xl font-heading font-extrabold text-brand-blue-900 tracking-tight leading-tight">
-              Need <span className="text-primary-500">Live Help?</span>
+              Need <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">Live Help?</span>
             </h2>
             <p className="mt-6 text-slate-600 text-lg sm:text-xl leading-relaxed font-medium">
               Our technical support team can walk you through the entire setup process over the phone. Don't hesitate to reach out.
@@ -37,12 +37,7 @@ export default function WiFiHelpSection() {
               <svg className="w-6 h-6 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
               Call 1300 000 000
             </a>
-            <div className="flex items-center gap-2 text-sm font-bold text-slate-400 mt-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span>FASTEST RESPONSE</span>
-            </div>
           </div>
-
         </div>
       </div>
     </section>

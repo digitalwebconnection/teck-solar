@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
+import { useReveal } from "../../../hooks/useReveal";
 
 const checkpoints = [
   "CEC Approved Solar Retailer",
   "25-Year Performance Warranty",
-  "Up to $1,400 Govt Rebates Applied",
 ];
 
 const stats = [
@@ -14,7 +14,12 @@ const stats = [
     sub: "Pioneering solar since 2015",
     color: "blue",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -31,7 +36,12 @@ const stats = [
     sub: "Across NSW, VIC & QLD",
     color: "orange",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -48,7 +58,12 @@ const stats = [
     sub: "Clean renewable power",
     color: "blue",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -65,7 +80,12 @@ const stats = [
     sub: "In-house certified team",
     color: "orange",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -78,181 +98,207 @@ const stats = [
 ];
 
 export default function AboutHeroSection() {
+  const heroReveal = useReveal();
+  const imageReveal = useReveal();
+  const statsReveal = useReveal();
   return (
-    <section className="relative overflow-hidden bg-white text-slate-900 pt-10 pb-16 lg:pt-14 lg:pb-20 border-b border-slate-100">
-      {/* Delicate ambient color glows - Pure light aesthetic */}
-      <div className="absolute top-0 right-1/4 w-[460px] h-[460px] bg-brand-blue-50/60 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
-      <div className="absolute bottom-0 left-10 w-[380px] h-[380px] bg-primary-50/60 rounded-full blur-3xl pointer-events-none translate-y-1/3" />
+    <>
+      <section className="relative overflow-hidden bg-slate-50 py-8 lg:py-12 border-b border-slate-200">
+        {/* Background Decorative Blur Elements */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-brand-blue-100/50 to-transparent rounded-full blur-3xl pointer-events-none transform translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-[#E56D00]/10 to-transparent rounded-full blur-3xl pointer-events-none transform -translate-x-1/3 translate-y-1/3" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 2-Column Hero Showcase */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-          {/* Left Column: Core Narrative */}
-          <div className="lg:col-span-7">
-            {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[3.25rem] font-heading font-extrabold text-slate-900 tracking-tight leading-[1.15]">
-              Powering Australia with{" "}
-              <span className="bg-gradient-to-r from-brand-blue-500 via-brand-blue-600 to-primary-500 bg-clip-text text-transparent">
-                Clean Solar Energy
-              </span>
-            </h1>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top 2-Column Hero Area */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-center">
+            {/* Left Column: Core Narrative */}
+            <div
+              className={`lg:col-span-7 lg:pr-8 xl:pr-16 flex flex-col items-center lg:items-start text-center lg:text-left transition-all duration-1000 ease-out ${heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+              ref={heroReveal.ref}
+            >
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-black text-slate-900 tracking-tighter leading-[1.1] mb-6 w-full">
+                Powering Australia with{" "} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
+                  Clean Solar Energy.
+                </span>
+              </h1>
 
-            {/* Concise Summary */}
-            <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-              Teck Solar is a Clean Energy Council approved solar retailer
-              delivering high-efficiency rooftop systems, battery storage, and
-              EV charging across Australia.
-            </p>
+              {/* Concise Summary */}
+              <p className="text-lg sm:text-xl text-slate-500 leading-relaxed max-w-2xl font-light mb-8 w-full">
+                Teck Solar is a Clean Energy Council approved solar retailer
+                delivering high-efficiency rooftop systems, battery storage, and
+                EV charging across Australia. We build systems designed to perform
+                and built to last.
+              </p>
 
-            {/* 3 Styled Value Checkpoint Pills */}
-            <div className="mt-6 flex flex-wrap gap-2.5 sm:gap-3">
-              {checkpoints.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200/80 text-xs sm:text-sm font-medium text-slate-800 shadow-2xs"
+              {/* Premium Checkpoints */}
+              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mb-10 w-full">
+                {checkpoints.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.08)] text-sm font-bold text-slate-700 w-full sm:w-auto"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#E56D00] to-orange-400 flex items-center justify-center shrink-0 shadow-inner">
+                      <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                    </div>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Premium Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto">
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#E56D00] text-white font-heading font-bold text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto overflow-hidden shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)]"
                 >
-                  <span className="w-4 h-4 rounded-full bg-brand-blue-500 text-white flex items-center justify-center shrink-0">
-                    <svg
-                      className="w-2.5 h-2.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </span>
-                  <span>{item}</span>
-                </div>
-              ))}
+                  <div className="absolute inset-0 bg-[#cc6100] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
+                  <span className="relative z-10">Get a Free Quote</span>
+                  <svg
+                    className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                </Link>
+
+                <a
+                  href="#our-story"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:border-brand-blue-500 hover:text-brand-blue-600 hover:-translate-y-1 w-full sm:w-auto"
+                >
+                  <span className="relative z-10">Our Story</span>
+                  <svg
+                    className="w-5 h-5 relative z-10 group-hover:translate-y-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </a>
+              </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-heading font-bold text-white bg-primary-500 hover:bg-primary-600 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/35 hover:-translate-y-0.5 active:scale-95 transition-all text-sm sm:text-base cursor-pointer"
-              >
-                <span>Get a Free Quote</span>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.4}
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
-              </Link>
-
-              <a
-                href="#our-story"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-heading font-bold text-brand-blue-500 bg-white border-2 border-brand-blue-500 hover:bg-brand-blue-500 hover:text-white shadow-2xs hover:-translate-y-0.5 active:scale-95 transition-all text-sm sm:text-base cursor-pointer"
-              >
-                <span>Our Story</span>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.4}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Visual Showcase with Layered Floating Elements */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-lg lg:max-w-none">
-              {/* Subtle Layered Background Frame for Depth */}
-              <div className="absolute -inset-2 bg-gradient-to-tr from-brand-blue-100/50 to-primary-100/40 rounded-xl transform rotate-1 scale-[1.02] pointer-events-none" />
+            {/* Right Column: Visual Showcase */}
+            <div
+              className={`lg:col-span-5 relative transition-all duration-1000 delay-300 ease-out ${imageReveal.visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+              ref={imageReveal.ref}
+            >
+              {/* The offset accent frame */}
+              <div className="absolute top-6 left-6 right-0 bottom-0 bg-gradient-to-br from-[#144E9A] to-brand-blue-900 rounded-3xl shadow-2xl z-0 transform transition-transform duration-700 hover:translate-x-2 hover:translate-y-2 pointer-events-none"></div>
 
               {/* Main Image Container */}
-              <div className="relative rounded-xl overflow-hidden shadow-xl shadow-slate-900/10 border border-slate-200/90 bg-white">
+              <div className="relative z-10 rounded-3xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(20,72,140,0.3)] border-8 border-white mr-6 mb-6 bg-slate-100 group">
+                <div className="absolute inset-0 bg-brand-blue-900/10 mix-blend-multiply z-10 pointer-events-none transition-opacity duration-500 group-hover:opacity-0"></div>
                 <img
                   src="/images/about-team.jpg"
                   alt="Teck Solar certified installation team"
-                  className="w-full h-[340px] sm:h-[400px] object-cover"
+                  className="w-full h-[400px] lg:h-[500px] object-cover transform transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-transparent pointer-events-none" />
               </div>
-              {/* Bottom-Left Floating Review Badge */}
-              <div className="hidden sm:flex absolute -bottom-5 -left-5 items-center gap-3.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xl shadow-slate-900/10 py-3 px-4 rounded-2xl z-20">
-                <span className="text-primary-500 font-heading font-black text-xl flex items-center gap-1">
-                  <span>★</span>
-                  <span>4.9</span>
-                </span>
-                <div className="text-left border-l border-slate-200 pl-3.5">
-                  <span className="text-xs font-heading font-bold text-slate-900 block leading-tight">
-                    2,500+ Installs
+
+              {/* Floating Review Badge */}
+              <div className="absolute bottom-12 -left-8 bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-100 flex items-center gap-4 z-20 animate-[float_4s_ease-in-out_infinite]">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E56D00] to-orange-400 flex items-center justify-center shrink-0 shadow-inner">
+                  <span className="text-white font-heading font-black text-2xl">
+                    ★
                   </span>
-                  <span className="text-[11px] text-slate-500 block mt-0.5">
-                    Australia Wide
-                  </span>
+                </div>
+                <div>
+                  <p className="text-base font-bold text-slate-800 leading-tight">
+                    4.9/5 Rating
+                  </p>
+                  <p className="text-sm text-slate-500 font-medium mt-0.5">
+                    2,500+ Happy Clients
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Stats: Editorial Minimalist Typography (Compact) */}
-        <div className="mt-12 sm:mt-16 border-t border-slate-200/60 pt-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 lg:gap-8">
+      {/* Premium Stats Section */}
+      <section className="py-16 lg:py-24 bg-slate-100 relative overflow-hidden border-b border-slate-200">
+        {/* Subtle decorative background elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-500/5 rounded-full blur-3xl pointer-events-none transform translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-500/5 rounded-full blur-3xl pointer-events-none transform -translate-x-1/2 translate-y-1/2"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 transition-all duration-1000 ease-out ${statsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+            ref={statsReveal.ref}
+          >
             {stats.map((item, i) => (
-              <div key={i} className="relative group flex flex-col items-center text-center">
-                {/* Subtle Icon & Label Header */}
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 transition-colors duration-300 ${
-                    item.color === 'orange' 
-                      ? 'text-primary-500 group-hover:bg-primary-50' 
-                      : 'text-brand-blue-500 group-hover:bg-brand-blue-50'
-                  }`}>
-                    <div className="scale-75">
+              <div
+                key={i}
+                className="group relative bg-white rounded-xl p-8 border border-slate-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] hover:border-brand-blue-200 transition-all duration-500 hover:-translate-y-2 overflow-hidden flex flex-col"
+              >
+                {/* Subtle hover gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                
+                <div className="relative z-10">
+                  {/* Icon Header */}
+                  <div className="flex items-center justify-between mb-8">
+                    <div
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors duration-500 ${
+                        item.color === "orange"
+                          ? "bg-gradient-to-br from-[#E56D00]/10 to-orange-400/10 text-[#E56D00] group-hover:bg-[#E56D00] group-hover:text-white"
+                          : "bg-gradient-to-br from-[#144E9A]/10 to-brand-blue-500/10 text-[#144E9A] group-hover:bg-[#144E9A] group-hover:text-white"
+                      }`}
+                    >
                       {item.icon}
                     </div>
                   </div>
-                  <h4 className="text-xs sm:text-sm font-heading font-bold text-slate-900 tracking-wide uppercase">
+
+                  {/* Number */}
+                  <div className="flex items-baseline gap-1 mb-3">
+                    <span
+                      className={`text-5xl font-heading font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r ${
+                        item.color === "orange"
+                          ? "from-[#E56D00] to-orange-400"
+                          : "from-[#144E9A] to-brand-blue-500"
+                      }`}
+                    >
+                      {item.number}
+                    </span>
+                    <span
+                      className={`text-2xl font-heading font-black ${
+                        item.color === "orange"
+                          ? "text-[#E56D00]"
+                          : "text-[#144E9A]"
+                      }`}
+                    >
+                      {item.symbol}
+                    </span>
+                  </div>
+
+                  {/* Text */}
+                  <h4 className="text-lg font-heading font-bold text-slate-900 mb-1.5">
                     {item.label}
                   </h4>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                    {item.sub}
+                  </p>
                 </div>
-                
-                {/* Gradient Number */}
-                <div className="flex items-baseline justify-center gap-1 mb-1">
-                  <span className={`text-4xl sm:text-5xl font-heading font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-br transition-transform duration-500 group-hover:scale-105 ${
-                    item.color === 'orange' ? 'from-primary-500 to-orange-400' : 'from-brand-blue-600 to-blue-400'
-                  }`}>
-                    {item.number}
-                  </span>
-                  <span className={`text-xl sm:text-2xl font-heading font-black ${
-                    item.color === 'orange' ? 'text-primary-500' : 'text-brand-blue-500'
-                  }`}>
-                    {item.symbol}
-                  </span>
-                </div>
-                
-                {/* Description */}
-                <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-[200px]">
-                  {item.sub}
-                </p>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

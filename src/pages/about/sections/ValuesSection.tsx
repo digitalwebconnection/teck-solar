@@ -193,12 +193,12 @@ export default function ValuesSection() {
 
   return (
     <section
-      className="py-14 sm:py-18 lg:py-22 px-4 sm:px-6 lg:px-8 bg-slate-50/50 relative overflow-hidden border-b border-slate-100"
+      className="py-14 sm:py-18 lg:py-22 px-4 sm:px-6 lg:px-8 bg-brand-blue-50/50 relative overflow-hidden border-b border-slate-100"
       ref={ref}
     >
-      {/* Background Animated Subtle Glows */}
-      <div className="absolute top-10 right-1/4 w-96 h-96 bg-brand-blue-100/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-primary-100/25 rounded-full blur-3xl pointer-events-none" />
+      {/* Background Animated Subtle Glows for Light Background */}
+      <div className="absolute top-10 right-1/4 w-96 h-96 bg-brand-blue-100/40 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-80 h-80 bg-primary-100/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         {/* Authoritative Section Header */}
@@ -215,10 +215,13 @@ export default function ValuesSection() {
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
-            Our Core Values
+            Our Core{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
+              Values
+            </span>
           </h2>
 
-          <p className="mt-3 text-base text-slate-600 leading-relaxed">
+          <p className="mt-4 text-lg text-slate-600 leading-relaxed max-w-2xl font-normal">
             The engineering principles and customer commitments that guide every residential and commercial installation we deliver across Australia.
           </p>
         </div>

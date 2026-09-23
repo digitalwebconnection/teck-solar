@@ -49,11 +49,11 @@ export default function GuideTopicsSection() {
   const topicsReveal = useReveal();
 
   return (
-    <div className="bg-white py-8 lg:py-12" ref={topicsReveal.ref}>
+    <div className=" py-8 lg:py-12" ref={topicsReveal.ref}>
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black text-slate-900 tracking-tighter mb-6">
-            Explore the Chapters.
+            Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">the Chapters.</span>
           </h2>
           <p className="text-xl text-slate-500 max-w-2xl">
             Dive into the complete guide, chapter by chapter, to become a solar expert before signing any contracts.
@@ -65,7 +65,7 @@ export default function GuideTopicsSection() {
           {guideTopics.map((topic, i) => (
             <div
               key={i}
-              className={`group border-b border-slate-200 py-10 lg:py-14 flex flex-col md:flex-row gap-8 lg:gap-16 transition-all duration-700 ease-out hover:bg-slate-50 ${topicsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`group border-b border-slate-200 py-10 lg:py-14 px-5 flex flex-col md:flex-row gap-8 lg:gap-16 transition-all duration-700 ease-out hover:bg-slate-200 ${topicsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${i * 100}ms` }}
             >
               {/* Chapter Number */}
@@ -88,8 +88,8 @@ export default function GuideTopicsSection() {
                 <div className="flex flex-wrap gap-x-8 gap-y-4">
                   {topic.tips.map((tip, ti) => (
                     <div key={ti} className="flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-slate-400 transition-colors duration-300"></div>
-                      <span className="text-sm font-medium text-slate-500 uppercase tracking-wide">
+                      <div className="w-1.5 h-1.5 rounded-full bg-orange-500 group-hover:bg-slate-400 transition-colors duration-300"></div>
+                      <span className="text-sm font-medium text-slate-700 uppercase tracking-wide">
                         {tip}
                       </span>
                     </div>

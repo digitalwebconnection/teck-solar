@@ -47,23 +47,27 @@ export default function QuoteFormBand() {
 
   return (
     <section
-      className="py-20 lg:py-24 bg-slate-50 border-t border-slate-200/80"
+      className="py-8 lg:py-12 bg-slate-50/70 relative border-t border-slate-100 overflow-hidden"
       ref={ref}
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      {/* Background ambient lighting */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue-50/50 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#E56D00]/5 rounded-full blur-3xl pointer-events-none translate-y-1/2 -translate-x-1/4" />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         {/* Section Header */}
         <div
-          className={`text-center mb-12 lg:mb-16 transition-all duration-700 ${
+          className={`text-center mb-14 lg:mb-16 transition-all duration-700 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
-        >
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-500/10 text-primary-600 text-xs font-semibold tracking-wider uppercase">
-            Have Questions?
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-heading font-bold text-navy-900 mt-3 tracking-tight">
-            Frequently Asked Questions
+        >         
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+            Frequently Asked{" "}
+            <span className="bg-gradient-to-r from-[#144E9A] to-[#E56D00] bg-clip-text text-transparent">
+              Questions
+            </span>
           </h2>
-          <p className="mt-3 text-slate-600 text-sm sm:text-base max-w-4xl mx-auto">
+          <p className="mt-5 text-slate-500 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed">
             Everything you need to know about switching to solar, claiming
             government rebates, and maximizing your savings with Teck Solar.
           </p>
@@ -76,39 +80,41 @@ export default function QuoteFormBand() {
             return (
               <div
                 key={index}
-                className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${
+                className={`bg-white rounded-2xl border transition-all duration-500 overflow-hidden ${
                   isOpen
-                    ? "border-primary-500/50 shadow-md shadow-primary-500/5 ring-1 ring-primary-500/20"
-                    : "border-slate-200/80 hover:border-slate-300 shadow-xs"
+                    ? "border-brand-blue-200 shadow-[0_8px_30px_rgb(20,78,154,0.08)] ring-1 ring-brand-blue-50"
+                    : "border-slate-200/80 hover:border-brand-blue-100 shadow-sm hover:shadow-md"
                 }`}
               >
                 <button
                   type="button"
                   onClick={() => toggleFaq(index)}
-                  className="w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors"
+                  className="w-full flex items-center justify-between p-6 sm:p-7 text-left cursor-pointer transition-colors group"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-heading font-semibold text-slate-900 text-base sm:text-lg pr-4 flex items-center gap-3">
+                  <span className="font-heading font-bold text-slate-900 text-base sm:text-lg pr-4 flex items-center gap-4">
                     <span
-                      className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
+                      className={`w-10 h-10 rounded-xl text-sm font-extrabold flex items-center justify-center shrink-0 transition-all duration-500 shadow-sm ${
                         isOpen
-                          ? "bg-primary-500 text-white"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-gradient-to-br from-[#144E9A] to-[#E56D00] text-white shadow-[#144E9A]/20"
+                          : "bg-slate-50 text-slate-400 border border-slate-100 group-hover:bg-slate-100 group-hover:text-brand-blue-600"
                       }`}
                     >
                       0{index + 1}
                     </span>
-                    {faq.question}
+                    <span className="group-hover:text-brand-blue-700 transition-colors duration-300">
+                      {faq.question}
+                    </span>
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 ${
                       isOpen
-                        ? "bg-primary-50 text-primary-600 rotate-180"
-                        : "bg-slate-100 text-slate-500"
+                        ? "bg-[#E56D00]/10 text-[#E56D00] rotate-180"
+                        : "bg-slate-50 text-slate-400 border border-slate-100 group-hover:bg-slate-100 group-hover:text-brand-blue-500"
                     }`}
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-5 h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -116,7 +122,7 @@ export default function QuoteFormBand() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={2.5}
                         d="M19 9l-7 7-7-7"
                       />
                     </svg>
@@ -124,12 +130,16 @@ export default function QuoteFormBand() {
                 </button>
 
                 <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                  className={`transition-all duration-500 ease-in-out overflow-hidden ${
                     isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                   }`}
                 >
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100">
-                    <p>{faq.answer}</p>
+                  <div className="px-6 sm:px-7 pb-7 pt-1">
+                    <div className="pl-14">
+                      <p className="text-slate-600 text-base leading-relaxed font-light">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -18,7 +18,7 @@ export default function GuideOverviewSection() {
         <div className="mb-20 max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black text-slate-900 tracking-tighter leading-[1.05] mb-8 text-center justify-center">
             Stop guessing. <br className="hidden md:block" />
-            Start with the <span className="text-[#E56D00]">facts.</span>
+            Start with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">the facts.</span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-500 font-light leading-relaxed text-center max-w-4xl mx-auto">
             The Clean Energy Council (CEC) consumer guide strips away the marketing fluff to give you the raw, unbiased truth about switching to renewables.

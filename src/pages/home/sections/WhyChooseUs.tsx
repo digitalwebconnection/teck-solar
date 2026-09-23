@@ -93,12 +93,12 @@ export default function WhyChooseUs() {
       ref={ref}
     >
       {/* High-contrast smooth overlay */}
-      <div className="absolute inset-0 bg-navy-950/25 " />
-      <div className="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/55 to-navy-950/5" />
+      <div className="absolute inset-0 bg-slate-950/40 " />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
 
       {/* Ambient solar glows */}
-      <div className="absolute -top-24 left-1/4 w-96 h-96 bg-primary-500/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 left-1/4 w-96 h-96 bg-brand-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-[#E56D00]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         {/* Section Header */}
@@ -107,53 +107,68 @@ export default function WhyChooseUs() {
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="w-10 h-0.5 bg-gradient-to-r from-transparent to-[#E56D00] rounded-full" />
+            <span className="text-sm font-heading font-bold uppercase tracking-[0.2em] text-[#E56D00]">
+              Why Choose Us
+            </span>
+            <span className="w-10 h-0.5 bg-gradient-to-l from-transparent to-[#E56D00] rounded-full" />
+          </div>
+
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-heading font-extrabold text-white tracking-tight leading-tight">
-            Why Choose{" "}
-            <span className="bg-linear-to-r from-primary-400 to-primary-500 bg-clip-text text-transparent">
-              Teck Solar
+            Premium Solar{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
+              Excellence
             </span>
           </h2>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-4xl mx-auto leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-4xl mx-auto leading-relaxed font-light">
             Australian certified craftsmanship, premium Tier-1 engineering, and
             dedicated support every step of your solar journey.
           </p>
         </div>
 
-        {/* Features without boxes */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-7">
-          {features.map((feat, i) => (
-            <div
-              key={i}
-              className={`text-center group transition-all duration-500 flex flex-col items-center ${
-                visible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${i * 100}ms` }}
-            >
-              {/* Floating Glowing Icon */}
-              <div className="relative w-16 h-16 mb-5 flex items-center justify-center">
-                <div className="absolute inset-0 rounded-2xl bg-primary-500/20 blur-md group-hover:bg-primary-500/40 group-hover:blur-lg transition-all duration-300" />
-                <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-primary-500 to-primary-600 text-white flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
-                  {feat.icon}
+          {features.map((feat, i) => {
+            const isEven = i % 2 === 0;
+            const iconBgClass = isEven ? "bg-[#144E9A] shadow-[#144E9A]/30" : "bg-[#E56D00] shadow-[#E56D00]/30";
+            const hoverTextClass = isEven ? "group-hover:text-brand-blue-400" : "group-hover:text-[#FBAF75]";
+            const hoverLineClass = isEven ? "group-hover:bg-[#144E9A]" : "group-hover:bg-[#E56D00]";
+            const hoverGlowClass = isEven ? "group-hover:bg-[#144E9A]/30" : "group-hover:bg-[#E56D00]/30";
+
+            return (
+              <div
+                key={i}
+                className={`text-center group transition-all duration-500 flex flex-col items-center ${
+                  visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                {/* Floating Glowing Icon */}
+                <div className="relative w-16 h-16 mb-5 flex items-center justify-center">
+                  <div className={`absolute inset-0 rounded-2xl bg-brand-blue-500/20 blur-md ${hoverGlowClass} group-hover:blur-lg transition-all duration-300`} />
+                  <div className={`relative w-16 h-16 rounded-2xl ${iconBgClass} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    {feat.icon}
+                  </div>
                 </div>
+
+                {/* Title */}
+                <h3 className={`text-xl font-heading font-extrabold text-white ${hoverTextClass} transition-colors drop-shadow-sm`}>
+                  {feat.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-slate-300 text-sm mt-3 leading-relaxed drop-shadow-xs max-w-xs font-light">
+                  {feat.description}
+                </p>
+
+                {/* Minimal Accent line */}
+                <div className={`w-8 h-1 rounded-full bg-slate-700 group-hover:w-14 ${hoverLineClass} transition-all duration-500 mt-5`} />
               </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-heading font-bold text-white group-hover:text-primary-300 transition-colors drop-shadow-sm">
-                {feat.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-slate-200 text-sm mt-3 leading-relaxed drop-shadow-xs max-w-xs">
-                {feat.description}
-              </p>
-
-              {/* Minimal Accent line */}
-              <div className="w-8 h-1 rounded-full bg-primary-500/50 group-hover:w-14 group-hover:bg-primary-400 transition-all duration-500 mt-5" />
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

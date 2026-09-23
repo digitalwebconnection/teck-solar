@@ -1,5 +1,5 @@
 import WiFiStepsSection from './sections/WiFiStepsSection';
-import WiFiHelpSection from './sections/WiFiHelpSection';
+import SharedCTA from '../../../components/SharedCTA';
 
 export default function WiFiMonitoring() {
   return (
@@ -110,15 +110,7 @@ export default function WiFiMonitoring() {
               </div>
 
               {/* Floating Element: WiFi Connected Badge */}
-              <div className="absolute top-16 right-4 lg:right-0 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 z-30 transform -rotate-[4deg] hover:rotate-0 transition-transform duration-500 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#E56D00]/10 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-[#E56D00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>
-                </div>
-                <div>
-                  <div className="text-slate-900 font-bold text-sm">Router Synced</div>
-                  <div className="text-[#144E9A] font-semibold text-xs">Signal: Excellent</div>
-                </div>
-              </div>
+              
 
               {/* Floating Element: Inverter Device Card */}
               <div className="absolute bottom-12 left-4 lg:left-0 bg-slate-900 p-4 rounded-2xl shadow-2xl z-30 transform rotate-[6deg] hover:rotate-0 transition-transform duration-500 flex items-center gap-4 w-56">
@@ -142,7 +134,7 @@ export default function WiFiMonitoring() {
       </div>
 
       {/* Standalone Support CTA Section */}
-      <WiFiHelpSection />
+      <SharedCTA />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useReveal } from '../../../hooks/useReveal';
+import { useReveal } from "../../../hooks/useReveal";
 
 export default function StorySection() {
   const { ref, visible } = useReveal();
@@ -14,7 +14,7 @@ export default function StorySection() {
           {/* Left Column: Authoritative Editorial Story */}
           <div
             className={`lg:col-span-7 transition-all duration-700 ${
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
             {/* Section Eyebrow */}
@@ -27,7 +27,10 @@ export default function StorySection() {
 
             {/* Headline */}
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-slate-900 tracking-tight leading-[1.15]">
-              Powering Australia's Renewable Future Since 2015
+              Powering Australia's Renewable{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00] font-bold">
+                Future Since 2015
+              </span>
             </h2>
 
             {/* Narrative Paragraphs */}
@@ -35,23 +38,23 @@ export default function StorySection() {
               <p className="text-slate-800 font-normal">
                 Founded in 2015, Teck Solar began with a simple vision: to make
                 clean, renewable energy accessible to every Australian. Starting
-                as a small team of passionate engineers and electricians in Sydney,
-                we've grown into one of Australia's most trusted solar energy
-                providers.
+                as a small team of passionate engineers and electricians in
+                Sydney, we've grown into one of Australia's most trusted solar
+                energy providers.
               </p>
 
               <p className="text-slate-600 text-base">
-                Today, with over 2,500 successful installations across New
-                South Wales, Victoria, and Queensland, we continue to deliver
-                exceptional solar solutions that combine cutting-edge
-                technology with personalised service.
+                Today, with over 2,500 successful installations across New South
+                Wales, Victoria, and Queensland, we continue to deliver
+                exceptional solar solutions that combine cutting-edge technology
+                with personalised service.
               </p>
 
               <p className="text-slate-600 text-base">
                 Our mission is to empower homeowners and businesses to take
-                control of their energy future while contributing to a
-                cleaner planet. Every panel we install is a step towards a
-                more sustainable Australia.
+                control of their energy future while contributing to a cleaner
+                planet. Every panel we install is a step towards a more
+                sustainable Australia.
               </p>
             </div>
 
@@ -89,7 +92,7 @@ export default function StorySection() {
           {/* Right Column: High-End Photographic Showcase */}
           <div
             className={`lg:col-span-5 transition-all duration-700 delay-150 ${
-              visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
             <div className="relative">
@@ -106,8 +109,18 @@ export default function StorySection() {
               <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-brand-blue-50 text-brand-blue-500 flex items-center justify-center font-bold">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
                     </svg>
                   </div>
                   <div>

@@ -1,5 +1,5 @@
 import DatasheetsGridSection from './sections/DatasheetsGridSection';
-import WiFiHelpSection from '../wifi-monitoring/sections/WiFiHelpSection';
+import SharedCTA from '../../../components/SharedCTA';
 
 export default function ProductDatasheets() {
   return (
@@ -100,7 +100,7 @@ export default function ProductDatasheets() {
       </div>
 
       {/* Shared CTA Section */}
-      <WiFiHelpSection />
+      <SharedCTA />
     </div>
   );
 }

@@ -31,7 +31,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-4">
           {/* Brand & Accreditation Column */}
           <div className="space-y-6">
-            <Link to="/" className="inline-block">
+            <Link 
+              to="/" 
+              className="inline-block"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               <img
                 src={logo}
                 alt="Teck Solar"

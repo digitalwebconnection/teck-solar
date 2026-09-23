@@ -38,9 +38,7 @@ export default function ServiceFaqSection({ faqs }: ServiceFaqSectionProps) {
               }}
             >
               {/* Massive Watermark */}
-              <div className="absolute -top-12 -left-8 text-[160px] lg:text-[200px] font-heading font-black text-slate-50 leading-none select-none pointer-events-none z-0">
-                FAQ
-              </div>
+             
               
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-brand-blue-50 to-white text-brand-blue-700 font-bold text-xs tracking-[0.2em] uppercase mb-8 border border-brand-blue-100 shadow-sm">

@@ -327,7 +327,11 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 w-full">
           <div className="flex items-center justify-between h-20">
             {/* Brand Logo - Crisp on White */}
-            <Link to="/" className="flex items-center py-2 shrink-0 group">
+            <Link 
+              to="/" 
+              className="flex items-center py-2 shrink-0 group relative z-50"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               <img
                 src={logo}
                 alt="Teck Solar"
