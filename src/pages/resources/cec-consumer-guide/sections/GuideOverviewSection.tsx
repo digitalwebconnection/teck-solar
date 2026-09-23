@@ -4,81 +4,72 @@ export default function GuideOverviewSection() {
   const contentReveal = useReveal();
 
   return (
-    <section
-      className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white"
-      ref={contentReveal.ref}
-    >
-      <div className="max-w-4xl mx-auto w-full">
-        <div
-          className={`transition-all duration-700 ${contentReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
-          <div className="bg-navy-50 rounded-2xl p-8 md:p-10 border border-navy-100 mb-12">
-            <div className="flex items-start gap-5">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white flex items-center justify-center shrink-0">
-                <svg
-                  className="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-2xl font-heading font-bold text-navy-900">
-                  About This Guide
-                </h2>
-                <p className="mt-3 text-navy-500 leading-relaxed">
-                  The Clean Energy Council (CEC) is Australia's peak body for
-                  the clean energy industry. This consumer guide is designed to
-                  help you make informed decisions when considering a solar
-                  energy system for your home or business.
-                </p>
-                <p className="mt-3 text-navy-500 leading-relaxed">
-                  Whether you're new to solar or looking to expand an existing
-                  system, this guide covers everything you need to know — from
-                  understanding how solar works to navigating government rebates
-                  and choosing a reputable installer.
-                </p>
-              </div>
+    <section className="bg-[#FAFAFA] border-b border-slate-200 overflow-hidden relative">
+      {/* Background Graphic */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] bg-[#144E9A]/10 blur-[120px] rounded-full rotate-45"></div>
+        <div className="absolute bottom-[-20%] right-[-10%] w-[40%] h-[120%] bg-[#E56D00]/10 blur-[100px] rounded-full rotate-45"></div>
+      </div>
+
+      <div 
+        className={`max-w-7xl mx-auto px-6 lg:px-12 py-8 lg:py-12 transition-all duration-1000 ease-out relative z-10 ${contentReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        ref={contentReveal.ref}
+      >
+        <div className="mb-20 max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black text-slate-900 tracking-tighter leading-[1.05] mb-8 text-center justify-center">
+            Stop guessing. <br className="hidden md:block" />
+            Start with the <span className="text-[#E56D00]">facts.</span>
+          </h2>
+          <p className="text-xl md:text-2xl text-slate-500 font-light leading-relaxed text-center max-w-4xl mx-auto">
+            The Clean Energy Council (CEC) consumer guide strips away the marketing fluff to give you the raw, unbiased truth about switching to renewables.
+          </p>
+        </div>
+
+        {/* Minimalist Column Layout (NO CARDS/BOXES) - Just text separated by thin lines */}
+        <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-slate-200 border-y border-slate-200 bg-white shadow-sm rounded-md p-4 lg:p-8 relative">
+          
+          <div className="flex-1 py-12 lg:py-8 lg:pr-12 relative group">
+            <div className="text-[120px] font-heading font-black text-slate-100 absolute top-0 right-4 select-none group-hover:text-[#E56D00]/40 transition-colors duration-500 z-0">01</div>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Consumer Rights</h3>
+              <p className="text-slate-600 leading-relaxed text-lg">
+                Understand Australian Consumer Law guarantees, what your warranties actually cover, and exactly who is responsible if something goes wrong.
+              </p>
             </div>
           </div>
 
-          {/* Download CTA */}
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-8 text-center text-white">
-            <h3 className="text-xl font-heading font-semibold">
-              Download the Full CEC Consumer Guide
-            </h3>
-            <p className="mt-2 text-white/80 text-sm">
-              Get the complete PDF guide with detailed information on all topics
-              covered below.
-            </p>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-heading font-semibold bg-white text-primary-600 hover:bg-primary-50 hover:-translate-y-0.5 shadow-sm transition-all mt-5 mx-auto cursor-pointer"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                />
-              </svg>
-              Download PDF Guide
-            </button>
+          <div className="flex-1 py-12 lg:py-8 lg:px-12 relative group">
+            <div className="text-[120px] font-heading font-black text-slate-100 absolute top-0 right-4 select-none group-hover:text-[#144E9A]/40 transition-colors duration-500 z-0">02</div>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">System Sizing</h3>
+              <p className="text-slate-600 leading-relaxed text-lg">
+                Stop overpaying for massive systems. Learn how to calculate your exact household load and match it to the perfect inverter/panel ratio.
+              </p>
+            </div>
           </div>
+
+          <div className="flex-1 py-12 lg:py-8 lg:pl-12 relative group">
+            <div className="text-[120px] font-heading font-black text-slate-100 absolute top-0 right-4 select-none group-hover:text-emerald-500/40 transition-colors duration-500 z-0">03</div>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Rebates & STCs</h3>
+              <p className="text-slate-600 leading-relaxed text-lg">
+                Navigate the complex world of Small-scale Technology Certificates (STCs) and state-level loan schemes to maximize your government subsidies.
+              </p>
+            </div>
+          </div>
+
         </div>
+
+        <div className="mt-20 flex justify-start">
+          <a 
+            href="#download"
+            className="group flex items-center gap-6 pb-2 border-b-2 border-slate-900 hover:border-[#E56D00] transition-colors duration-300"
+          >
+            <span className="text-2xl font-heading font-bold text-slate-900 group-hover:text-[#E56D00] transition-colors duration-300">Download the 4.2MB PDF</span>
+            <svg className="w-8 h-8 text-slate-900 group-hover:text-[#E56D00] group-hover:translate-x-2 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
+        </div>
+
       </div>
     </section>
   );

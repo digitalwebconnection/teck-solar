@@ -1,4 +1,3 @@
-
 import { useReveal } from "../../../hooks/useReveal";
 
 interface AccreditationItem {

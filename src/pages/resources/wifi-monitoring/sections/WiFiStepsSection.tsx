@@ -4,7 +4,7 @@ const steps = [
   {
     step: 1,
     title: 'Download the Monitoring App',
-    description: 'Download the solar monitoring app from the App Store (iOS) or Google Play (Android). The app name depends on your inverter brand — we\'ll let you know which one to install.',
+    description: 'Download the solar monitoring app from the App Store (iOS) or Google Play (Android). The app name depends on your inverter brand.',
     tips: ['Fronius: "Fronius Solar.web"', 'Enphase: "Enphase Enlighten"', 'SMA: "SMA Energy"', 'Sungrow: "iSolarCloud"'],
   },
   {
@@ -16,7 +16,7 @@ const steps = [
   {
     step: 3,
     title: 'Connect to Inverter Hotspot',
-    description: 'On your phone or tablet, go to WiFi settings and look for a new network that matches your inverter brand (e.g., "Fronius_xxxx" or "AP_xxxx"). Connect to this temporary hotspot.',
+    description: 'On your phone or tablet, go to WiFi settings and look for a new network that matches your inverter brand (e.g., "Fronius_xxxx"). Connect to this temporary hotspot.',
     tips: ['The hotspot may appear as an unsecured network', 'You may temporarily lose internet — this is normal', 'Default password is often on a label on the inverter'],
   },
   {
@@ -46,57 +46,80 @@ const steps = [
 ];
 
 export default function WiFiStepsSection() {
-  const stepsReveal = useReveal();
+  const sectionReveal = useReveal();
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white" ref={stepsReveal.ref}>
-      <div className="max-w-4xl mx-auto w-full">
-        <div className={`text-center mb-14 transition-all duration-700 ${stepsReveal.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-primary-500 font-heading font-semibold text-sm tracking-widest uppercase">Setup Guide</span>
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-navy-900 mt-3">Connect Your Solar System to WiFi</h2>
-          <div className="w-16 h-1 bg-primary-500 rounded-full mx-auto mt-4" />
-          <p className="mt-4 text-navy-500 max-w-2xl mx-auto">
-            Follow these step-by-step instructions to connect your solar inverter to WiFi and start monitoring your system remotely.
-          </p>
-        </div>
+    <section className="py-24 lg:py-32 bg-slate-50 relative z-20" ref={sectionReveal.ref}>
+      <div className="max-w-[1400px] mx-auto w-full px-6 lg:px-12">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          
+          {/* Left Column: Sticky Header */}
+          <div className="lg:w-1/3">
+            <div className={`sticky top-32 transition-all duration-700 ${sectionReveal.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="inline-block px-4 py-1.5 rounded-full bg-[#144E9A]/10 text-[#144E9A] font-bold text-xs uppercase tracking-widest mb-6">Setup Process</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
+                Connect to <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">The Cloud.</span>
+              </h2>
+              <p className="text-lg text-slate-600 leading-relaxed mb-10">
+                Follow these step-by-step instructions to securely connect your solar system to your home network and enable 24/7 remote monitoring.
+              </p>
 
-        <div className="space-y-8">
-          {steps.map((s, i) => (
-            <div
-              key={i}
-              className={`flex gap-6 transition-all duration-700 ${stepsReveal.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              {/* Step Number */}
-              <div className="shrink-0">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center shadow-lg">
-                  <span className="text-white font-heading font-bold text-xl">{s.step}</span>
-                </div>
-                {i < steps.length - 1 && (
-                  <div className="w-0.5 h-full bg-primary-100 mx-auto mt-2 min-h-[40px]" />
-                )}
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 pb-4">
-                <h3 className="text-xl font-heading font-semibold text-navy-900">{s.title}</h3>
-                <p className="text-navy-500 mt-2 leading-relaxed">{s.description}</p>
-                {s.tips.length > 0 && (
-                  <div className="mt-4 bg-navy-50 rounded-xl p-5 border border-navy-100">
-                    <p className="text-xs font-semibold text-primary-500 uppercase tracking-wide mb-2">Tips</p>
-                    <ul className="space-y-1.5">
-                      {s.tips.map((tip, ti) => (
-                        <li key={ti} className="flex items-start gap-2 text-sm text-navy-600">
-                          <svg className="w-4 h-4 text-eco-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                          {tip}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+              {/* Quick Info Box */}
+              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-5">
+                 <div className="w-12 h-12 rounded-full bg-[#E56D00]/10 flex items-center justify-center shrink-0">
+                    <svg className="w-6 h-6 text-[#E56D00]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                 </div>
+                 <div>
+                   <h4 className="font-bold text-slate-900 mb-2">Before you begin</h4>
+                   <p className="text-sm text-slate-600 leading-relaxed">Ensure you have your 2.4GHz WiFi password and your inverter serial number handy.</p>
+                 </div>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Right Column: Step Cards */}
+          <div className="lg:w-2/3 relative">
+             {/* Continuous Timeline Line */}
+             <div className="absolute left-[23px] top-8 bottom-32 w-1 bg-gradient-to-b from-[#144E9A]/20 via-[#E56D00]/20 to-transparent rounded-full hidden md:block" />
+
+             <div className="space-y-8 lg:space-y-12">
+               {steps.map((s, i) => (
+                 <div key={i} className={`relative md:pl-16 lg:pl-20 transition-all duration-700 ${sectionReveal.visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                    
+                    {/* Node */}
+                    <div className="absolute left-0 top-0 w-12 h-12 rounded-full bg-white border-4 border-[#144E9A] items-center justify-center text-lg font-heading font-black text-[#144E9A] shadow-lg shadow-[#144E9A]/20 z-10 hidden md:flex">
+                      {s.step}
+                    </div>
+
+                    {/* Card */}
+                    <div className="bg-white rounded-2xl p-8 lg:p-10 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-[#144E9A]/5 transition-all duration-300 relative overflow-hidden group">
+                      
+                      <div className="md:hidden w-12 h-12 rounded-full bg-[#144E9A]/10 text-[#144E9A] flex items-center justify-center font-heading font-black text-lg mb-6">
+                        {s.step}
+                      </div>
+
+                      <h3 className="text-2xl font-heading font-bold text-slate-900 mb-4">{s.title}</h3>
+                      <p className="text-slate-600 leading-relaxed mb-8">{s.description}</p>
+                      
+                      {s.tips.length > 0 && (
+                        <div className="bg-slate-50 rounded-[1.5rem] p-6 border border-slate-100">
+                          <span className="text-xs font-bold text-[#E56D00] uppercase tracking-widest block mb-4">Pro Tips</span>
+                          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {s.tips.map((tip, ti) => (
+                              <li key={ti} className="flex items-start gap-3 text-sm text-slate-600">
+                                <svg className="w-5 h-5 text-[#144E9A] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                                {tip}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                 </div>
+               ))}
+
+             </div>
+          </div>
         </div>
       </div>
     </section>
