@@ -48,6 +48,9 @@ export default function ContactFormSection() {
 
     if (res.success) {
       setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      setTimeout(() => {
+        setResult(null);
+      }, 3000);
     }
   };
 
@@ -72,7 +75,7 @@ export default function ContactFormSection() {
 
             {result && (
               <div
-                className={`mb-6 p-4 rounded-xl text-sm font-medium ${
+                className={`hidden sm:block mb-6 p-4 rounded-xl text-sm font-medium ${
                   result.success
                     ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                     : "bg-red-50 text-red-800 border border-red-200"
@@ -101,6 +104,10 @@ export default function ContactFormSection() {
                       setFormData({ ...formData, name: e.target.value })
                     }
                     className="w-full px-4 py-3 rounded-xl border border-navy-200 text-navy-900 placeholder-navy-400 text-sm transition-all"
+                    maxLength={50}
+                    minLength={2}
+                    pattern="^[a-zA-Z\s]+$"
+                    title="Only letters and spaces allowed"
                     required
                   />
                 </div>
@@ -121,6 +128,7 @@ export default function ContactFormSection() {
                       setFormData({ ...formData, email: e.target.value })
                     }
                     className="w-full px-4 py-3 rounded-xl border border-navy-200 text-navy-900 placeholder-navy-400 text-sm transition-all"
+                    maxLength={100}
                     required
                   />
                 </div>
@@ -143,6 +151,10 @@ export default function ContactFormSection() {
                       setFormData({ ...formData, phone: e.target.value })
                     }
                     className="w-full px-4 py-3 rounded-xl border border-navy-200 text-navy-900 placeholder-navy-400 text-sm transition-all"
+                    maxLength={15}
+                    minLength={8}
+                    pattern="^[\d\s\-\+\(\)]+$"
+                    title="Please enter a valid phone number"
                     required
                   />
                 </div>
@@ -190,6 +202,7 @@ export default function ContactFormSection() {
                     setFormData({ ...formData, message: e.target.value })
                   }
                   className="w-full px-4 py-3 rounded-xl border border-navy-200 text-navy-900 placeholder-navy-400 text-sm resize-none transition-all"
+                  maxLength={1000}
                   required
                 />
               </div>
@@ -213,6 +226,18 @@ export default function ContactFormSection() {
                   />
                 </svg>
               </button>
+              
+              {result && (
+                <div
+                  className={`block sm:hidden mt-4 p-4 rounded-xl text-sm font-medium animate-fade-in ${
+                    result.success
+                      ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                      : "bg-red-50 text-red-800 border border-red-200"
+                  }`}
+                >
+                  {result.message}
+                </div>
+              )}
             </form>
           </div>
 

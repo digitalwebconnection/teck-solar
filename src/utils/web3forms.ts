@@ -1,4 +1,5 @@
-﻿export const WEB3FORMS_ACCESS_KEY = '931031ab-378b-41eb-9bc5-ca9d50b95e91';
+// export const WEB3FORMS_ACCESS_KEY = '931031ab-378b-41eb-9bc5-ca9d50b95e91';
+export const WEB3FORMS_ACCESS_KEY = '93';
 
 export interface Web3FormsPayload {
   name?: string;
@@ -16,6 +17,16 @@ export interface Web3FormsResponse {
   data?: any;
 }
 
+// Security Point: Input Sanitization to prevent XSS and Injection Attacks
+function sanitizeInput(input: any): any {
+  if (typeof input !== 'string') return input;
+  // Remove HTML tags completely
+  let sanitized = input.replace(/<[^>]*>?/gm, '');
+  // Remove dangerous characters commonly used in Script/SQL injection
+  sanitized = sanitized.replace(/[<>;={}]/g, '');
+  return sanitized.trim();
+}
+
 export async function submitToWeb3Forms(
   data: Web3FormsPayload | FormData,
   options?: {
@@ -23,6 +34,16 @@ export async function submitToWeb3Forms(
     from_name?: string;
   }
 ): Promise<Web3FormsResponse> {
+  // Security Point: Rate Limiting (1 submission per minute)
+  const lastSubmitTime = localStorage.getItem('lastFormSubmitTime');
+  const now = Date.now();
+  if (lastSubmitTime && now - parseInt(lastSubmitTime, 10) < 60000) {
+    return {
+      success: false,
+      message: 'Please wait a minute before submitting another form.',
+    };
+  }
+
   try {
     let formData: FormData;
 
@@ -35,7 +56,8 @@ export async function submitToWeb3Forms(
           if (typeof val === 'object' && !(val instanceof File) && !(val instanceof Blob)) {
             formData.append(key, JSON.stringify(val));
           } else {
-            formData.append(key, String(val));
+            // Apply sanitization to all string inputs
+            formData.append(key, sanitizeInput(String(val)));
           }
         }
       });
@@ -57,6 +79,11 @@ export async function submitToWeb3Forms(
     });
 
     const result = await response.json();
+    
+    if (result.success) {
+      localStorage.setItem('lastFormSubmitTime', now.toString());
+    }
+
     return {
       success: result.success === true,
       message: result.message || (result.success ? 'Form submitted successfully!' : 'Submission failed'),

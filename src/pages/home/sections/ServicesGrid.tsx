@@ -96,7 +96,7 @@ export default function ServicesGrid() {
               <Link
                 key={i}
                 to={service.link}
-                className="group flex flex-col justify-between w-[280px] sm:w-[340px] lg:w-[380px] shrink-0 bg-white rounded-3xl overflow-hidden border border-slate-200/60 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(20,78,154,0.15)] hover:border-brand-blue-200 hover:-translate-y-2 transition-all duration-500 relative"
+                className="group flex flex-col justify-between w-[280px] sm:w-[340px] lg:w-[380px] shrink-0 bg-white rounded-md overflow-hidden border border-slate-200/60 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(20,78,154,0.15)] hover:border-brand-blue-200 hover:-translate-y-2 transition-all duration-500 relative"
               >
                 <div>
                   {/* Image Container with Inner Shadow & Scale */}
@@ -124,10 +124,14 @@ export default function ServicesGrid() {
 
                 {/* Card Footer Action */}
                 <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-2 relative z-20">
-                  <div className="flex items-center gap-3 text-brand-blue-600 font-heading font-bold text-sm sm:text-base group-hover:text-[#E56D00] transition-colors duration-300">
-                    <div className="w-10 h-10 rounded-full bg-brand-blue-50 group-hover:bg-[#E56D00]/10 flex items-center justify-center transition-colors duration-300 shrink-0">
+                  <div className="relative inline-flex items-center h-12 pl-[60px] pr-6 rounded-full font-heading font-bold text-sm sm:text-base text-slate-900 transition-colors duration-500 group-hover:text-white">
+                    {/* Expanding Background */}
+                    <div className="absolute left-0 top-0 h-12 w-12 rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:w-full z-0 shadow-sm group-hover:shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)]"></div>
+                    
+                    {/* Arrow Icon */}
+                    <div className="absolute left-0 top-0 h-12 w-12 flex items-center justify-center z-10 text-white">
                       <svg
-                        className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                        className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -135,12 +139,13 @@ export default function ServicesGrid() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2.5}
+                          strokeWidth={1.5}
                           d="M14 5l7 7m0 0l-7 7m7-7H3"
                         />
                       </svg>
                     </div>
-                    <span>Discover More</span>
+                    
+                    <span className="relative z-10">Discover More</span>
                   </div>
                 </div>
               </Link>

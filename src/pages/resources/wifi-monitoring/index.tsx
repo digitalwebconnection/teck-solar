@@ -44,7 +44,7 @@ export default function WiFiMonitoring() {
             </div>
 
             {/* Right Abstract Visual (CSS Art Router/Phone) */}
-            <div className="w-full lg:w-6/12 h-[450px] lg:h-[550px] relative flex justify-center items-center mt-12 lg:mt-0">
+            <div className="w-full lg:w-6/12 h-[580px] lg:h-[600px] relative flex justify-center items-center mt-4 lg:mt-0">
               
               {/* Soft Ambient Glow */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#144E9A]/20 rounded-full blur-[80px]" />

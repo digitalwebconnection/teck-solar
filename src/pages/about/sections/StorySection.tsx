@@ -6,14 +6,14 @@ export default function StorySection() {
   return (
     <section
       id="our-story"
-      className="py-8 sm:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white scroll-mt-12 border-b border-slate-100"
+      className="py-8 sm:py-10 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white scroll-mt-12 border-b border-slate-100"
       ref={ref}
     >
       <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Authoritative Editorial Story */}
+          {/* Content Column (Right on Desktop) */}
           <div
-            className={`lg:col-span-7 transition-all duration-700 ${
+            className={`lg:col-span-7 order-2 lg:order-2 transition-all duration-700 ${
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
@@ -89,9 +89,9 @@ export default function StorySection() {
             </div>
           </div>
 
-          {/* Right Column: High-End Photographic Showcase */}
+          {/* Image Column (Left on Desktop) */}
           <div
-            className={`lg:col-span-5 transition-all duration-700 delay-150 ${
+            className={`lg:col-span-5 order-1 lg:order-1 transition-all duration-700 delay-150 ${
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >

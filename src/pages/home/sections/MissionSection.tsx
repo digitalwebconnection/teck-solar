@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
 import { useReveal } from "../../../hooks/useReveal";
 import { useQuoteModal } from "../../../context/QuoteModalContext";
+import { PixelImage } from "../../../components/ui/pixel-image";
+import { DotPattern } from "../../../components/ui/dot-pattern";
 
 export default function MissionSection() {
   const { ref, visible } = useReveal(0.15);
   const { openModal } = useQuoteModal();
+
+  const images = [
+    "/images/mission-solar.jpg",
+    "/images/hero-commercial.jpg", 
+    "/images/hero-residential.jpg"
+  ];
 
   return (
     <section
@@ -66,27 +74,33 @@ export default function MissionSection() {
               <button
                 type="button"
                 onClick={openModal}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#E56D00] text-white font-heading font-bold text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto overflow-hidden shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)] cursor-pointer"
+                className="group relative inline-flex items-center h-14 pl-[72px] pr-8 rounded-full font-heading font-bold text-lg text-slate-900 transition-colors duration-500 hover:text-white w-full sm:w-auto cursor-pointer"
               >
-                <div className="absolute inset-0 bg-[#cc6100] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
+                {/* Expanding Orange Background */}
+                <div className="absolute left-0 top-0 h-14 w-14 rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:w-full z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)]"></div>
+                
+                {/* Arrow Icon */}
+                <div className="absolute left-0 top-0 h-14 w-14 flex items-center justify-center z-10 text-white">
+                  <svg
+                    className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                </div>
+                
                 <span className="relative z-10">Start Your Solar Journey</span>
-                <svg
-                  className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
               </button>
               <Link
                 to="/services/residential-solar"
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:border-brand-blue-500 hover:text-brand-blue-600 hover:-translate-y-1 w-full sm:w-auto"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-sm bg-white border border-slate-300 text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:bg-brand-blue-500 hover:text-white hover:-translate-y-1 w-full sm:w-auto"
               >
                 <span className="relative z-10">Explore Services</span>
                 <svg
@@ -116,14 +130,24 @@ export default function MissionSection() {
               {/* Backing decorative frame */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-[#E56D00]/20 via-emerald-100/40 to-sky-100/50 rounded-3xl blur-xl opacity-70 -z-10" />
 
+              {/* Decorative offset dot patterns */}
+              <div className="absolute -top-12 -right-12 w-64 h-64 -z-10">
+                <DotPattern className="fill-slate-400/50" />
+              </div>
+              <div className="absolute -bottom-10 -left-12 w-64 h-64 -z-10">
+                <DotPattern className="fill-[#144E9A]/30" />
+              </div>
+
               {/* Main Image Container */}
               <div className="relative rounded-t-full overflow-hidden shadow-2xl shadow-slate-900/15 border border-slate-200 bg-slate-900 group">
-                <img
-                  src="/images/mission-solar.jpg"
-                  alt="Modern solar panels in green field under bright sun"
-                  className="w-full h-[380px] sm:h-[460px] lg:h-[520px] object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                <PixelImage
+                  srcs={images}
+                  className="w-full h-[380px] sm:h-[460px] lg:h-[520px]"
+                  customGrid={{ rows: 6, cols: 6 }}
+                  grayscaleAnimation={false}
+                  alt="Modern solar panels"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent pointer-events-none z-20" />
               </div>
             </div>
           </div>

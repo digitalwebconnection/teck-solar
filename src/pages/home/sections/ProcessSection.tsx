@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useReveal } from "../../../hooks/useReveal";
 
 const processSteps = [
@@ -131,6 +132,15 @@ const processSteps = [
 
 export default function ProcessSection() {
   const { ref, visible } = useReveal(0.15);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (!visible) return;
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % processSteps.length);
+    }, 2500); // Auto change every 2.5 seconds
+    return () => clearInterval(timer);
+  }, [visible]);
 
   return (
     <section
@@ -166,43 +176,69 @@ export default function ProcessSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-12 gap-y-8 lg:gap-y-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-12 lg:gap-y-16 mt-8">
           {processSteps.map((step, i) => {
             const isEven = i % 2 === 0;
-            const hoverBgClass = isEven ? "group-hover:bg-[#144E9A] group-hover:shadow-[#144E9A]/20" : "group-hover:bg-[#E56D00] group-hover:shadow-[#E56D00]/20";
-            const hoverTextClass = isEven ? "group-hover:text-[#144E9A]" : "group-hover:text-[#E56D00]";
+            const isActive = i === activeIndex;
+
+            // Create the stair-step cascading effect
+            let stairClass = "";
+            if (i % 2 === 1) stairClass += "md:translate-y-12 ";
+            else stairClass += "md:translate-y-0 ";
+            
+            if (i % 3 === 0) stairClass += "lg:translate-y-0";
+            else if (i % 3 === 1) stairClass += "lg:translate-y-12";
+            else if (i % 3 === 2) stairClass += "lg:translate-y-24";
 
             return (
               <div
                 key={i}
-                className={`transition-all duration-700 ${
+                className={`relative transition-all duration-700 ${stairClass} ${
                   visible
-                    ? "opacity-100 translate-y-0"
+                    ? "opacity-100"
                     : "opacity-0 translate-y-12"
                 }`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <div className="group relative flex flex-col h-full p-8 rounded-3xl transition-all duration-500 border border-transparent hover:bg-white hover:shadow-[0_20px_40px_-10px_rgba(20,78,154,0.08)] hover:-translate-y-2 hover:border-slate-100 cursor-default">
+                {/* Connecting Line / Arrow to the next card (hidden on last column or mobile) */}
+                {(i + 1) % 3 !== 0 && i !== processSteps.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-10 w-12 border-t-2 border-dashed border-slate-300 transform -translate-y-1/2 rotate-[25deg] z-0" />
+                )}
+                
+                <div 
+                  onMouseEnter={() => setActiveIndex(i)}
+                  className={`group relative flex flex-col h-full p-8 transition-all duration-500 border cursor-default z-10 rounded-md ${
+                    isActive 
+                      ? isEven 
+                        ? "bg-[#144E9A] border-[#144E9A] shadow-[0_20px_40px_-10px_rgba(20,78,154,0.3)] -translate-y-3"
+                        : "bg-[#E56D00] border-[#E56D00] shadow-[0_20px_40px_-10px_rgba(229,109,0,0.3)] -translate-y-3"
+                      : "bg-white border-slate-200"
+                  }`}
+                >
                   {/* Step indicator with number, icon, and dynamic accent line */}
                   <div className="flex items-center gap-4 mb-6">
-                    <div className={`w-14 h-14 rounded-2xl bg-slate-50 text-slate-400 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 flex items-center justify-center group-hover:-translate-y-1 ${hoverBgClass} group-hover:text-white group-hover:border-transparent group-hover:shadow-lg transition-all duration-500 flex-shrink-0`}>
+                    <div className={`w-14 h-14 rounded-md shadow-sm border flex items-center justify-center transition-all duration-500 flex-shrink-0 ${
+                      isActive 
+                        ? "bg-white/20 text-white border-transparent -translate-y-1 shadow-lg"
+                        : "bg-slate-50 text-slate-400 border-slate-100"
+                    }`}>
                       {step.icon("w-6 h-6")}
                     </div>
                     <div className="flex items-baseline gap-2">
-                      <span className={`text-3xl font-heading font-extrabold text-slate-300 ${hoverTextClass} transition-all duration-500`}>
+                      <span className={`text-3xl font-heading font-extrabold transition-colors duration-500 ${isActive ? "text-white" : "text-black"}`}>
                         {step.step}
                       </span>
                     </div>
-                    <div className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent group-hover:from-brand-blue-200 group-hover:to-transparent transition-all duration-500" />
+                    <div className={`h-px flex-1 bg-gradient-to-r transition-all duration-500 ${isActive ? "from-white/40 to-transparent" : "from-slate-200 to-transparent"}`} />
                   </div>
 
                   {/* Title */}
-                  <h3 className={`text-xl font-heading font-extrabold text-slate-900 ${hoverTextClass} transition-all duration-300 mb-3`}>
+                  <h3 className={`text-xl font-heading font-extrabold transition-colors duration-500 mb-3 ${isActive ? "text-white" : "text-slate-900"}`}>
                     {step.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-slate-500 text-base leading-relaxed font-light">
+                  <p className={`text-base leading-relaxed font-light transition-colors duration-500 ${isActive ? "text-white/90" : "text-slate-500"}`}>
                     {step.description}
                   </p>
                 </div>

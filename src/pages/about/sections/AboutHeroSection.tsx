@@ -7,101 +7,11 @@ const checkpoints = [
   "25-Year Performance Warranty",
 ];
 
-const stats = [
-  {
-    number: "10",
-    symbol: "+",
-    label: "Years of Experience",
-    sub: "Pioneering solar since 2015",
-    color: "blue",
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-  },
-  {
-    number: "2,500",
-    symbol: "+",
-    label: "Installations",
-    sub: "Across NSW, VIC & QLD",
-    color: "orange",
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-        />
-      </svg>
-    ),
-  },
-  {
-    number: "50",
-    symbol: "MW+",
-    label: "Installed Capacity",
-    sub: "Clean renewable power",
-    color: "blue",
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 10V3L4 14h7v7l9-11h-7z"
-        />
-      </svg>
-    ),
-  },
-  {
-    number: "100",
-    symbol: "%",
-    label: "CEC Accredited",
-    sub: "In-house certified team",
-    color: "orange",
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-        />
-      </svg>
-    ),
-  },
-];
+
 
 export default function AboutHeroSection() {
   const heroReveal = useReveal();
   const imageReveal = useReveal();
-  const statsReveal = useReveal();
   const { openModal } = useQuoteModal();
   return (
     <>
@@ -230,75 +140,6 @@ export default function AboutHeroSection() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Premium Stats Section */}
-      <section className="py-16 lg:py-24 bg-slate-100 relative overflow-hidden border-b border-slate-200">
-        {/* Subtle decorative background elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-500/5 rounded-full blur-3xl pointer-events-none transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-500/5 rounded-full blur-3xl pointer-events-none transform -translate-x-1/2 translate-y-1/2"></div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 transition-all duration-1000 ease-out ${statsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
-            ref={statsReveal.ref}
-          >
-            {stats.map((item, i) => (
-              <div
-                key={i}
-                className="group relative bg-white rounded-xl p-8 border border-slate-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] hover:border-brand-blue-200 transition-all duration-500 hover:-translate-y-2 overflow-hidden flex flex-col"
-              >
-                {/* Subtle hover gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                
-                <div className="relative z-10">
-                  {/* Icon Header */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors duration-500 ${
-                        item.color === "orange"
-                          ? "bg-gradient-to-br from-[#E56D00]/10 to-orange-400/10 text-[#E56D00] group-hover:bg-[#E56D00] group-hover:text-white"
-                          : "bg-gradient-to-br from-[#144E9A]/10 to-brand-blue-500/10 text-[#144E9A] group-hover:bg-[#144E9A] group-hover:text-white"
-                      }`}
-                    >
-                      {item.icon}
-                    </div>
-                  </div>
-
-                  {/* Number */}
-                  <div className="flex items-baseline gap-1 mb-3">
-                    <span
-                      className={`text-5xl font-heading font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r ${
-                        item.color === "orange"
-                          ? "from-[#E56D00] to-orange-400"
-                          : "from-[#144E9A] to-brand-blue-500"
-                      }`}
-                    >
-                      {item.number}
-                    </span>
-                    <span
-                      className={`text-2xl font-heading font-black ${
-                        item.color === "orange"
-                          ? "text-[#E56D00]"
-                          : "text-[#144E9A]"
-                      }`}
-                    >
-                      {item.symbol}
-                    </span>
-                  </div>
-
-                  {/* Text */}
-                  <h4 className="text-lg font-heading font-bold text-slate-900 mb-1.5">
-                    {item.label}
-                  </h4>
-                  <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                    {item.sub}
-                  </p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

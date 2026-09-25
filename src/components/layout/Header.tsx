@@ -240,7 +240,7 @@ export default function Header() {
     <>
       {/* Premium Dark Top Utility Bar */}
       <div className="w-full bg-slate-900 text-slate-300 text-[13px] py-2.5">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-4 w-full gap-y-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 w-full">
           
           {/* Left: Contact Info */}
           <div className="flex items-center gap-6">
@@ -291,7 +291,7 @@ export default function Header() {
           </div>
 
           {/* Right: Badges & Social */}
-          <div className="flex items-center gap-5 ml-auto">
+          <div className="flex items-center gap-5 sm:ml-auto">
             {/* Accreditation Badge */}
             <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded text-white text-xs font-semibold">
               <span>⚡</span>
@@ -306,7 +306,7 @@ export default function Header() {
               href="https://wa.me/61400000000"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-medium hover:text-green-400 transition-colors group"
+              className="hidden sm:flex items-center gap-1.5 font-medium hover:text-green-400 transition-colors group"
             >
               <svg
                 className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform"
@@ -636,7 +636,7 @@ export default function Header() {
             
             <div className="flex items-center gap-3 xl:gap-4">
               {/* Primary Get a Quote Button */}
-              <Button onClick={openModal}>
+              <Button onClick={openModal} className="hidden lg:inline-flex">
                 Get a Free Quote
                 <svg
                   className="w-4 h-4 transition-transform duration-200 group-hover/button:translate-x-1"
@@ -750,12 +750,6 @@ export default function Header() {
                 />
               </svg>
             </button>
-          </div>
-
-          {/* Rebate banner inside mobile drawer */}
-          <div className="bg-primary-50 px-4 py-2 text-xs text-primary-800 border-b border-primary-100 flex items-center gap-1.5 font-medium">
-            <span>☀️</span>
-            <span>Australian Rebates Up to $1,400 Available</span>
           </div>
 
           {/* Drawer Navigation Links */}

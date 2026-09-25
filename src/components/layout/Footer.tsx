@@ -28,13 +28,13 @@ export default function Footer() {
     <footer className="bg-slate-900 border-t border-slate-200">
       {/* Main Footer Container */}
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-14 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-12">
           {/* Brand & Accreditation Column */}
-          <div className="space-y-6">
-            <Link 
-              to="/" 
+          <div className="space-y-6 col-span-2 md:col-span-1">
+            <Link
+              to="/"
               className="inline-block"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               <img
                 src={logo}
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links Column */}
-          <div>
+          <div className="col-span-1">
             <h4 className="text-white font-semibold text-base mb-4 flex items-center gap-2">
               Quick Links
             </h4>
@@ -73,7 +73,7 @@ export default function Footer() {
           </div>
 
           {/* Services Column */}
-          <div>
+          <div className="col-span-1">
             <h4 className="text-white font-semibold text-base mb-4 flex items-center gap-2">
               Our Services
             </h4>
@@ -92,7 +92,7 @@ export default function Footer() {
           </div>
 
           {/* Contact Details Column */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <h4 className="text-white font-semibold text-base mb-4 flex items-center gap-2">
               Get in Touch
             </h4>
@@ -182,12 +182,22 @@ export default function Footer() {
       <div className="border-t border-slate-200 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-white w-full text-center">
           <div className="flex-1 lg:text-left">
-            <p>&copy; {new Date().getFullYear()} Teck Solar. All rights reserved.</p>
+            <p>
+              &copy; {new Date().getFullYear()} Teck Solar. All rights reserved.
+            </p>
           </div>
-          
+
           <div className="flex-1 text-slate-400">
             <p>
-              Developed by <a href="https://digitalwebconnection.com/" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:text-primary-400 transition-colors font-medium">Digital Web Connection</a>
+              Developed by{" "}
+              <a
+                href="https://digitalwebconnection.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-500 hover:text-primary-400 transition-colors font-medium"
+              >
+                Digital Web Connection
+              </a>
             </p>
           </div>
 

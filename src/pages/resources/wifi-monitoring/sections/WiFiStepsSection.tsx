@@ -46,7 +46,7 @@ const steps = [
 ];
 
 export default function WiFiStepsSection() {
-  const sectionReveal = useReveal();
+  const sectionReveal = useReveal(0.05);
 
   return (
     <section className="py-24 lg:py-32 bg-slate-50 relative z-20" ref={sectionReveal.ref}>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuoteModal } from "../../../context/QuoteModalContext";
 
@@ -18,7 +18,7 @@ const slides: Slide[] = [
     badge: "Clean Solar Energy",
     title: "Power Your Home\nWith Solar Energy",
     subtitle:
-      "Save up to 80% on power bills with premium residential solar systems.",
+      "Save up to 80% on power bills with premium residential solar systems. Join thousands of Australian homeowners securing their energy independence, reducing their carbon footprint, and adding lasting value to their property.",
     primaryCta: "Get a Free Quote",
     primaryLink: "/contact",
     secondaryCta: "About Us",
@@ -29,7 +29,7 @@ const slides: Slide[] = [
     badge: "Commercial Solutions",
     title: "Commercial Solar\nFor Your Business",
     subtitle:
-      "Cut operational electricity costs with high-efficiency commercial solar.",
+      "Cut operational electricity costs with high-efficiency commercial solar. We design scalable, reliable solar solutions that protect your business against rising energy prices and demonstrate your commitment to sustainability.",
     primaryCta: "Get a Free Quote",
     primaryLink: "/contact",
     secondaryCta: "Our Services",
@@ -40,7 +40,7 @@ const slides: Slide[] = [
     badge: "CEC Accredited",
     title: "Expert Installation\nYou Can Trust",
     subtitle:
-      "Certified Australian installers delivering top-tier quality and support.",
+      "Certified Australian installers delivering top-tier quality and support. From initial design to final connection, our CEC-accredited team ensures a flawless, hassle-free installation backed by our industry-leading workmanship guarantee.",
     primaryCta: "Request Call Back",
     primaryLink: "/contact",
     secondaryCta: "Learn More",
@@ -52,14 +52,6 @@ const slides: Slide[] = [
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const { openModal } = useQuoteModal();
-
-  const prevSlide = useCallback(() => {
-    setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  }, []);
-
-  const nextSlide = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -92,28 +84,18 @@ export default function HeroSlider() {
             }`}
           />
           {/* High-contrast smooth gradients for optimal readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/65 to-navy-950/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/50 via-navy-950/70 to-navy-950/50" />       
         </div>
       ))}
 
       {/* Main Content (Simple, Short, and Focused) */}
-      <div className="relative z-10 w-full">
+      <div className="relative z-10 w-full text-left">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl text-left">
-            {/* Short Tag Badge */}
-            <div
-              key={`badge-${current}`}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500/20 border border-primary-400/40 text-primary-300 text-xs sm:text-sm font-medium tracking-wide mb-4 animate-fade-in"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-primary-400"></span>
-              <span>{activeSlide.badge}</span>
-            </div>
-
+          <div className="max-w-4xl flex flex-col items-start">
             {/* Heading */}
             <h1
               key={`heading-${current}`}
-              className="text-3xl sm:text-5xl lg:text-5xl  font-serif font-extrabold text-white leading-tight sm:leading-tight whitespace-pre-line animate-slide-up"
+              className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight sm:leading-tight whitespace-pre-line animate-slide-up"
             >
               {activeSlide.title}
             </h1>
@@ -121,7 +103,7 @@ export default function HeroSlider() {
             {/* Short Subheading */}
             <p
               key={`sub-${current}`}
-              className="mt-4 text-base sm:text-lg text-slate-200 max-w-lg leading-relaxed animate-slide-up"
+              className="mt-4 text-base sm:text-lg text-white/70 max-w-3xl leading-relaxed animate-slide-up"
               style={{ animationDelay: "100ms" }}
             >
               {activeSlide.subtitle}
@@ -130,55 +112,45 @@ export default function HeroSlider() {
             {/* CTAs */}
             <div
               key={`cta-${current}`}
-              className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4 animate-slide-up"
+              className="mt-8 flex flex-wrap items-center justify-start gap-3 sm:gap-4 animate-slide-up"
               style={{ animationDelay: "200ms" }}
             >
               {activeSlide.primaryLink === "/contact" ? (
                 <button
                   type="button"
                   onClick={openModal}
-                  className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
+                  className="group relative inline-flex items-center h-[52px] sm:h-[56px] pl-[68px] sm:pl-[72px] pr-7 sm:pr-8 rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
                 >
-                  <span>{activeSlide.primaryCta}</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.2}
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
+                  <div className="absolute left-0 top-0 h-full w-full rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:bg-[#14488C] z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(20,72,140,0.5)]"></div>
+                  
+                  <div className="absolute left-0 top-0 h-full w-[52px] sm:w-[56px] flex items-center justify-center z-10 text-white">
+                    <svg className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                  </div>
+                  
+                  <span className="relative z-10">{activeSlide.primaryCta}</span>
                 </button>
               ) : (
                 <Link
                   to={activeSlide.primaryLink}
-                  className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/30 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
+                  className="group relative inline-flex items-center h-[52px] sm:h-[56px] pl-[68px] sm:pl-[72px] pr-7 sm:pr-8 rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
                 >
-                  <span>{activeSlide.primaryCta}</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.2}
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
+                  <div className="absolute left-0 top-0 h-full w-full rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:bg-[#14488C] z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(20,72,140,0.5)]"></div>
+                  
+                  <div className="absolute left-0 top-0 h-full w-[52px] sm:w-[56px] flex items-center justify-center z-10 text-white">
+                    <svg className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                  </div>
+                  
+                  <span className="relative z-10">{activeSlide.primaryCta}</span>
                 </Link>
               )}
 
               <Link
                 to={activeSlide.secondaryLink}
-                className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-lg font-heading font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xs hover:-translate-y-0.5 transition-all text-sm sm:text-base cursor-pointer"
+                className="inline-flex items-center justify-center h-[52px] sm:h-[56px] px-8 rounded-full font-heading font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xs hover:-translate-y-0.5 transition-all text-base sm:text-lg cursor-pointer"
               >
                 <span>{activeSlide.secondaryCta}</span>
               </Link>
@@ -186,49 +158,6 @@ export default function HeroSlider() {
           </div>
         </div>
       </div>
-
-      {/* Prev / Next Minimal Arrows (Desktop) */}
-      <button
-        type="button"
-        onClick={prevSlide}
-        aria-label="Previous slide"
-        className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white backdrop-blur-xs border border-white/20 transition-all cursor-pointer"
-      >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </button>
-
-      <button
-        type="button"
-        onClick={nextSlide}
-        aria-label="Next slide"
-        className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white backdrop-blur-xs border border-white/20 transition-all cursor-pointer"
-      >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </button>
 
       {/* Slide Indicators (Clean Dots / Bars at Bottom) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5">

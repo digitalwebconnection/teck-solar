@@ -59,19 +59,6 @@ export default function ServiceFaqSection({ faqs }: ServiceFaqSectionProps) {
                   Find answers to the most common questions about our solar
                   installations and services.
                 </p>
-
-                {/* Subtle Contact Info instead of a CTA block */}
-                <div className="flex items-center gap-5 p-5 rounded-xl bg-slate-100 border border-slate-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] w-max max-w-full">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-blue-50 to-brand-blue-100 flex items-center justify-center text-brand-blue-600 shrink-0 shadow-inner">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-500 font-medium mb-1">Need more details?</p>
-                    <a href="/contact" className="text-xl font-heading text-brand-blue-900 font-bold hover:text-primary-500 transition-colors">
-                      Call 1300 000 000
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

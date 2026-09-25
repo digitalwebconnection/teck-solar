@@ -52,7 +52,7 @@ export default function QuoteModal() {
 
       {/* Modal Container */}
       <div
-        className={`relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-300 ${
+        className={`relative w-full max-w-4xl max-h-[95vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-300 ${
           isAnimatingOut
             ? "opacity-0 translate-y-8 scale-95"
             : "opacity-100 translate-y-0 scale-100"
@@ -116,7 +116,7 @@ export default function QuoteModal() {
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full md:w-7/12 p-6 sm:p-8 relative">
+        <div className="w-full md:w-7/12 p-5 sm:p-8 relative overflow-y-auto">
           {/* Close Button */}
           <button
             type="button"
@@ -156,33 +156,33 @@ export default function QuoteModal() {
                 <p className="text-sm text-slate-500 font-light">Fill out the details below and our team will get back to you within 24 hours.</p>
               </div>
 
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="space-y-1">
                     <label className="block text-[13px] font-semibold text-slate-700">First Name *</label>
-                    <input type="text" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="John" />
+                    <input type="text" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="John" maxLength={50} minLength={2} pattern="^[a-zA-Z\s]+$" title="Only letters and spaces allowed" />
                   </div>
                   <div className="space-y-1">
                     <label className="block text-[13px] font-semibold text-slate-700">Last Name *</label>
-                    <input type="text" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="Doe" />
+                    <input type="text" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="Doe" maxLength={50} minLength={2} pattern="^[a-zA-Z\s]+$" title="Only letters and spaces allowed" />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="space-y-1">
                     <label className="block text-[13px] font-semibold text-slate-700">Phone Number *</label>
-                    <input type="tel" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="0400 000 000" />
+                    <input type="tel" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="0400 000 000" maxLength={15} minLength={8} pattern="^[\d\s\-\+\(\)]+$" title="Please enter a valid phone number" />
                   </div>
                   <div className="space-y-1">
                     <label className="block text-[13px] font-semibold text-slate-700">Email Address *</label>
-                    <input type="email" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="john@example.com" />
+                    <input type="email" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="john@example.com" maxLength={100} />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="space-y-1">
                     <label className="block text-[13px] font-semibold text-slate-700">Postcode *</label>
-                    <input type="text" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="e.g. 2000" />
+                    <input type="text" required className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm" placeholder="e.g. 2000" maxLength={10} minLength={4} pattern="^[\d]+$" title="Please enter a valid numerical postcode" />
                   </div>
                   <div className="space-y-1">
                     <label className="block text-[13px] font-semibold text-slate-700">Property Type *</label>

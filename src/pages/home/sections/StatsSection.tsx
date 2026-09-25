@@ -9,7 +9,8 @@ interface StatItem {
   label: string;
   badge: string;
   color: "blue" | "orange";
-  icon: React.ReactNode;
+  image: string;
+  description: string;
 }
 
 const trustStats: StatItem[] = [
@@ -20,11 +21,8 @@ const trustStats: StatItem[] = [
     label: "Installations Completed",
     badge: "Australia Wide",
     color: "blue",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
+    image: "/images/hero-installation.jpg",
+    description: "Over 2,500 successful solar installations across Australia, providing sustainable and reliable energy solutions to homes and businesses.",
   },
   {
     id: "capacity",
@@ -33,11 +31,8 @@ const trustStats: StatItem[] = [
     label: "Solar Capacity Installed",
     badge: "Clean Energy",
     color: "orange",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
+    image: "/images/hero-commercial.jpg",
+    description: "Delivering over 50 Megawatts of clean, renewable energy to the grid, significantly reducing carbon footprints and power bills.",
   },
   {
     id: "satisfaction",
@@ -46,11 +41,8 @@ const trustStats: StatItem[] = [
     label: "Customer Satisfaction",
     badge: "★ 4.9/5 Rating",
     color: "blue",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.514" />
-      </svg>
-    ),
+    image: "/images/service-residential.jpg",
+    description: "A consistent 4.9/5 star rating from our customers, reflecting our commitment to quality, transparency, and ongoing support.",
   },
   {
     id: "warranty",
@@ -59,11 +51,18 @@ const trustStats: StatItem[] = [
     label: "Performance Warranty",
     badge: "Tier-1 Guaranteed",
     color: "orange",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
+    image: "/images/mission-solar.jpg",
+    description: "Backed by an industry-leading 25-year performance warranty on Tier-1 engineered components for absolute peace of mind.",
+  },
+  {
+    id: "carbon",
+    target: 100,
+    suffix: "k+",
+    label: "Tons Carbon Offset",
+    badge: "Eco Impact",
+    color: "blue",
+    image: "/images/service-battery.jpg",
+    description: "Our installations have successfully offset over 100,000 tons of CO2 emissions, actively fighting climate change across the country.",
   },
 ];
 
@@ -115,103 +114,126 @@ function AnimatedCounter({
 
 export default function StatsSection() {
   const { ref, visible } = useReveal(0.2);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    if (isHovering) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % trustStats.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isHovering]);
+
+  const displayData = trustStats[activeIndex];
 
   return (
-    <section className="py-8 lg:py-12 bg-slate-100 relative overflow-hidden border-b border-slate-200">
-      {/* Subtle decorative background elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-500/5 rounded-full blur-3xl pointer-events-none transform translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-500/5 rounded-full blur-3xl pointer-events-none transform -translate-x-1/2 translate-y-1/2"></div>
+    <section className="py-8 lg:py-14 bg-slate-50 relative overflow-hidden border-y border-slate-200">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
         ref={ref}
       >
-        {/* Section Header */}
-        <div
-          className={`text-center max-w-4xl mx-auto mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
-          <div className="flex items-center justify-center gap-2.5 mb-4">
-            <span className="w-8 h-0.5 bg-brand-blue-500 rounded-full" />
-            <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-brand-blue-500">
-              Proven Track Record
-            </span>
-            <span className="w-8 h-0.5 bg-brand-blue-500 rounded-full" />
+        <div className="lg:grid lg:grid-cols-12 lg:gap-16 lg:items-center">
+          {/* Section Header */}
+          <div
+            className={`lg:col-span-5 text-left mb-16 lg:mb-0 transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+          >
+            <div className="flex flex-col gap-6 lg:gap-8">
+              <div className="flex items-center justify-start gap-3">
+                <span className={`transition-colors duration-500 w-12 h-[2px] rounded-full ${displayData.color === 'orange' ? 'bg-[#E56D00]' : 'bg-[#14488C]'}`} />
+                <span className={`text-sm font-heading font-bold uppercase tracking-[0.3em] transition-colors duration-500 ${displayData.color === 'orange' ? 'text-[#E56D00]' : 'text-[#14488C]'}`}>
+                  {displayData.badge}
+                </span>
+              </div>
+              
+              <div className="overflow-hidden font-serif transition-all duration-500">
+                 <span className={`text-7xl lg:text-8xl font-black tracking-tighter transition-colors duration-500 ${displayData.color === 'orange' ? 'text-[#E56D00]' : 'text-[#14488C]'}`}>
+                   {displayData.prefix}<AnimatedCounter target={displayData.target} start={true} />{displayData.suffix}
+                 </span>
+              </div>
+
+              <h2 className="text-4xl sm:text-5xl lg:text-5xl font-serif font-heading font-extrabold text-slate-900 tracking-tight leading-tight transition-colors duration-500">
+                {displayData.label.split(' ')[0]}{" "}
+                <span className={`block mt-1 transition-colors duration-500 ${displayData.color === 'orange' ? 'text-[#E56D00]' : 'text-[#14488C]'}`}>
+                  {displayData.label.split(' ').slice(1).join(' ')}
+                </span>
+              </h2>
+            </div>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
-            Numbers That {" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
-              Speak Trust
-            </span>
-          </h2>
+          {/* Fanned Cards Display */}
+          <div className="lg:col-span-7 flex justify-center items-center h-[450px] sm:h-[500px] w-full mt-10 lg:mt-0">
+            <div className="relative w-full h-full max-w-[500px] mx-auto">
+              {trustStats.map((item, index) => {
+                const isActive = index === activeIndex;
 
-          <p className="mt-5 text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Real outcomes delivered across Australia with certified standards,
-            Tier-1 engineered components, and decades of guaranteed reliability.
-          </p>
-        </div>
+                let transformClass = "";
+                if (index === 0) {
+                  transformClass = isActive 
+                    ? "-translate-x-[90px] sm:-translate-x-[140px] -translate-y-8 rotate-0 z-50 scale-105" 
+                    : "-translate-x-[120px] sm:-translate-x-[180px] translate-y-12 -rotate-12 z-10";
+                }
+                if (index === 1) {
+                  transformClass = isActive 
+                    ? "-translate-x-[40px] sm:-translate-x-[60px] -translate-y-12 rotate-0 z-50 scale-105" 
+                    : "-translate-x-[60px] sm:-translate-x-[90px] translate-y-4 -rotate-6 z-20";
+                }
+                if (index === 2) {
+                  transformClass = isActive 
+                    ? "translate-x-0 -translate-y-16 rotate-0 z-50 scale-105" 
+                    : "translate-x-0 translate-y-0 rotate-0 z-30";
+                }
+                if (index === 3) {
+                  transformClass = isActive 
+                    ? "translate-x-[40px] sm:translate-x-[60px] -translate-y-12 rotate-0 z-50 scale-105" 
+                    : "translate-x-[60px] sm:translate-x-[90px] translate-y-4 rotate-6 z-20";
+                }
+                if (index === 4) {
+                  transformClass = isActive 
+                    ? "translate-x-[90px] sm:translate-x-[140px] -translate-y-8 rotate-0 z-50 scale-105" 
+                    : "translate-x-[120px] sm:translate-x-[180px] translate-y-12 rotate-12 z-10";
+                }
 
-        {/* Premium Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {trustStats.map((item, index) => (
-            <div
-              key={item.id}
-              className={`group relative bg-white rounded-xl p-8 border border-slate-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] hover:border-brand-blue-200 transition-all duration-500 hover:-translate-y-2 overflow-hidden flex flex-col ${
-                visible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-12"
-              }`}
-              style={{ transitionDelay: `${index * 120}ms` }}
-            >
-              {/* Subtle hover gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-              <div className="relative z-10">
-                {/* Icon & Badge Header */}
-                <div className="flex flex-col mb-8 gap-4">
+                return (
                   <div
-                    className={`w-14 h-14 rounded-xl flex items-center justify-center transition-colors duration-500 ${
-                      item.color === "orange"
-                        ? "bg-gradient-to-br from-[#E56D00]/10 to-orange-400/10 text-[#E56D00] group-hover:bg-[#E56D00] group-hover:text-white"
-                        : "bg-gradient-to-br from-[#144E9A]/10 to-brand-blue-500/10 text-[#144E9A] group-hover:bg-[#144E9A] group-hover:text-white"
+                    key={item.id}
+                    onMouseEnter={() => { setActiveIndex(index); setIsHovering(true); }}
+                    onMouseLeave={() => setIsHovering(false)}
+                    className={`group absolute top-1/2 left-1/2 -mt-[170px] -ml-[110px] w-[220px] h-[340px] sm:w-[260px] sm:h-[380px] sm:-mt-[190px] sm:-ml-[130px] rounded-xl overflow-hidden cursor-pointer transition-all duration-700 ease-out origin-bottom shadow-[0_10px_30px_rgba(0,0,0,0.5)] ${transformClass} ${
+                      !visible && "opacity-0 scale-75"
                     }`}
+                    style={{ transitionDelay: visible ? `${index * 150}ms` : "0ms" }}
                   >
-                    {item.icon}
+                    {/* Full Card Background Image */}
+                    <img 
+                      src={item.image} 
+                      alt={item.label} 
+                      className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ${isActive ? 'scale-110' : 'scale-100'}`} 
+                    />
+                    
+                    {/* Dim overlay for inactive cards to separate them without making them see-through */}
+                    <div className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-0' : 'opacity-40 group-hover:opacity-20'}`} />
+                    
+                    {/* Dark gradient overlay ONLY at the bottom for text readability */}
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent pointer-events-none transition-opacity duration-700" />
+                    
+                    {/* Subtle border to frame the card */}
+                    <div className="absolute inset-0 border border-white/20 rounded-xl pointer-events-none" />
+
+                    {/* Bottom Info: Title Only */}
+                    <div className="absolute bottom-6 left-6 right-6 z-10">
+                      <h3 className="text-xl sm:text-2xl font-heading font-bold leading-tight text-white drop-shadow-md">
+                        {item.label}
+                      </h3>
+                    </div>
                   </div>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    {item.badge}
-                  </span>
-                </div>
-
-                {/* Animated Number */}
-                <div className="flex items-baseline gap-1 mb-3">
-                  <span
-                    className={`text-5xl font-heading font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r ${
-                      item.color === "orange"
-                        ? "from-[#E56D00] to-orange-400"
-                        : "from-[#144E9A] to-brand-blue-500"
-                    }`}
-                  >
-                    <AnimatedCounter target={item.target} prefix={item.prefix} start={visible} />
-                  </span>
-                  <span
-                    className={`text-2xl font-heading font-black ${
-                      item.color === "orange"
-                        ? "text-[#E56D00]"
-                        : "text-[#144E9A]"
-                    }`}
-                  >
-                    {item.suffix}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg font-heading font-bold text-slate-900 leading-tight">
-                  {item.label}
-                </h3>
-              </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

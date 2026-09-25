@@ -5,7 +5,7 @@ import ServicesGrid from './sections/ServicesGrid';
 import WhyChooseUs from './sections/WhyChooseUs';
 import ProcessSection from './sections/ProcessSection';
 import TestimonialsSection from './sections/TestimonialsSection';
-import QuoteFormBand from './sections/QuoteFormBand';
+import FaqSection from './sections/FaqSection';
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       <WhyChooseUs />
       <ProcessSection />
       <TestimonialsSection />
-      <QuoteFormBand />
+      <FaqSection />
     </>
   );
 }

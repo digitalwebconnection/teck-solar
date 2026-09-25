@@ -88,17 +88,13 @@ export default function WhyChooseUs() {
 
   return (
     <section
-      className="relative py-20 sm:py-24 lg:py-14 bg-fixed bg-cover bg-center bg-no-repeat overflow-hidden"
-      style={{ backgroundImage: "url('/images/hero-installation.jpg')" }}
+      className="relative py-20 sm:py-24 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-brand-blue-50/40 overflow-hidden"
       ref={ref}
     >
-      {/* High-contrast smooth overlay */}
-      <div className="absolute inset-0 bg-slate-950/40 " />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
 
       {/* Ambient solar glows */}
-      <div className="absolute -top-24 left-1/4 w-96 h-96 bg-brand-blue-500/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-[#E56D00]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 left-1/4 w-96 h-96 bg-brand-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-[#E56D00]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         {/* Section Header */}
@@ -115,60 +111,79 @@ export default function WhyChooseUs() {
             <span className="w-10 h-0.5 bg-gradient-to-l from-transparent to-[#E56D00] rounded-full" />
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-heading font-extrabold text-white tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
             Premium Solar{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
               Excellence
             </span>
           </h2>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-4xl mx-auto leading-relaxed font-light">
+          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed font-light">
             Australian certified craftsmanship, premium Tier-1 engineering, and
             dedicated support every step of your solar journey.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-7">
-          {features.map((feat, i) => {
-            const isEven = i % 2 === 0;
-            const iconBgClass = isEven ? "bg-[#144E9A] shadow-[#144E9A]/30" : "bg-[#E56D00] shadow-[#E56D00]/30";
-            const hoverTextClass = isEven ? "group-hover:text-brand-blue-400" : "group-hover:text-[#FBAF75]";
-            const hoverLineClass = isEven ? "group-hover:bg-[#144E9A]" : "group-hover:bg-[#E56D00]";
-            const hoverGlowClass = isEven ? "group-hover:bg-[#144E9A]/30" : "group-hover:bg-[#E56D00]/30";
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
+          {/* Quality Installations */}
+          <div
+            className={`col-span-1 md:col-span-1 relative overflow-hidden rounded-md bg-gradient-to-br from-[#144E9A]/10 to-[#144E9A]/5 border border-[#144E9A]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#144E9A]/20 hover:to-[#144E9A]/10 transition-all duration-500 hover:border-[#144E9A]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ transitionDelay: '0ms' }}
+          >
+             <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#144E9A]/20 blur-3xl group-hover:bg-[#144E9A]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+             <div className="absolute top-6 left-6 text-[#144E9A] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+                {features[0].icon}
+             </div>
+             <div className="relative z-10 mt-20 md:mt-24">
+               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[0].title}</h3>
+               <p className="text-slate-700 text-[13px] leading-relaxed">{features[0].description}</p>
+             </div>
+          </div>
 
-            return (
-              <div
-                key={i}
-                className={`text-center group transition-all duration-500 flex flex-col items-center ${
-                  visible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                {/* Floating Glowing Icon */}
-                <div className="relative w-16 h-16 mb-5 flex items-center justify-center">
-                  <div className={`absolute inset-0 rounded-2xl bg-brand-blue-500/20 blur-md ${hoverGlowClass} group-hover:blur-lg transition-all duration-300`} />
-                  <div className={`relative w-16 h-16 rounded-2xl ${iconBgClass} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    {feat.icon}
-                  </div>
-                </div>
+          {/* Simple & Easy */}
+          <div
+            className={`col-span-1 md:col-span-2 relative overflow-hidden rounded-md bg-gradient-to-br from-[#E56D00]/10 to-[#E56D00]/5 border border-[#E56D00]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#E56D00]/20 hover:to-[#E56D00]/10 transition-all duration-500 hover:border-[#E56D00]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ transitionDelay: '100ms' }}
+          >
+             <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#E56D00]/20 blur-3xl group-hover:bg-[#E56D00]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+             <div className="absolute top-6 left-6 text-[#E56D00] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+                {features[1].icon}
+             </div>
+             <div className="relative z-10 mt-20 md:mt-16">
+               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[1].title}</h3>
+               <p className="text-slate-700 text-[13px] leading-relaxed max-w-md">{features[1].description}</p>
+             </div>
+          </div>
 
-                {/* Title */}
-                <h3 className={`text-xl font-heading font-extrabold text-white ${hoverTextClass} transition-colors drop-shadow-sm`}>
-                  {feat.title}
-                </h3>
+          {/* CEC Accredited */}
+          <div
+            className={`col-span-1 md:col-span-2 relative overflow-hidden rounded-md bg-gradient-to-br from-[#E56D00]/10 to-[#E56D00]/5 border border-[#E56D00]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#E56D00]/20 hover:to-[#E56D00]/10 transition-all duration-500 hover:border-[#E56D00]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ transitionDelay: '200ms' }}
+          >
+             <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-[#E56D00]/20 blur-3xl group-hover:bg-[#E56D00]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+             <div className="absolute top-6 left-6 text-[#E56D00] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+                {features[2].icon}
+             </div>
+             <div className="relative z-10 mt-20 md:mt-16">
+               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[2].title}</h3>
+               <p className="text-slate-700 text-[13px] leading-relaxed max-w-md">{features[2].description}</p>
+             </div>
+          </div>
 
-                {/* Description */}
-                <p className="text-slate-300 text-sm mt-3 leading-relaxed drop-shadow-xs max-w-xs font-light">
-                  {feat.description}
-                </p>
-
-                {/* Minimal Accent line */}
-                <div className={`w-8 h-1 rounded-full bg-slate-700 group-hover:w-14 ${hoverLineClass} transition-all duration-500 mt-5`} />
-              </div>
-            );
-          })}
+          {/* Premium Products */}
+          <div
+            className={`col-span-1 md:col-span-1 relative overflow-hidden rounded-md bg-gradient-to-br from-[#144E9A]/10 to-[#144E9A]/5 border border-[#144E9A]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#144E9A]/20 hover:to-[#144E9A]/10 transition-all duration-500 hover:border-[#144E9A]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ transitionDelay: '300ms' }}
+          >
+             <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#144E9A]/20 blur-3xl group-hover:bg-[#144E9A]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+             <div className="absolute top-6 left-6 text-[#144E9A] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+                {features[3].icon}
+             </div>
+             <div className="relative z-10 mt-20 md:mt-24">
+               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[3].title}</h3>
+               <p className="text-slate-700 text-[13px] leading-relaxed">{features[3].description}</p>
+             </div>
+          </div>
         </div>
       </div>
     </section>

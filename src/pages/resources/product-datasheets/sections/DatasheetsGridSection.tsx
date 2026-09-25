@@ -33,7 +33,7 @@ export default function DatasheetsGridSection() {
   }, [activeCategory, searchQuery]);
 
   return (
-    <section className="w-full pb-32 animate-slide-up" ref={gridReveal.ref} style={{ animationDelay: '200ms' }}>
+    <section className="w-full pb-16 lg:pb-24 animate-slide-up" ref={gridReveal.ref} style={{ animationDelay: '200ms' }}>
       
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start relative mt-12 lg:mt-0">
         
