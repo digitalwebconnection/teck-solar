@@ -275,7 +275,7 @@ export default function ContactFormSection() {
                   <div>
                     <p className="text-navy-400 text-xs">Head Office</p>
                     <p className="text-white font-medium text-sm">
-                      123 George Street, Sydney NSW 2000
+                      Lvl 1/5 George St, North Strathfield NSW 2137, Australia
                     </p>
                   </div>
                 </div>
@@ -298,10 +298,10 @@ export default function ContactFormSection() {
                   <div>
                     <p className="text-navy-400 text-xs">Call Us</p>
                     <a
-                      href="tel:1300832576"
+                      href="tel:+611300134077"
                       className="text-white font-medium hover:text-primary-400 transition-colors"
                     >
-                      1300 TECK SOLAR
+                      +61 1300 134 077
                     </a>
                   </div>
                 </div>
@@ -324,10 +324,10 @@ export default function ContactFormSection() {
                   <div>
                     <p className="text-navy-400 text-xs">Email Us</p>
                     <a
-                      href="mailto:info@tecksolar.com.au"
+                      href="mailto:sales@tecksolar.com.au"
                       className="text-white font-medium hover:text-primary-400 transition-colors"
                     >
-                      info@tecksolar.com.au
+                      sales@tecksolar.com.au
                     </a>
                   </div>
                 </div>

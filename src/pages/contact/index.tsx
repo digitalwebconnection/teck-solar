@@ -63,7 +63,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-slate-900">
-                      1300 TECK SOLAR
+                      +61 1300 134 077
                     </div>
                     <div className="text-xs text-slate-500 font-medium">
                       Fastest response

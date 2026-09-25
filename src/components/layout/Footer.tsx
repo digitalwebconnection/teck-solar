@@ -17,10 +17,7 @@ const serviceLinks = [
 ];
 
 const officeLocations = [
-  "Level 1, 5 George St North Strathfield NSW 2137",
-  "SA office - 217-255 Flinders st Adelaide",
-  "22 Ormsby Terrace , Mandurah, WA 6210",
-  "Suite 250, 139 Cardigan St, Carlton VIC 3053",
+  "Lvl 1/5 George St, North Strathfield NSW 2137, Australia",
 ];
 
 export default function Footer() {
@@ -144,10 +141,10 @@ export default function Footer() {
                   />
                 </svg>
                 <a
-                  href="tel:1300134077"
+                  href="tel:+611300134077"
                   className="text-sm font-semibold text-slate-400 hover:text-primary-600 transition-colors"
                 >
-                  1300 134 077
+                  +61 1300 134 077
                 </a>
               </div>
 
@@ -167,10 +164,10 @@ export default function Footer() {
                   />
                 </svg>
                 <a
-                  href="mailto:info@teck-solar.com.au"
+                  href="mailto:sales@tecksolar.com.au"
                   className="text-sm font-medium text-slate-400 hover:text-primary-600 transition-colors"
                 >
-                  info@teck-solar.com.au
+                  sales@tecksolar.com.au
                 </a>
               </div>
             </div>
