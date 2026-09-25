@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuoteModal } from "../../../context/QuoteModalContext";
+import Text3DFlip from "../../../components/ui/text-3d-flip";
 
 interface Slide {
   badge: string;
@@ -37,10 +38,10 @@ const slides: Slide[] = [
     image: "/images/hero-commercial.jpg",
   },
   {
-    badge: "CEC Accredited",
+    badge: "SAA Accredited",
     title: "Expert Installation\nYou Can Trust",
     subtitle:
-      "Certified Australian installers delivering top-tier quality and support. From initial design to final connection, our CEC-accredited team ensures a flawless, hassle-free installation backed by our industry-leading workmanship guarantee.",
+      "Certified Australian installers delivering top-tier quality and support. From initial design to final connection, our SAA-accredited team ensures a flawless, hassle-free installation backed by our industry-leading workmanship guarantee.",
     primaryCta: "Request Call Back",
     primaryLink: "/contact",
     secondaryCta: "Learn More",
@@ -84,7 +85,7 @@ export default function HeroSlider() {
             }`}
           />
           {/* High-contrast smooth gradients for optimal readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/50 via-navy-950/70 to-navy-950/50" />       
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950/50 via-navy-950/70 to-navy-950/50" />
         </div>
       ))}
 
@@ -95,9 +96,19 @@ export default function HeroSlider() {
             {/* Heading */}
             <h1
               key={`heading-${current}`}
-              className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight sm:leading-tight whitespace-pre-line animate-slide-up"
+              className="w-full mb-4 animate-slide-up"
             >
-              {activeSlide.title}
+              <Text3DFlip
+                className="justify-start font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] sm:leading-[1.1] tracking-tight"
+                textClassName="text-white"
+                flipTextClassName="text-[#ffffff]"
+                rotateDirection="top"
+                staggerDuration={0.025}
+                staggerFrom="first"
+                transition={{ type: "spring", damping: 25, stiffness: 160 }}
+              >
+                {activeSlide.title}
+              </Text3DFlip>
             </h1>
 
             {/* Short Subheading */}
@@ -122,14 +133,26 @@ export default function HeroSlider() {
                   className="group relative inline-flex items-center h-[52px] sm:h-[56px] pl-[68px] sm:pl-[72px] pr-7 sm:pr-8 rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
                 >
                   <div className="absolute left-0 top-0 h-full w-full rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:bg-[#14488C] z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(20,72,140,0.5)]"></div>
-                  
+
                   <div className="absolute left-0 top-0 h-full w-[52px] sm:w-[56px] flex items-center justify-center z-10 text-white">
-                    <svg className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    <svg
+                      className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
                     </svg>
                   </div>
-                  
-                  <span className="relative z-10">{activeSlide.primaryCta}</span>
+
+                  <span className="relative z-10">
+                    {activeSlide.primaryCta}
+                  </span>
                 </button>
               ) : (
                 <Link
@@ -137,14 +160,26 @@ export default function HeroSlider() {
                   className="group relative inline-flex items-center h-[52px] sm:h-[56px] pl-[68px] sm:pl-[72px] pr-7 sm:pr-8 rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
                 >
                   <div className="absolute left-0 top-0 h-full w-full rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:bg-[#14488C] z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(20,72,140,0.5)]"></div>
-                  
+
                   <div className="absolute left-0 top-0 h-full w-[52px] sm:w-[56px] flex items-center justify-center z-10 text-white">
-                    <svg className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    <svg
+                      className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
                     </svg>
                   </div>
-                  
-                  <span className="relative z-10">{activeSlide.primaryCta}</span>
+
+                  <span className="relative z-10">
+                    {activeSlide.primaryCta}
+                  </span>
                 </Link>
               )}
 

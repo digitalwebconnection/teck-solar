@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useReveal } from "../../../hooks/useReveal";
+import InfiniteSpiral from "./InfiniteSpiral";
 
 const services = [
   {
@@ -48,15 +48,19 @@ const services = [
 
 export default function ServicesGrid() {
   const { ref, visible } = useReveal();
-  
+
   return (
     <section
       className="relative py-8 lg:py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 overflow-hidden"
       ref={ref}
     >
+      {/* Premium Background Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/50 to-slate-50 pointer-events-none" />
+
       {/* Subtle Background Glows */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-blue-50/50 rounded-full blur-3xl pointer-events-none transform translate-x-1/3 -translate-y-1/3" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#E56D00]/5 rounded-full blur-3xl pointer-events-none transform -translate-x-1/3 translate-y-1/3" />
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-blue-100/40 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#E56D00]/10 rounded-full blur-[100px] pointer-events-none transform -translate-x-1/3 translate-y-1/3" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         {/* Premium Section Header */}
@@ -72,84 +76,118 @@ export default function ServicesGrid() {
             </span>
             <span className="w-10 h-0.5 bg-gradient-to-l from-transparent to-brand-blue-500 rounded-full" />
           </div>
-          
+
           <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-heading font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
             Our Premium{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
               Services
             </span>
           </h2>
-          
+
           <p className="text-lg text-slate-600 leading-relaxed font-light">
-            Comprehensive solar energy and storage solutions tailored for maximum efficiency, reliability, and long-term sustainability.
+            Comprehensive solar energy and storage solutions tailored for
+            maximum efficiency, reliability, and long-term sustainability.
           </p>
         </div>
 
-        {/* Infinite Scrolling Marquee */}
-        <div 
-          className={`relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] pb-12 pt-4 transition-all duration-1000 delay-300 ${
+        {/* Infinite 3D Spiral & Feature Highlights */}
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0 items-center transition-all duration-1000 delay-300 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
           }`}
         >
-          <div className="flex w-max animate-marquee [animation-duration:18s] gap-6 sm:gap-8 xl:gap-10 hover:[animation-play-state:paused]">
-            {[...services, ...services].map((service, i) => (
-              <Link
-                key={i}
-                to={service.link}
-                className="group flex flex-col justify-between w-[280px] sm:w-[340px] lg:w-[380px] shrink-0 bg-white rounded-md overflow-hidden border border-slate-200/60 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(20,78,154,0.15)] hover:border-brand-blue-200 hover:-translate-y-2 transition-all duration-500 relative"
-              >
-                <div>
-                  {/* Image Container with Inner Shadow & Scale */}
-                  <div className="h-64 overflow-hidden relative">
-                    <div className="absolute inset-0 bg-brand-blue-900/10 mix-blend-multiply z-10 transition-opacity duration-500 group-hover:opacity-0" />
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                    {/* Bottom fade into card body */}
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
-                  </div>
+          {/* Left Features */}
+          <div className="lg:col-span-3 space-y-4 lg:space-y-8 px-4 lg:px-0 z-20">
+            {/* Feature 1 */}
+            <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg shadow-brand-blue-900/5 hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-600 flex items-center justify-center mb-4">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Maximized Yield</h3>
+              <p className="text-sm text-slate-600">Advanced MPPT technology extracts every drop of solar energy.</p>
+            </div>
+            
+            {/* Feature 2 */}
+            <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg shadow-brand-blue-900/5 hover:-translate-y-1 transition-transform duration-300 lg:translate-x-4">
+              <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-600 flex items-center justify-center mb-4">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Tier 1 Panels</h3>
+              <p className="text-sm text-slate-600">Sourced exclusively from world-leading premium manufacturers.</p>
+            </div>
 
-                  {/* Card Content */}
-                  <div className="px-6 sm:px-8 pt-3 pb-6 relative z-20 bg-white -mt-2">
-                    <h3 className="text-xl sm:text-2xl font-heading font-extrabold text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#144E9A] group-hover:to-[#E56D00] transition-all duration-300 mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-slate-500 text-sm sm:text-base leading-relaxed font-light">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
+            {/* Feature 3 */}
+            <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg shadow-brand-blue-900/5 hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-600 flex items-center justify-center mb-4">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Smart Monitoring</h3>
+              <p className="text-sm text-slate-600">Track your real-time performance with our 24/7 mobile app.</p>
+            </div>
+          </div>
 
-                {/* Card Footer Action */}
-                <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-2 relative z-20">
-                  <div className="relative inline-flex items-center h-12 pl-[60px] pr-6 rounded-full font-heading font-bold text-sm sm:text-base text-slate-900 transition-colors duration-500 group-hover:text-white">
-                    {/* Expanding Background */}
-                    <div className="absolute left-0 top-0 h-12 w-12 rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:w-full z-0 shadow-sm group-hover:shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)]"></div>
-                    
-                    {/* Arrow Icon */}
-                    <div className="absolute left-0 top-0 h-12 w-12 flex items-center justify-center z-10 text-white">
-                      <svg
-                        className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
-                    </div>
-                    
-                    <span className="relative z-10">Discover More</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          {/* Center Spiral */}
+          <div className="lg:col-span-6 z-10 relative">
+            {/* Giant decorative background text behind the spiral */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+               <span className="text-[12rem] font-black text-slate-200/40 select-none tracking-tighter -rotate-90 lg:rotate-0 whitespace-nowrap">TECK</span>
+            </div>
+            
+            <div
+              style={{ height: "600px", position: "relative", width: "100%" }}
+              className="-mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full"
+            >
+              <InfiniteSpiral
+                items={services.map((s) => ({
+                  src: s.image,
+                  alt: s.title,
+                  title: s.title,
+                  link: s.link,
+                }))}
+                animationMode="auto"
+                speed={0.55}
+                radius={240}
+                cardWidth={140}
+                cardHeight={140}
+                verticalSpacing={90}
+                perspective={1000}
+                cardRadius={6}
+                centerScale={1.2}
+                edgeBlur={6}
+                cardsPerTurn={7}
+                pauseOnHover={true}
+              />
+            </div>
+          </div>
+
+          {/* Right Features */}
+          <div className="lg:col-span-3 space-y-4 lg:space-y-8 px-4 lg:px-0 z-20">
+            {/* Feature 4 */}
+            <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg shadow-[#E56D00]/5 hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-10 h-10 rounded-full bg-[#E56D00]/10 text-[#E56D00] flex items-center justify-center mb-4">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">10-Year Warranty</h3>
+              <p className="text-sm text-slate-600">Comprehensive coverage for total peace of mind.</p>
+            </div>
+            
+            {/* Feature 5 */}
+            <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg shadow-[#E56D00]/5 hover:-translate-y-1 transition-transform duration-300 lg:-translate-x-4">
+              <div className="w-10 h-10 rounded-full bg-[#E56D00]/10 text-[#E56D00] flex items-center justify-center mb-4">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Expert Installers</h3>
+              <p className="text-sm text-slate-600">Installed by our certified, highly-trained in-house teams.</p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg shadow-[#E56D00]/5 hover:-translate-y-1 transition-transform duration-300">
+              <div className="w-10 h-10 rounded-full bg-[#E56D00]/10 text-[#E56D00] flex items-center justify-center mb-4">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Grid Independence</h3>
+              <p className="text-sm text-slate-600">Seamless integration with battery storage solutions.</p>
+            </div>
           </div>
         </div>
       </div>

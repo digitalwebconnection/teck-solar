@@ -57,9 +57,9 @@ const features = [
         />
       </svg>
     ),
-    title: "CEC Accredited",
+    title: "SAA Accredited",
     description:
-      "Our team holds full CEC (Clean Energy Council) accreditation, ensuring compliance and eligibility for rebates.",
+      "Our team holds full SAA (Clean Energy Council) accreditation, ensuring compliance and eligibility for rebates.",
   },
   {
     icon: (
@@ -91,7 +91,6 @@ export default function WhyChooseUs() {
       className="relative py-20 sm:py-24 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-brand-blue-50/40 overflow-hidden"
       ref={ref}
     >
-
       {/* Ambient solar glows */}
       <div className="absolute -top-24 left-1/4 w-96 h-96 bg-brand-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-[#E56D00]/10 rounded-full blur-3xl pointer-events-none" />
@@ -128,61 +127,77 @@ export default function WhyChooseUs() {
           {/* Quality Installations */}
           <div
             className={`col-span-1 md:col-span-1 relative overflow-hidden rounded-md bg-gradient-to-br from-[#144E9A]/10 to-[#144E9A]/5 border border-[#144E9A]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#144E9A]/20 hover:to-[#144E9A]/10 transition-all duration-500 hover:border-[#144E9A]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ transitionDelay: '0ms' }}
+            style={{ transitionDelay: "0ms" }}
           >
-             <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#144E9A]/20 blur-3xl group-hover:bg-[#144E9A]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
-             <div className="absolute top-6 left-6 text-[#144E9A] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
-                {features[0].icon}
-             </div>
-             <div className="relative z-10 mt-20 md:mt-24">
-               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[0].title}</h3>
-               <p className="text-slate-700 text-[13px] leading-relaxed">{features[0].description}</p>
-             </div>
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#144E9A]/20 blur-3xl group-hover:bg-[#144E9A]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+            <div className="absolute top-6 left-6 text-[#144E9A] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+              {features[0].icon}
+            </div>
+            <div className="relative z-10 mt-20 md:mt-24">
+              <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">
+                {features[0].title}
+              </h3>
+              <p className="text-slate-700 text-[13px] leading-relaxed">
+                {features[0].description}
+              </p>
+            </div>
           </div>
 
           {/* Simple & Easy */}
           <div
             className={`col-span-1 md:col-span-2 relative overflow-hidden rounded-md bg-gradient-to-br from-[#E56D00]/10 to-[#E56D00]/5 border border-[#E56D00]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#E56D00]/20 hover:to-[#E56D00]/10 transition-all duration-500 hover:border-[#E56D00]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ transitionDelay: '100ms' }}
+            style={{ transitionDelay: "100ms" }}
           >
-             <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#E56D00]/20 blur-3xl group-hover:bg-[#E56D00]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
-             <div className="absolute top-6 left-6 text-[#E56D00] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
-                {features[1].icon}
-             </div>
-             <div className="relative z-10 mt-20 md:mt-16">
-               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[1].title}</h3>
-               <p className="text-slate-700 text-[13px] leading-relaxed max-w-md">{features[1].description}</p>
-             </div>
+            <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#E56D00]/20 blur-3xl group-hover:bg-[#E56D00]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+            <div className="absolute top-6 left-6 text-[#E56D00] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+              {features[1].icon}
+            </div>
+            <div className="relative z-10 mt-20 md:mt-16">
+              <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">
+                {features[1].title}
+              </h3>
+              <p className="text-slate-700 text-[13px] leading-relaxed max-w-md">
+                {features[1].description}
+              </p>
+            </div>
           </div>
 
-          {/* CEC Accredited */}
+          {/* SAA Accredited */}
           <div
             className={`col-span-1 md:col-span-2 relative overflow-hidden rounded-md bg-gradient-to-br from-[#E56D00]/10 to-[#E56D00]/5 border border-[#E56D00]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#E56D00]/20 hover:to-[#E56D00]/10 transition-all duration-500 hover:border-[#E56D00]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ transitionDelay: '200ms' }}
+            style={{ transitionDelay: "200ms" }}
           >
-             <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-[#E56D00]/20 blur-3xl group-hover:bg-[#E56D00]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
-             <div className="absolute top-6 left-6 text-[#E56D00] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
-                {features[2].icon}
-             </div>
-             <div className="relative z-10 mt-20 md:mt-16">
-               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[2].title}</h3>
-               <p className="text-slate-700 text-[13px] leading-relaxed max-w-md">{features[2].description}</p>
-             </div>
+            <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-[#E56D00]/20 blur-3xl group-hover:bg-[#E56D00]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+            <div className="absolute top-6 left-6 text-[#E56D00] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+              {features[2].icon}
+            </div>
+            <div className="relative z-10 mt-20 md:mt-16">
+              <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">
+                {features[2].title}
+              </h3>
+              <p className="text-slate-700 text-[13px] leading-relaxed max-w-md">
+                {features[2].description}
+              </p>
+            </div>
           </div>
 
           {/* Premium Products */}
           <div
             className={`col-span-1 md:col-span-1 relative overflow-hidden rounded-md bg-gradient-to-br from-[#144E9A]/10 to-[#144E9A]/5 border border-[#144E9A]/20 shadow-sm p-6 flex flex-col justify-end group hover:from-[#144E9A]/20 hover:to-[#144E9A]/10 transition-all duration-500 hover:border-[#144E9A]/30 hover:shadow-xl hover:-translate-y-1.5 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ transitionDelay: '300ms' }}
+            style={{ transitionDelay: "300ms" }}
           >
-             <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#144E9A]/20 blur-3xl group-hover:bg-[#144E9A]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
-             <div className="absolute top-6 left-6 text-[#144E9A] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
-                {features[3].icon}
-             </div>
-             <div className="relative z-10 mt-20 md:mt-24">
-               <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">{features[3].title}</h3>
-               <p className="text-slate-700 text-[13px] leading-relaxed">{features[3].description}</p>
-             </div>
+            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#144E9A]/20 blur-3xl group-hover:bg-[#144E9A]/30 transition-all duration-700 rounded-full group-hover:scale-125" />
+            <div className="absolute top-6 left-6 text-[#144E9A] bg-white p-3 rounded-2xl border border-white/50 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/80">
+              {features[3].icon}
+            </div>
+            <div className="relative z-10 mt-20 md:mt-24">
+              <h3 className="text-xl font-heading font-bold text-slate-900 mb-2 transition-colors">
+                {features[3].title}
+              </h3>
+              <p className="text-slate-700 text-[13px] leading-relaxed">
+                {features[3].description}
+              </p>
+            </div>
           </div>
         </div>
       </div>

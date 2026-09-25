@@ -3,7 +3,7 @@ import { useReveal } from "../../../hooks/useReveal";
 interface AccreditationItem {
   id: string;
   step: string;
-  category: "cec" | "safety" | "license";
+  category: "SAA" | "safety" | "license";
   categoryName: string;
   title: string;
   role: string;
@@ -13,22 +13,22 @@ interface AccreditationItem {
 
 const accreditations: AccreditationItem[] = [
   {
-    id: "cec-retailer",
+    id: "SAA-retailer",
     step: "01",
-    category: "cec",
+    category: "SAA",
     categoryName: "Clean Energy Council",
-    title: "Clean Energy Council (CEC)",
+    title: "Clean Energy Council (SAA)",
     role: "Approved Solar Retailer",
     summary:
       "Guarantees consumer protection, honest quotes, and a 5-year whole-of-system on-site warranty.",
     accent: "blue",
   },
   {
-    id: "cec-installer",
+    id: "SAA-installer",
     step: "02",
-    category: "cec",
+    category: "SAA",
     categoryName: "Clean Energy Council",
-    title: "CEC Accredited Installers",
+    title: "SAA Accredited Installers",
     role: "Grid-Connect & Battery Storage Certified",
     summary:
       "In-house certified electricians and engineers for rooftop PV and high-voltage battery systems.",
@@ -82,41 +82,101 @@ const accreditations: AccreditationItem[] = [
 
 function AccreditationIcon({ id }: { id: string }) {
   switch (id) {
-    case "cec-retailer":
+    case "SAA-retailer":
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.2}
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          />
         </svg>
       );
-    case "cec-installer":
+    case "SAA-installer":
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.2}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
         </svg>
       );
     case "master-elec":
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.2}
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
         </svg>
       );
     case "iso-9001":
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.2}
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
         </svg>
       );
     case "fair-trading":
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.2}
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
         </svg>
       );
     case "public-liability":
     default:
       return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.2}
+            d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"
+          />
         </svg>
       );
   }
@@ -133,7 +193,6 @@ export default function AccreditationsSection() {
       <div className="max-w-7xl mx-auto w-full">
         {/* Modern Split Layout: Sticky Left Panel + Clean Scrolling Stream */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-          
           {/* ================= LEFT COLUMN (STICKY & LIGHT) ================= */}
           <div
             className={`lg:col-span-5 lg:sticky lg:top-28 self-start transition-all duration-700 ${
@@ -147,7 +206,8 @@ export default function AccreditationsSection() {
 
             {/* Reduced, Punchy Subtitle */}
             <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed max-w-md">
-              Governed by peak Australian electrical bodies and the Clean Energy Council, guaranteeing safe, high-yield installations.
+              Governed by peak Australian electrical bodies and the Clean Energy
+              Council, guaranteeing safe, high-yield installations.
             </p>
             <div className="mt-6">
               <a
@@ -157,11 +217,12 @@ export default function AccreditationsSection() {
                 className="inline-flex items-center gap-1.5 text-xs font-heading font-bold text-brand-blue-600 hover:text-brand-blue-700 transition-colors group cursor-pointer"
               >
                 <span>Verify on Clean Energy Council Register</span>
-                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">
+                  →
+                </span>
               </a>
             </div>
             {/* Direct Verification Link */}
-
           </div>
 
           {/* ================= RIGHT COLUMN (ELEGANT SCROLLING STREAM) ================= */}
@@ -178,7 +239,9 @@ export default function AccreditationsSection() {
                 {/* Thin Accent Indicator Bar on Hover */}
                 <div
                   className={`absolute left-0 top-4 bottom-4 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100 ${
-                    item.accent === "orange" ? "bg-primary-500" : "bg-brand-blue-500"
+                    item.accent === "orange"
+                      ? "bg-primary-500"
+                      : "bg-brand-blue-500"
                   }`}
                 />
 
@@ -209,7 +272,7 @@ export default function AccreditationsSection() {
                   <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 group-hover:text-brand-blue-600 transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  
+
                   <span className="text-xs sm:text-sm font-semibold text-brand-blue-500 block mt-0.5">
                     {item.role}
                   </span>
@@ -222,14 +285,23 @@ export default function AccreditationsSection() {
 
                 {/* Subtle Hover Action Arrow */}
                 <div className="hidden sm:flex w-8 h-8 rounded-full bg-slate-50 border border-slate-200/80 text-slate-400 group-hover:border-brand-blue-200 group-hover:bg-brand-blue-50 group-hover:text-brand-blue-600 group-hover:translate-x-1 transition-all items-center justify-center shrink-0 mt-1">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </div>
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </section>

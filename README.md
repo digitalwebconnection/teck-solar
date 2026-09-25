@@ -12,7 +12,7 @@ A modern, responsive web application for Teck Solar, a solar energy solutions pr
   - Commercial Solar
   - Battery Storage
   - EV Chargers
-- **Resource Center**: Easy access to important customer resources like product datasheets, WiFi monitoring guides, and CEC consumer guides.
+- **Resource Center**: Easy access to important customer resources like product datasheets, WiFi monitoring guides, and SAA consumer guides.
 
 ## Tech Stack
 
@@ -44,17 +44,20 @@ src/
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - Node.js (v18 or higher recommended)
 - npm (comes with Node.js)
 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    ```
 
 2. Navigate to the project directory:
+
    ```bash
    cd teck-solar
    ```

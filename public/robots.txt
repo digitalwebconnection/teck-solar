@@ -1,0 +1,9 @@
+﻿User-agent: *
+Allow: /
+
+# Disallow private folders and build artifacts
+Disallow: /ODATrial/
+Disallow: /*.json$
+
+# Sitemaps
+Sitemap: https://tecksolar.com.au/sitemap.xml

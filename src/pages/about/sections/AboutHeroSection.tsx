@@ -1,13 +1,10 @@
-
 import { useReveal } from "../../../hooks/useReveal";
 import { useQuoteModal } from "../../../context/QuoteModalContext";
 
 const checkpoints = [
-  "CEC Approved Solar Retailer",
+  "SAA Approved Solar Retailer",
   "25-Year Performance Warranty",
 ];
-
-
 
 export default function AboutHeroSection() {
   const heroReveal = useReveal();
@@ -30,7 +27,7 @@ export default function AboutHeroSection() {
             >
               {/* Main Headline */}
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-black text-slate-900 tracking-tighter leading-[1.1] mb-6 w-full">
-                Powering Australia with{" "} <br />
+                Powering Australia with <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
                   Clean Solar Energy.
                 </span>
@@ -40,8 +37,8 @@ export default function AboutHeroSection() {
               <p className="text-lg sm:text-xl text-slate-500 leading-relaxed max-w-2xl font-light mb-8 w-full">
                 Teck Solar is a Clean Energy Council approved solar retailer
                 delivering high-efficiency rooftop systems, battery storage, and
-                EV charging across Australia. We build systems designed to perform
-                and built to last.
+                EV charging across Australia. We build systems designed to
+                perform and built to last.
               </p>
 
               {/* Premium Checkpoints */}
@@ -52,7 +49,19 @@ export default function AboutHeroSection() {
                     className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.08)] text-sm font-bold text-slate-700 w-full sm:w-auto"
                   >
                     <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#E56D00] to-orange-400 flex items-center justify-center shrink-0 shadow-inner">
-                      <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                      <svg
+                        className="w-3.5 h-3.5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
                     </div>
                     <span>{item}</span>
                   </div>

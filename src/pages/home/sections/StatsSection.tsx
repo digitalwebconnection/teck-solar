@@ -22,7 +22,8 @@ const trustStats: StatItem[] = [
     badge: "Australia Wide",
     color: "blue",
     image: "/images/hero-installation.jpg",
-    description: "Over 2,500 successful solar installations across Australia, providing sustainable and reliable energy solutions to homes and businesses.",
+    description:
+      "Over 2,500 successful solar installations across Australia, providing sustainable and reliable energy solutions to homes and businesses.",
   },
   {
     id: "capacity",
@@ -32,7 +33,8 @@ const trustStats: StatItem[] = [
     badge: "Clean Energy",
     color: "orange",
     image: "/images/hero-commercial.jpg",
-    description: "Delivering over 50 Megawatts of clean, renewable energy to the grid, significantly reducing carbon footprints and power bills.",
+    description:
+      "Delivering over 50 Megawatts of clean, renewable energy to the grid, significantly reducing carbon footprints and power bills.",
   },
   {
     id: "satisfaction",
@@ -42,7 +44,8 @@ const trustStats: StatItem[] = [
     badge: "★ 4.9/5 Rating",
     color: "blue",
     image: "/images/service-residential.jpg",
-    description: "A consistent 4.9/5 star rating from our customers, reflecting our commitment to quality, transparency, and ongoing support.",
+    description:
+      "A consistent 4.9/5 star rating from our customers, reflecting our commitment to quality, transparency, and ongoing support.",
   },
   {
     id: "warranty",
@@ -52,7 +55,8 @@ const trustStats: StatItem[] = [
     badge: "Tier-1 Guaranteed",
     color: "orange",
     image: "/images/mission-solar.jpg",
-    description: "Backed by an industry-leading 25-year performance warranty on Tier-1 engineered components for absolute peace of mind.",
+    description:
+      "Backed by an industry-leading 25-year performance warranty on Tier-1 engineered components for absolute peace of mind.",
   },
   {
     id: "carbon",
@@ -62,7 +66,8 @@ const trustStats: StatItem[] = [
     badge: "Eco Impact",
     color: "blue",
     image: "/images/service-battery.jpg",
-    description: "Our installations have successfully offset over 100,000 tons of CO2 emissions, actively fighting climate change across the country.",
+    description:
+      "Our installations have successfully offset over 100,000 tons of CO2 emissions, actively fighting climate change across the country.",
   },
 ];
 
@@ -143,22 +148,32 @@ export default function StatsSection() {
           >
             <div className="flex flex-col gap-6 lg:gap-8">
               <div className="flex items-center justify-start gap-3">
-                <span className={`transition-colors duration-500 w-12 h-[2px] rounded-full ${displayData.color === 'orange' ? 'bg-[#E56D00]' : 'bg-[#14488C]'}`} />
-                <span className={`text-sm font-heading font-bold uppercase tracking-[0.3em] transition-colors duration-500 ${displayData.color === 'orange' ? 'text-[#E56D00]' : 'text-[#14488C]'}`}>
+                <span
+                  className={`transition-colors duration-500 w-12 h-[2px] rounded-full ${displayData.color === "orange" ? "bg-[#E56D00]" : "bg-[#14488C]"}`}
+                />
+                <span
+                  className={`text-sm font-heading font-bold uppercase tracking-[0.3em] transition-colors duration-500 ${displayData.color === "orange" ? "text-[#E56D00]" : "text-[#14488C]"}`}
+                >
                   {displayData.badge}
                 </span>
               </div>
-              
+
               <div className="overflow-hidden font-serif transition-all duration-500">
-                 <span className={`text-7xl lg:text-8xl font-black tracking-tighter transition-colors duration-500 ${displayData.color === 'orange' ? 'text-[#E56D00]' : 'text-[#14488C]'}`}>
-                   {displayData.prefix}<AnimatedCounter target={displayData.target} start={true} />{displayData.suffix}
-                 </span>
+                <span
+                  className={`text-7xl lg:text-8xl font-black tracking-tighter transition-colors duration-500 ${displayData.color === "orange" ? "text-[#E56D00]" : "text-[#14488C]"}`}
+                >
+                  {displayData.prefix}
+                  <AnimatedCounter target={displayData.target} start={true} />
+                  {displayData.suffix}
+                </span>
               </div>
 
               <h2 className="text-4xl sm:text-5xl lg:text-5xl font-serif font-heading font-extrabold text-slate-900 tracking-tight leading-tight transition-colors duration-500">
-                {displayData.label.split(' ')[0]}{" "}
-                <span className={`block mt-1 transition-colors duration-500 ${displayData.color === 'orange' ? 'text-[#E56D00]' : 'text-[#14488C]'}`}>
-                  {displayData.label.split(' ').slice(1).join(' ')}
+                {displayData.label.split(" ")[0]}{" "}
+                <span
+                  className={`block mt-1 transition-colors duration-500 ${displayData.color === "orange" ? "text-[#E56D00]" : "text-[#14488C]"}`}
+                >
+                  {displayData.label.split(" ").slice(1).join(" ")}
                 </span>
               </h2>
             </div>
@@ -172,54 +187,61 @@ export default function StatsSection() {
 
                 let transformClass = "";
                 if (index === 0) {
-                  transformClass = isActive 
-                    ? "-translate-x-[90px] sm:-translate-x-[140px] -translate-y-8 rotate-0 z-50 scale-105" 
+                  transformClass = isActive
+                    ? "-translate-x-[90px] sm:-translate-x-[140px] -translate-y-4 rotate-0 z-50"
                     : "-translate-x-[120px] sm:-translate-x-[180px] translate-y-12 -rotate-12 z-10";
                 }
                 if (index === 1) {
-                  transformClass = isActive 
-                    ? "-translate-x-[40px] sm:-translate-x-[60px] -translate-y-12 rotate-0 z-50 scale-105" 
+                  transformClass = isActive
+                    ? "-translate-x-[40px] sm:-translate-x-[60px] -translate-y-8 rotate-0 z-50"
                     : "-translate-x-[60px] sm:-translate-x-[90px] translate-y-4 -rotate-6 z-20";
                 }
                 if (index === 2) {
-                  transformClass = isActive 
-                    ? "translate-x-0 -translate-y-16 rotate-0 z-50 scale-105" 
+                  transformClass = isActive
+                    ? "translate-x-0 -translate-y-12 rotate-0 z-50"
                     : "translate-x-0 translate-y-0 rotate-0 z-30";
                 }
                 if (index === 3) {
-                  transformClass = isActive 
-                    ? "translate-x-[40px] sm:translate-x-[60px] -translate-y-12 rotate-0 z-50 scale-105" 
+                  transformClass = isActive
+                    ? "translate-x-[40px] sm:translate-x-[60px] -translate-y-8 rotate-0 z-50"
                     : "translate-x-[60px] sm:translate-x-[90px] translate-y-4 rotate-6 z-20";
                 }
                 if (index === 4) {
-                  transformClass = isActive 
-                    ? "translate-x-[90px] sm:translate-x-[140px] -translate-y-8 rotate-0 z-50 scale-105" 
+                  transformClass = isActive
+                    ? "translate-x-[90px] sm:translate-x-[140px] -translate-y-4 rotate-0 z-50"
                     : "translate-x-[120px] sm:translate-x-[180px] translate-y-12 rotate-12 z-10";
                 }
 
                 return (
                   <div
                     key={item.id}
-                    onMouseEnter={() => { setActiveIndex(index); setIsHovering(true); }}
+                    onMouseEnter={() => {
+                      setActiveIndex(index);
+                      setIsHovering(true);
+                    }}
                     onMouseLeave={() => setIsHovering(false)}
                     className={`group absolute top-1/2 left-1/2 -mt-[170px] -ml-[110px] w-[220px] h-[340px] sm:w-[260px] sm:h-[380px] sm:-mt-[190px] sm:-ml-[130px] rounded-xl overflow-hidden cursor-pointer transition-all duration-700 ease-out origin-bottom shadow-[0_10px_30px_rgba(0,0,0,0.5)] ${transformClass} ${
                       !visible && "opacity-0 scale-75"
                     }`}
-                    style={{ transitionDelay: visible ? `${index * 150}ms` : "0ms" }}
+                    style={{
+                      transitionDelay: visible ? `${index * 150}ms` : "0ms",
+                    }}
                   >
                     {/* Full Card Background Image */}
-                    <img 
-                      src={item.image} 
-                      alt={item.label} 
-                      className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ${isActive ? 'scale-110' : 'scale-100'}`} 
+                    <img
+                      src={item.image}
+                      alt={item.label}
+                      className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${isActive ? "scale-105" : "scale-100"}`}
                     />
-                    
+
                     {/* Dim overlay for inactive cards to separate them without making them see-through */}
-                    <div className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-0' : 'opacity-40 group-hover:opacity-20'}`} />
-                    
+                    <div
+                      className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${isActive ? "opacity-0" : "opacity-40 group-hover:opacity-20"}`}
+                    />
+
                     {/* Dark gradient overlay ONLY at the bottom for text readability */}
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent pointer-events-none transition-opacity duration-700" />
-                    
+
                     {/* Subtle border to frame the card */}
                     <div className="absolute inset-0 border border-white/20 rounded-xl pointer-events-none" />
 

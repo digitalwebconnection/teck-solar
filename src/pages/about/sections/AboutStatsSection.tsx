@@ -73,7 +73,7 @@ const stats = [
   {
     number: "100",
     symbol: "%",
-    label: "CEC Accredited",
+    label: "SAA Accredited",
     sub: "In-house certified team",
     color: "orange",
     bgImage: "/images/hero-installation.jpg",
@@ -146,47 +146,55 @@ export default function AboutStatsSection() {
 
   return (
     <section className="py-0" ref={statsReveal.ref}>
-      <div className={`flex flex-col lg:flex-row w-full h-auto lg:h-[450px] transition-all duration-1000 ease-out ${statsReveal.visible ? "opacity-100" : "opacity-0"}`}>
+      <div
+        className={`flex flex-col lg:flex-row w-full h-auto lg:h-[450px] transition-all duration-1000 ease-out ${statsReveal.visible ? "opacity-100" : "opacity-0"}`}
+      >
         {stats.map((item, i) => (
           <div
             key={i}
             className="group relative h-[280px] hover:h-[350px] lg:h-full lg:hover:h-full flex-1 lg:hover:flex-[3] transition-all duration-700 ease-in-out cursor-pointer overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800/50 last:border-0"
           >
             {/* Background Image */}
-            <img 
-              src={item.bgImage} 
+            <img
+              src={item.bgImage}
               alt={item.label}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
             />
-            
+
             {/* Dark gradient overlay for readability (always visible slightly, partially fades on hover) */}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent transition-opacity duration-500 group-hover:opacity-0" />
-            
+
             {/* Solid Color Overlay on Hover */}
-            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${item.color === 'orange' ? 'bg-[#E56D00]' : 'bg-[#144E9A]'}`} />
-            
+            <div
+              className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${item.color === "orange" ? "bg-[#E56D00]" : "bg-[#144E9A]"}`}
+            />
+
             {/* Content Container */}
             <div className="absolute inset-0 p-6 lg:p-6 lg:group-hover:p-10 flex flex-col justify-between text-white z-10 transition-all duration-500">
               {/* Top Number (01, 02) */}
               <div className="text-sm font-bold tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
                 0{i + 1}
               </div>
-              
+
               {/* Bottom content */}
               <div className="flex flex-col justify-end h-full">
                 {/* Title (Always visible at the bottom initially, then pushed up) */}
                 <h3 className="text-2xl lg:text-xl lg:group-hover:text-3xl font-heading font-extrabold uppercase tracking-wide leading-tight transition-all duration-500 drop-shadow-md break-words">
                   {item.label}
                 </h3>
-                
+
                 {/* Detailed stats that fade in on hover */}
                 <div className="h-0 opacity-0 overflow-hidden group-hover:h-auto group-hover:opacity-100 group-hover:mt-2 transition-all duration-500 ease-in-out">
                   <p className="text-white/95 font-medium leading-relaxed mb-2 text-base lg:text-lg">
                     {item.sub}
                   </p>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-5xl lg:text-6xl font-black">{item.number}</span>
-                    <span className="text-3xl lg:text-4xl font-black">{item.symbol}</span>
+                    <span className="text-5xl lg:text-6xl font-black">
+                      {item.number}
+                    </span>
+                    <span className="text-3xl lg:text-4xl font-black">
+                      {item.symbol}
+                    </span>
                   </div>
                 </div>
               </div>

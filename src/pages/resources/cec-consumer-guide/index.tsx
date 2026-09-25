@@ -2,14 +2,13 @@ import GuideOverviewSection from "./sections/GuideOverviewSection";
 import GuideTopicsSection from "./sections/GuideTopicsSection";
 import SharedCTA from "../../../components/SharedCTA";
 
-export default function CECConsumerGuide() {
+export default function SAAConsumerGuide() {
   return (
     <div className="bg-slate-50 min-h-screen selection:bg-amber-500 selection:text-white">
       {/* Dynamic Floating Documents Hero */}
       <div className="py-8 lg:py-12 border-b border-slate-200/50 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8">
-            
             {/* Left Content (Typography) */}
             <div className="w-full lg:w-5/12 relative z-10">
               <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-heading font-black text-slate-900 tracking-tighter leading-[1.05] mb-8">
@@ -59,17 +58,15 @@ export default function CECConsumerGuide() {
 
             {/* Right Abstract Visual */}
             <div className="w-full lg:w-6/12 h-[450px] lg:h-[550px] relative perspective-[1000px] flex items-center justify-center mt-12 lg:mt-0">
-              
               {/* Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 via-transparent to-slate-900/10 rounded-full blur-3xl opacity-60" />
-              
+
               {/* Radiating Signal Rings Behind */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] border border-slate-900/5 rounded-full animate-[ping_4s_cubic-bezier(0,0,0.2,1)_infinite]" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-slate-900/5 rounded-full animate-[ping_4s_cubic-bezier(0,0,0.2,1)_infinite] animation-delay-1000" />
-              
+
               {/* Main Guide Card */}
               <div className="relative w-[280px] sm:w-[320px] bg-white border-4 border-white rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] transform rotate-[-4deg] p-6 flex flex-col z-20 transition-transform duration-700 hover:rotate-0 hover:-translate-y-4 group">
-                
                 {/* Image Cover */}
                 <div className="w-full h-40 sm:h-48 rounded-2xl overflow-hidden mb-6 relative">
                   <img
@@ -78,12 +75,11 @@ export default function CECConsumerGuide() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-slate-900/10"></div>
-                  
                 </div>
 
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-xs font-bold text-amber-500 uppercase tracking-widest">
-                    CEC Edition
+                    SAA Edition
                   </span>
                   <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-full uppercase tracking-wider">
                     v2024
@@ -148,7 +144,6 @@ export default function CECConsumerGuide() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

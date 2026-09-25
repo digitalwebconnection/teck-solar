@@ -27,7 +27,7 @@ const faqs: FaqItem[] = [
     question:
       "How long does installation take and what warranties are included?",
     answer:
-      "Most residential rooftop installations are completed within a single day by our CEC-accredited electricians with zero hassle. Every installation comes with up to 25-year panel performance warranties, 10-year inverter warranties, and our comprehensive 10-year Teck Solar workmanship guarantee.",
+      "Most residential rooftop installations are completed within a single day by our SAA-accredited electricians with zero hassle. Every installation comes with up to 25-year panel performance warranties, 10-year inverter warranties, and our comprehensive 10-year Teck Solar workmanship guarantee.",
   },
   {
     question:
@@ -60,7 +60,7 @@ export default function QuoteFormBand() {
           className={`text-center mb-14 lg:mb-16 transition-all duration-700 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
-        >         
+        >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
             Frequently Asked{" "}
             <span className="bg-gradient-to-r from-[#144E9A] to-[#E56D00] bg-clip-text text-transparent">

@@ -75,7 +75,7 @@ const navLinks: NavItem[] = [
         icon: "wifi",
       },
       {
-        label: "CEC Consumer Guide",
+        label: "SAA Consumer Guide",
         path: "/resources/cec-consumer-guide",
         desc: "Official Clean Energy Council consumer guides & standards.",
         icon: "shield",
@@ -295,7 +295,7 @@ export default function Header() {
             {/* Accreditation Badge */}
             <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded text-white text-xs font-semibold">
               <span>⚡</span>
-              <span>CEC Accredited</span>
+              <span>SAA Accredited</span>
             </div>
 
             {/* Separator */}

@@ -1,5 +1,6 @@
-// export const WEB3FORMS_ACCESS_KEY = '931031ab-378b-41eb-9bc5-ca9d50b95e91';
-export const WEB3FORMS_ACCESS_KEY = '93';
+export const WEB3FORMS_ACCESS_KEY =
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_WEB3FORMS_ACCESS_KEY) ||
+  "9674244f-e241-475f-84ac-96ba0559d404";
 
 export interface Web3FormsPayload {
   name?: string;
@@ -34,13 +35,13 @@ export async function submitToWeb3Forms(
     from_name?: string;
   }
 ): Promise<Web3FormsResponse> {
-  // Security Point: Rate Limiting (1 submission per minute)
+  // Rate limiting to prevent duplicate spam (5 seconds cooldown)
   const lastSubmitTime = localStorage.getItem('lastFormSubmitTime');
   const now = Date.now();
-  if (lastSubmitTime && now - parseInt(lastSubmitTime, 10) < 60000) {
+  if (lastSubmitTime && now - parseInt(lastSubmitTime, 10) < 5000) {
     return {
       success: false,
-      message: 'Please wait a minute before submitting another form.',
+      message: 'Please wait a few seconds before submitting another form.',
     };
   }
 
