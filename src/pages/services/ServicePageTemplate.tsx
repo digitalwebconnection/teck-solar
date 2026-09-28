@@ -1,4 +1,4 @@
-import PageBanner from '@/components/layout/PageBanner';
+import ServiceHeroBanner from './sections/ServiceHeroBanner';
 import ServiceIntroSection from './sections/ServiceIntroSection';
 import ServiceBenefitsSection from './sections/ServiceBenefitsSection';
 import ServiceFaqSection from './sections/ServiceFaqSection';
@@ -8,7 +8,6 @@ import type { ServicePageProps } from '@/types';
 export default function ServicePageTemplate({
   title,
   bannerImage,
-  subtitle,
   intro,
   introDetail,
   benefits,
@@ -17,10 +16,9 @@ export default function ServicePageTemplate({
 }: ServicePageProps) {
   return (
     <>
-      <PageBanner
+      <ServiceHeroBanner
         title={title}
-        backgroundImage={bannerImage}
-        subtitle={subtitle}
+        bannerImage={bannerImage}
       />
       <ServiceIntroSection
         title={title}

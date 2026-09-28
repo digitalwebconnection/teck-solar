@@ -45,7 +45,6 @@ export default function CommercialSolarPage() {
     <ServicePageTemplate
       title="Commercial Solar"
       bannerImage="/images/banners/commercial-solar.webp"
-      subtitle="Supercharge your business with sustainable energy. Reduce overheads, demonstrate corporate responsibility, and generate long-term ROI."
       intro="Power your enterprise with clean energy and drastically reduce your operating overheads. Teck Solar engineers high-performance, scalable commercial solar solutions designed specifically for offices, logistics centres, and industrial facilities."
       introDetail="Our dedicated commercial division has a proven track record of delivering complex projects ranging from 10kW precision rooftop systems to massive 500kW+ arrays. We provide a complete end-to-end service: from initial feasibility modelling and structural engineering to seamless installation, grid-connection, and lifetime maintenance."
       benefits={benefits}

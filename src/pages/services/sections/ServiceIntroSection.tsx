@@ -27,7 +27,7 @@ export default function ServiceIntroSection({
           <div className="lg:col-span-5 relative pt-6 pr-6">
             <div 
               ref={imageReveal.ref}
-              className={`relative transition-all duration-1000 delay-200 ease-out ${imageReveal.visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-16'}`}
+              className={`relative transition-all duration-800 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${imageReveal.visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
             >
               <div className="absolute -top-6 -right-6 w-40 h-40 bg-[radial-gradient(#14488C_2px,transparent_2px)] bg-[size:16px_16px] opacity-20 pointer-events-none z-0"></div>
               <div className="absolute top-8 left-8 right-0 bottom-0 bg-gradient-to-br from-brand-blue-600 to-brand-blue-900 rounded-[2rem] shadow-2xl z-0 pointer-events-none transform transition-transform duration-700 hover:translate-x-2 hover:translate-y-2"></div>
@@ -56,7 +56,7 @@ export default function ServiceIntroSection({
           </div>
 
           {/* Right: Content */}
-          <div className={`lg:col-start-7 lg:col-span-6 transition-all duration-1000 ease-out ${introReveal.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}>
+          <div className={`lg:col-start-7 lg:col-span-6 transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] ${introReveal.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-blue-50 text-brand-blue-800 font-bold text-xs tracking-[0.2em] uppercase mb-6 border-l-2 border-brand-blue-500">
               Overview
             </div>

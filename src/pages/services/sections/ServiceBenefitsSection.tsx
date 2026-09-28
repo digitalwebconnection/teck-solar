@@ -22,20 +22,20 @@ export default function ServiceBenefitsSection({
   const row1 = benefits.slice(0, midIndex);
   const row2 = benefits.slice(midIndex);
 
-  const marquee1 = [...row1, ...row1, ...row1, ...row1, ...row1, ...row1];
-  const marquee2 = [...row2, ...row2, ...row2, ...row2, ...row2, ...row2];
+  const marquee1 = [...row1, ...row1, ...row1];
+  const marquee2 = [...row2, ...row2, ...row2];
 
   return (
     <section
       className="py-8 sm:py-14 bg-slate-50 relative overflow-hidden flex flex-col items-center"
       ref={benefitsReveal.ref}
     >
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-blue-100/50 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-100/30 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-blue-100/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-100/25 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div
-          className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ease-out ${benefitsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+          className={`text-center mb-12 sm:mb-16 transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] ${benefitsReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-brand-blue-900 mt-2 tracking-tight">
             Why Choose Our{' '}

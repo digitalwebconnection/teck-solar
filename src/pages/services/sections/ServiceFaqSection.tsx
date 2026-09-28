@@ -102,14 +102,16 @@ export default function ServiceFaqSection({ faqs }: ServiceFaqSectionProps) {
                   </span>
                 </button>
                 <div
-                  className={`transition-all duration-500 ease-in-out overflow-hidden ${openFaq === i ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                  className={`grid transition-[grid-template-rows,opacity] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${openFaq === i ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
                 >
-                  <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-0">
-                    <div className="sm:pl-[4.5rem]">
-                      <div className="w-12 h-1 bg-gradient-to-r from-primary-500 to-brand-blue-500 rounded-full mb-5"></div>
-                      <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-medium">
-                        {faq.answer}
-                      </p>
+                  <div className="overflow-hidden">
+                    <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-0">
+                      <div className="sm:pl-[4.5rem]">
+                        <div className="w-12 h-1 bg-gradient-to-r from-primary-500 to-brand-blue-500 rounded-full mb-5"></div>
+                        <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-medium">
+                          {faq.answer}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

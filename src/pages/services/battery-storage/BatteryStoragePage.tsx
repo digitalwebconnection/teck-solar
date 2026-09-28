@@ -45,7 +45,6 @@ export default function BatteryStoragePage() {
     <ServicePageTemplate
       title="Battery Storage"
       bannerImage="/images/banners/battery-storage.webp"
-      subtitle="Achieve ultimate energy independence. Store your excess solar power to bypass peak grid tariffs and keep your home powered 24/7."
       intro="Achieve ultimate energy independence. By storing your excess solar power, our premium battery systems allow you to bypass peak grid tariffs and keep your home powered 24/7—even during a blackout."
       introDetail="Teck Solar partners exclusively with world-leading battery manufacturers to deliver intelligent, high-density storage solutions. Whether you are installing a brand new solar-plus-storage system or retrofitting a battery to your existing setup, our expert engineers will design a bespoke solution that maximizes your financial returns."
       benefits={benefits}

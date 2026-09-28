@@ -134,9 +134,34 @@
   50% { offset-distance: 100%; }
 }
 
+@keyframes marquee-infinite {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-infinite {
+  display: flex;
+  width: max-content;
+  animation: marquee-infinite 36s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@media (max-width: 768px) {
+  .animate-marquee-infinite {
+    animation-duration: 22s;
+  }
+}
+
 /* Base Styles */
 html {
-  scroll-behavior: smooth;
+  /* Instant scroll restoration on page transitions */
 }
 
 body {
