@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { useQuoteModal } from "../../context/QuoteModalContext";
+import { useQuoteModal } from "@/features/quote";
 import { Button } from "../ui/button";
 
 interface NavChild {

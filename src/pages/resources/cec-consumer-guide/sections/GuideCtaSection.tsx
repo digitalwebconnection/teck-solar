@@ -1,5 +1,5 @@
 
-import { useQuoteModal } from "../../../../context/QuoteModalContext";
+import { useQuoteModal } from "@/features/quote";
 
 export default function GuideCtaSection() {
   const { openModal } = useQuoteModal();

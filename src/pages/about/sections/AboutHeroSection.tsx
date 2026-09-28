@@ -1,5 +1,5 @@
 import { useReveal } from "../../../hooks/useReveal";
-import { useQuoteModal } from "../../../context/QuoteModalContext";
+import { useQuoteModal } from "@/features/quote";
 
 const checkpoints = [
   "SAA Approved Solar Retailer",

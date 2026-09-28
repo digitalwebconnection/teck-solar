@@ -1,23 +1,9 @@
 import { Link } from "react-router-dom";
-
-
-const quickLinks = [
-  { label: "Home", path: "/" },
-  { label: "About Us", path: "/about" },
-  { label: "Services", path: "/services" },
-  { label: "Contact Us", path: "/contact" },
-];
-
-const serviceLinks = [
-  { label: "Residential Solar", path: "/services/residential-solar" },
-  { label: "Commercial Solar", path: "/services/commercial-solar" },
-  { label: "Battery Storage", path: "/services/battery-storage" },
-  { label: "EV Charger", path: "/services/ev-charger" },
-];
-
-const officeLocations = [
-  "Lvl 1/5 George St, North Strathfield NSW 2137, Australia",
-];
+import {
+  footerQuickLinks as quickLinks,
+  footerServices as serviceLinks,
+  officeLocations,
+} from "@/data/navigation";
 
 export default function Footer() {
   return (

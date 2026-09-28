@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useQuoteModal } from "../../../context/QuoteModalContext";
-import Text3DFlip from "../../../components/ui/text-3d-flip";
+import { useQuoteModal } from "@/features/quote";
+import Text3DFlip from "@/components/effects/text-3d-flip";
 
 interface Slide {
   badge: string;

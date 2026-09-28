@@ -1,0 +1,59 @@
+import { useReveal } from "../../hooks/useReveal";
+
+export default function SharedCTA() {
+  const reveal = useReveal();
+
+  return (
+    <section className="py-16 bg-white" ref={reveal.ref}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* The "Perfect Box" CTA - Increased height via padding */}
+        <div
+          className={`bg-white border border-brand-blue-100 shadow-[0_8px_30px_rgb(20,72,140,0.08)] rounded-3xl overflow-hidden relative flex flex-col lg:flex-row items-center justify-between p-8 sm:p-12 lg:p-20 gap-8 sm:gap-12 transition-all duration-700 ${reveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+        >
+          {/* Subtle Blue Accent Line on Top */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-blue-500 to-primary-500"></div>
+
+          {/* Background Decorative Element */}
+          <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-primary-50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+
+          {/* Left Content */}
+          <div className="lg:max-w-2xl text-center lg:text-left relative z-10">
+            <h2 className="text-3xl sm:text-5xl font-heading font-extrabold text-brand-blue-900 tracking-tight leading-tight">
+              Need{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
+                Live Help?
+              </span>
+            </h2>
+            <p className="mt-6 text-slate-600 text-lg sm:text-xl leading-relaxed font-medium">
+              Our technical support team can walk you through the entire setup
+              process over the phone. Don't hesitate to reach out.
+            </p>
+          </div>
+
+          {/* Right Action */}
+          <div className="relative z-10 w-full lg:w-auto flex flex-col sm:flex-row items-center gap-4">
+            <a
+              href="tel:1300000832"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-[#144E9A] to-blue-700 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+            >
+              <svg
+                className="w-6 h-6 text-white animate-pulse"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              <span>1300 000 832</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

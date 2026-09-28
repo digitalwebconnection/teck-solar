@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useReveal } from "../../../hooks/useReveal";
-import { useQuoteModal } from "../../../context/QuoteModalContext";
-import { PixelImage } from "../../../components/ui/pixel-image";
-import { DotPattern } from "../../../components/ui/dot-pattern";
+import { useQuoteModal } from "@/features/quote";
+import { PixelImage } from "@/components/effects/pixel-image";
+import { DotPattern } from "@/components/effects/dot-pattern";
 
 export default function MissionSection() {
   const { ref, visible } = useReveal(0.15);

@@ -1,4 +1,4 @@
-import { useQuoteModal } from "../../../context/QuoteModalContext";
+import { useQuoteModal } from "@/features/quote";
 
 export default function AboutCtaSection() {
   const { openModal } = useQuoteModal();

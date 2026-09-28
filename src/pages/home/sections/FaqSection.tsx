@@ -1,33 +1,6 @@
-import { useReveal } from "../../../hooks/useReveal";
-import { MotionAccordion } from "../../../components/ui/motion-accordion";
-
-const faqs = [
-  {
-    question: "How much can I save by installing solar panels?",
-    answer:
-      "Savings vary based on your energy consumption, roof orientation, and the size of your system. Most of our residential customers see their energy bills drop by 50-80% immediately after installation, with the system paying for itself in 3-5 years.",
-  },
-  {
-    question: "Do I need a battery with my solar system?",
-    answer:
-      "While a battery isn't strictly necessary, it allows you to store excess energy generated during the day for use at night or during power outages. This maximizes your self-consumption and provides energy independence. We can design a system that starts without a battery but is 'battery-ready' for future upgrades.",
-  },
-  {
-    question: "How long does the installation process take?",
-    answer:
-      "The physical installation typically takes 1-2 days for residential systems and 1-2 weeks for commercial systems. However, the entire process from consultation, system design, grid connection approvals, to final commissioning usually takes 4-6 weeks.",
-  },
-  {
-    question: "What maintenance do solar panels require?",
-    answer:
-      "Solar systems require very little maintenance. We recommend a professional clean and electrical safety check every 1-2 years to ensure optimal performance. Our systems include advanced monitoring apps so you can track performance and we can remotely diagnose any issues.",
-  },
-  {
-    question: "Are there any government rebates available?",
-    answer:
-      "Yes! The Australian Federal Government provides STCs (Small-scale Technology Certificates) which act as an upfront discount on your system. Depending on your state, there may also be additional state-specific rebates or interest-free loans available. Our team handles all the rebate paperwork for you.",
-  },
-];
+import { useReveal } from "@/hooks/useReveal";
+import { MotionAccordion } from "@/components/effects/motion-accordion";
+import { homeFaqs } from "@/data/faqs";
 
 export default function FaqSection() {
   const { ref, visible } = useReveal(0.15);
@@ -58,22 +31,20 @@ export default function FaqSection() {
             </div>
             
             <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-heading font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
-              Frequently Asked{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00]">
-                Questions
-              </span>
+              Everything You Need <br className="hidden sm:inline" />
+              To Know About Solar
             </h2>
             
-            <p className="text-lg text-slate-600 leading-relaxed font-light mb-8 max-w-lg">
-              We know making the switch to solar is a big decision. Here are answers to some of the most common questions we get from our customers.
+            <p className="text-lg text-slate-600 font-light leading-relaxed mb-8 max-w-lg">
+              Switching to solar is a significant decision. Here are clear, straightforward answers to the questions Australian homeowners ask us most.
             </p>
 
             <a
-              href="#contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-slate-900 text-white font-heading font-bold transition-all duration-300 hover:bg-[#144E9A] hover:shadow-lg hover:-translate-y-1"
+              href="tel:1300000832"
+              className="inline-flex items-center gap-3 text-brand-blue-600 font-heading font-semibold hover:text-[#E56D00] transition-colors group"
             >
-              Ask Another Question
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span>Have a specific question? Speak to an expert</span>
+              <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
@@ -85,7 +56,7 @@ export default function FaqSection() {
               visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
             }`}
           >
-            <MotionAccordion items={faqs} gap={16} />
+            <MotionAccordion items={homeFaqs} gap={16} />
           </div>
 
         </div>

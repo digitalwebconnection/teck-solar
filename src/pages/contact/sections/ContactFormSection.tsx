@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useReveal } from "../../../hooks/useReveal";
-import { submitToWeb3Forms } from "../../../utils/web3forms";
+import { submitToWeb3Forms } from "@/lib/web3forms";
 
 export default function ContactFormSection() {
   const formReveal = useReveal();
