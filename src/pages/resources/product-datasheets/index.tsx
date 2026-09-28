@@ -45,7 +45,7 @@ export default function ProductDatasheets() {
               {/* Back Card (Image Panel) */}
               <div className="absolute top-4 right-4 w-72 h-80 bg-white border border-slate-200 rounded-3xl shadow-xl transform rotate-[10deg] translate-x-12 translate-y-4 p-4 hidden lg:block opacity-60">
                  <div className="w-full h-full rounded-2xl overflow-hidden relative">
-                   <img src="/images/service-commercial.jpg" alt="Commercial Solar" className="w-full h-full object-cover grayscale opacity-50" />
+                   <img src="/images/products/commercial.webp" alt="Commercial Solar" className="w-full h-full object-cover grayscale opacity-50" />
                    <div className="absolute inset-0 border-2 border-dashed border-slate-300 rounded-2xl mix-blend-overlay"></div>
                  </div>
               </div>
@@ -55,7 +55,7 @@ export default function ProductDatasheets() {
                 
                 {/* Image Cover */}
                 <div className="w-full h-32 sm:h-40 rounded-2xl overflow-hidden mb-4 sm:mb-6 relative">
-                  <img src="/images/service-battery.jpg" alt="Solar Battery" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img src="/images/products/battery.webp" alt="Solar Battery" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-slate-900/10"></div>
                   <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-[#144E9A] shadow-sm">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>

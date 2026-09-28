@@ -110,7 +110,7 @@ export default function QuoteModal() {
           {/* Background Image */}
           <div
             className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-overlay"
-            style={{ backgroundImage: "url('/images/hero-residential.jpg')" }}
+            style={{ backgroundImage: "url('/images/hero/residential.webp')" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
 

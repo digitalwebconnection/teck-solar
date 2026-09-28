@@ -70,7 +70,7 @@ export default function SAAConsumerGuide() {
                 {/* Image Cover */}
                 <div className="w-full h-40 sm:h-48 rounded-2xl overflow-hidden mb-6 relative">
                   <img
-                    src="/images/hero-residential.jpg"
+                    src="/images/hero/residential.webp"
                     alt="Solar Home"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />

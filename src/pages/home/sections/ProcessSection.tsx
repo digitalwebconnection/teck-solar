@@ -8,42 +8,42 @@ const processSteps = [
     title: "Initial Consultation",
     description:
       "We assess your energy needs, roof suitability, and discuss your goals in a free consultation.",
-    image: "/images/service-residential.jpg",
+    image: "/images/products/residential.webp",
   },
   {
     step: "02",
     title: "Custom Design",
     description:
       "Our engineers design a tailored solar system optimised for maximum energy generation.",
-    image: "/images/hero-commercial.jpg",
+    image: "/images/hero/commercial.webp",
   },
   {
     step: "03",
     title: "Detailed Quote",
     description:
       "Receive a transparent, no-obligation quote with clear pricing and projected savings.",
-    image: "/images/service-commercial.jpg",
+    image: "/images/products/commercial.webp",
   },
   {
     step: "04",
     title: "Permits & Approvals",
     description:
       "We handle all paperwork, council permits, and grid connection applications on your behalf.",
-    image: "/images/hero-installation.jpg",
+    image: "/images/hero/installation.webp",
   },
   {
     step: "05",
     title: "Professional Installation",
     description:
       "Our SAA-accredited team installs your system with meticulous attention to quality and safety.",
-    image: "/images/about-team.jpg",
+    image: "/images/banners/about-team.webp",
   },
   {
     step: "06",
     title: "Monitoring & Support",
     description:
       "Enjoy real-time monitoring and ongoing support to ensure peak performance for decades.",
-    image: "/images/service-battery.jpg",
+    image: "/images/products/battery.webp",
   },
 ];
 

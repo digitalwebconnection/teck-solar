@@ -1,5 +1,4 @@
 import ServicePageTemplate from '../template';
-import bannerImg from '../../../assets/services/raphael-cruz-IwY-27ceRCA-unsplash.jpg';
 
 const benefits = [
   {
@@ -45,12 +44,12 @@ export default function EVCharger() {
   return (
     <ServicePageTemplate
       title="EV Chargers"
-      bannerImage={bannerImg}
+      bannerImage="/images/banners/ev-charger.webp"
       subtitle="Charge your electric vehicle up to 10x faster with our premium smart chargers, fully integrated with your home solar system."
       intro="Accelerate your transition to electric mobility. Teck Solar provides premium, rapid EV charging stations for homes and businesses, fully integrated with your solar ecosystem."
       introDetail="Say goodbye to public charging queues and range anxiety. Our expert electricians design and install sophisticated charging infrastructure tailored to your exact vehicle and electrical capacity. By bridging the gap between your solar panels and your driveway, we help you slash your transport costs to zero."
       benefits={benefits}
-      featureImage="/images/service-ev-charger.jpg"
+      featureImage="/images/products/ev-charger.webp"
       faqs={faqs}
     />
   );

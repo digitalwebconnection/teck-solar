@@ -1,5 +1,4 @@
 import ServicePageTemplate from '../template';
-import bannerImg from '../../../assets/services/uitbundig-yxiP843xyrI-unsplash.jpg';
 
 const benefits = [
   {
@@ -46,12 +45,12 @@ export default function ResidentialSolar() {
   return (
     <ServicePageTemplate
       title="Residential Solar"
-      bannerImage={bannerImg}
+      bannerImage="/images/banners/residential-solar.webp"
       subtitle="Empower your home with clean, renewable energy. Lower your bills and increase your property value with our premium solar solutions."
       intro="Transform your home into a clean energy powerhouse. A custom-designed residential solar system from Teck Solar provides ultimate energy independence while protecting your family from constantly rising electricity prices."
       introDetail="We don't believe in one-size-fits-all. Our expert engineers will meticulously design and install a tailored system using only premium, Tier-1 equipment. Whether you want to eliminate your power bill or simply do your part for the environment, our solutions deliver unmatched performance and reliability."
       benefits={benefits}
-      featureImage="/images/hero-residential.jpg"
+      featureImage="/images/hero/residential.webp"
       faqs={faqs}
     />
   );

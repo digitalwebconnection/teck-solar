@@ -71,7 +71,7 @@ export default function WiFiMonitoring() {
                   <div className="mx-4 h-36 rounded-xl bg-slate-900 p-5 text-white flex flex-col justify-between shadow-lg relative overflow-hidden mb-6 group">
                      {/* Background Image & Overlay */}
                      <div className="absolute inset-0">
-                       <img src="/images/hero-residential.jpg" alt="Solar Panels" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                       <img src="/images/hero/residential.webp" alt="Solar Panels" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                        <div className="absolute inset-0 bg-gradient-to-tr from-[#144E9A]/95 to-[#1e5cad]/70 mix-blend-multiply" />
                        <div className="absolute inset-0" />
                      </div>

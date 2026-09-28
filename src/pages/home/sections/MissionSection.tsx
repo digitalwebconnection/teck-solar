@@ -9,9 +9,9 @@ export default function MissionSection() {
   const { openModal } = useQuoteModal();
 
   const images = [
-    "/images/mission-solar.jpg",
-    "/images/hero-commercial.jpg", 
-    "/images/hero-residential.jpg"
+    "/images/banners/mission-solar.webp",
+    "/images/hero/commercial.webp", 
+    "/images/hero/residential.webp"
   ];
 
   return (

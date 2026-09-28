@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.svg";
-import newEnergyTechLogo from "../../assets/New-ene.webp";
+
 
 const quickLinks = [
   { label: "Home", path: "/" },
@@ -34,7 +33,7 @@ export default function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               <img
-                src={logo}
+                src="/images/logo/logo.svg"
                 alt="Teck Solar"
                 className="h-12 md:h-26 w-auto object-contain"
               />
@@ -43,7 +42,7 @@ export default function Footer() {
             {/* New Energy Tech Consumer Code Badge */}
             <div className="flex items-center ">
               <img
-                src={newEnergyTechLogo}
+                src="/images/logo/new-energy-tech.webp"
                 alt="New Energy Tech Consumer Code Approved"
                 className="w-14 h-14 object-contain shrink-0"
               />

@@ -84,7 +84,7 @@ export default function Contact() {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-16 h-16 rounded-md bg-gradient-to-br from-[#144E9A] to-blue-600 flex items-center justify-center shadow-lg relative overflow-hidden">
                     <img
-                      src="/images/hero-residential.jpg"
+                      src="/images/hero/residential.webp"
                       alt="Team Member"
                       className="w-full h-full object-cover"
                     />

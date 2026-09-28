@@ -4,7 +4,7 @@ export default function ShowcaseSection() {
   return (
     <section className="w-full relative">
       <ScrollExpand
-        src="/images/service-commercial.jpg"
+        src="/images/products/commercial.webp"
         alt="Teck Solar Installation"
         title="Teck Solar"
         scrollHint="Scroll to expand"

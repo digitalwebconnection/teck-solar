@@ -99,7 +99,7 @@ export default function StorySection() {
               {/* Main Image Frame */}
               <div className="rounded-xl overflow-hidden border border-slate-200/90 shadow-lg shadow-slate-900/5 bg-slate-50">
                 <img
-                  src="/images/hero-installation.jpg"
+                  src="/images/hero/installation.webp"
                   alt="Certified solar installation by Teck Solar technicians"
                   className="w-full h-[400px] sm:h-[460px] object-cover"
                 />

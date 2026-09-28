@@ -73,10 +73,9 @@ export default function AboutHeroSection() {
                 <button
                   type="button"
                   onClick={openModal}
-                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#E56D00] text-white font-heading font-bold text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto overflow-hidden shadow-[0_10px_20px_-10px_rgba(229,109,0,0.5)] cursor-pointer"
+                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-[#E56D00] text-white font-heading font-bold text-lg transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto overflow-hidden shadow-[0_10px_30px_-10px_rgba(229,109,0,0.6)] cursor-pointer"
                 >
                   <div className="absolute inset-0 bg-[#cc6100] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
-                  <span className="relative z-10">Get a Free Quote</span>
                   <svg
                     className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -90,11 +89,12 @@ export default function AboutHeroSection() {
                       d="M14 5l7 7m0 0l-7 7m7-7H3"
                     />
                   </svg>
+                  <span className="relative z-10">Get a Free Quote</span>
                 </button>
 
                 <a
                   href="#our-story"
-                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:border-brand-blue-500 hover:text-brand-blue-600 hover:-translate-y-1 w-full sm:w-auto"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border border-[#144E9A] text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:bg-[#144E9A] hover:text-white hover:-translate-y-1 w-full sm:w-auto cursor-pointer"
                 >
                   <span className="relative z-10">Our Story</span>
                   <svg
@@ -126,7 +126,7 @@ export default function AboutHeroSection() {
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(20,72,140,0.3)] border-8 border-white mr-6 mb-6 bg-slate-100 group">
                 <div className="absolute inset-0 bg-brand-blue-900/10 mix-blend-multiply z-10 pointer-events-none transition-opacity duration-500 group-hover:opacity-0"></div>
                 <img
-                  src="/images/about-team.jpg"
+                  src="/images/banners/about-team.webp"
                   alt="Teck Solar certified installation team"
                   className="w-full h-[400px] lg:h-[500px] object-cover transform transition-transform duration-1000 group-hover:scale-105"
                 />

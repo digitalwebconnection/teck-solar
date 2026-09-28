@@ -21,7 +21,7 @@ const trustStats: StatItem[] = [
     label: "Installations Completed",
     badge: "Australia Wide",
     color: "blue",
-    image: "/images/hero-installation.jpg",
+    image: "/images/hero/installation.webp",
     description:
       "Over 2,500 successful solar installations across Australia, providing sustainable and reliable energy solutions to homes and businesses.",
   },
@@ -32,7 +32,7 @@ const trustStats: StatItem[] = [
     label: "Solar Capacity Installed",
     badge: "Clean Energy",
     color: "orange",
-    image: "/images/hero-commercial.jpg",
+    image: "/images/hero/commercial.webp",
     description:
       "Delivering over 50 Megawatts of clean, renewable energy to the grid, significantly reducing carbon footprints and power bills.",
   },
@@ -43,7 +43,7 @@ const trustStats: StatItem[] = [
     label: "Customer Satisfaction",
     badge: "★ 4.9/5 Rating",
     color: "blue",
-    image: "/images/service-residential.jpg",
+    image: "/images/products/residential.webp",
     description:
       "A consistent 4.9/5 star rating from our customers, reflecting our commitment to quality, transparency, and ongoing support.",
   },
@@ -54,7 +54,7 @@ const trustStats: StatItem[] = [
     label: "Performance Warranty",
     badge: "Tier-1 Guaranteed",
     color: "orange",
-    image: "/images/mission-solar.jpg",
+    image: "/images/banners/mission-solar.webp",
     description:
       "Backed by an industry-leading 25-year performance warranty on Tier-1 engineered components for absolute peace of mind.",
   },
@@ -65,7 +65,7 @@ const trustStats: StatItem[] = [
     label: "Tons Carbon Offset",
     badge: "Eco Impact",
     color: "blue",
-    image: "/images/service-battery.jpg",
+    image: "/images/products/battery.webp",
     description:
       "Our installations have successfully offset over 100,000 tons of CO2 emissions, actively fighting climate change across the country.",
   },

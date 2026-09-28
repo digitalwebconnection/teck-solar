@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/logo.svg";
+
 import { useQuoteModal } from "../../context/QuoteModalContext";
 import { Button } from "../ui/button";
 
@@ -361,7 +361,7 @@ export default function Header() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <img
-                src={logo}
+                src="/images/logo/logo.svg"
                 alt="Teck Solar"
                 className="h-14 md:h-16 max-h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
               />
@@ -750,7 +750,7 @@ export default function Header() {
               className="flex items-center"
             >
               <img
-                src={logo}
+                src="/images/logo/logo.svg"
                 alt="Teck Solar"
                 className="h-10 w-auto object-contain"
               />

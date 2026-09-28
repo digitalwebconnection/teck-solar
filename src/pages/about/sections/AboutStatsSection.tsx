@@ -7,7 +7,7 @@ const stats = [
     label: "Years of Experience",
     sub: "Pioneering solar since 2015",
     color: "blue",
-    bgImage: "/images/about-team.jpg",
+    bgImage: "/images/banners/about-team.webp",
     icon: (
       <svg
         className="w-6 h-6"
@@ -30,7 +30,7 @@ const stats = [
     label: "Installations",
     sub: "Across NSW, VIC & QLD",
     color: "orange",
-    bgImage: "/images/hero-residential.jpg",
+    bgImage: "/images/hero/residential.webp",
     icon: (
       <svg
         className="w-6 h-6"
@@ -53,7 +53,7 @@ const stats = [
     label: "Installed Capacity",
     sub: "Clean renewable power",
     color: "blue",
-    bgImage: "/images/hero-commercial.jpg",
+    bgImage: "/images/hero/commercial.webp",
     icon: (
       <svg
         className="w-6 h-6"
@@ -76,7 +76,7 @@ const stats = [
     label: "SAA Accredited",
     sub: "In-house certified team",
     color: "orange",
-    bgImage: "/images/hero-installation.jpg",
+    bgImage: "/images/hero/installation.webp",
     icon: (
       <svg
         className="w-6 h-6"
@@ -99,7 +99,7 @@ const stats = [
     label: "Happy Customers",
     sub: "Customer satisfaction rate",
     color: "blue",
-    bgImage: "/images/service-residential.jpg",
+    bgImage: "/images/products/residential.webp",
     icon: (
       <svg
         className="w-6 h-6"
@@ -122,7 +122,7 @@ const stats = [
     label: "Battery Storage",
     sub: "Energy storage deployed",
     color: "orange",
-    bgImage: "/images/service-battery.jpg",
+    bgImage: "/images/products/battery.webp",
     icon: (
       <svg
         className="w-6 h-6"

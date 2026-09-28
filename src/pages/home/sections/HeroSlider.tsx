@@ -24,7 +24,7 @@ const slides: Slide[] = [
     primaryLink: "/contact",
     secondaryCta: "About Us",
     secondaryLink: "/about",
-    image: "/images/hero-residential.jpg",
+    image: "/images/hero/residential.webp",
   },
   {
     badge: "Commercial Solutions",
@@ -35,7 +35,7 @@ const slides: Slide[] = [
     primaryLink: "/contact",
     secondaryCta: "Our Services",
     secondaryLink: "/services",
-    image: "/images/hero-commercial.jpg",
+    image: "/images/hero/commercial.webp",
   },
   {
     badge: "SAA Accredited",
@@ -46,7 +46,7 @@ const slides: Slide[] = [
     primaryLink: "/contact",
     secondaryCta: "Learn More",
     secondaryLink: "/about",
-    image: "/images/hero-installation.jpg",
+    image: "/images/hero/installation.webp",
   },
 ];
 
