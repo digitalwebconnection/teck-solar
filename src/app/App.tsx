@@ -1,12 +1,12 @@
 import { BrowserRouter } from 'react-router-dom';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import ScrollToTop from './components/layout/ScrollToTop';
-import { QuoteModal } from './components/shared';
-import { AppProviders } from './app/providers';
-import { AppRoutes } from './app/router';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import ScrollToTop from '@/components/layout/ScrollToTop';
+import { QuoteModal } from '@/components/shared';
+import { AppProviders } from './providers';
+import { AppRoutes } from './router';
 
-function App() {
+export function App() {
   return (
     <AppProviders>
       <BrowserRouter>
