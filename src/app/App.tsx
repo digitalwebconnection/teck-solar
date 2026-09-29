@@ -14,7 +14,7 @@ export function App() {
           <ScrollToTop />
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-1 flex flex-col overflow-x-hidden">
+            <main className="flex-1 flex flex-col overflow-x-clip">
               <AppRoutes />
             </main>
           </div>
