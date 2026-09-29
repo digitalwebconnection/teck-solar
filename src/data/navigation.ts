@@ -93,14 +93,96 @@ export const footerServices = [
   { label: "EV Charger", path: "/services/ev-charger" },
 ];
 
-export const officeLocations = [
-  "Lvl 1/5 George St, North Strathfield NSW 2137, Australia",
+export interface OfficeLocation {
+  id: string;
+  name: string;
+  badge: string;
+  suburb: string;
+  region: string;
+  state: string;
+  stateFull: string;
+  street: string;
+  locality: string;
+  address: string;
+  fullAddress: string;
+  isHeadOffice?: boolean;
+}
+
+export const officeLocations: OfficeLocation[] = [
+  {
+    id: "nsw",
+    name: "NSW Head Office",
+    badge: "Head Office",
+    suburb: "North Strathfield",
+    region: "Sydney Metro",
+    state: "NSW",
+    stateFull: "New South Wales",
+    street: "Level 1, 5 George St",
+    locality: "North Strathfield NSW 2137",
+    address: "Level 1, 5 George St, North Strathfield NSW 2137",
+    fullAddress: "Level 1, 5 George St, North Strathfield NSW 2137, Australia",
+    isHeadOffice: true,
+  },
+  {
+    id: "sa",
+    name: "SA Office",
+    badge: "SA Branch",
+    suburb: "Adelaide",
+    region: "Adelaide CBD",
+    state: "SA",
+    stateFull: "South Australia",
+    street: "217-255 Flinders St",
+    locality: "Adelaide SA 5000",
+    address: "217-255 Flinders St, Adelaide SA 5000",
+    fullAddress: "217-255 Flinders St, Adelaide SA 5000, Australia",
+    isHeadOffice: false,
+  },
+  {
+    id: "wa",
+    name: "WA Office",
+    badge: "WA Branch",
+    suburb: "Mandurah",
+    region: "Mandurah & Perth Region",
+    state: "WA",
+    stateFull: "Western Australia",
+    street: "22 Ormsby Terrace",
+    locality: "Mandurah WA 6210",
+    address: "22 Ormsby Terrace, Mandurah WA 6210",
+    fullAddress: "22 Ormsby Terrace, Mandurah WA 6210, Australia",
+    isHeadOffice: false,
+  },
+  {
+    id: "vic",
+    name: "VIC Office",
+    badge: "VIC Branch",
+    suburb: "Carlton",
+    region: "Melbourne Metro",
+    state: "VIC",
+    stateFull: "Victoria",
+    street: "Suite 250, 139 Cardigan St",
+    locality: "Carlton VIC 3053",
+    address: "Suite 250, 139 Cardigan St, Carlton VIC 3053",
+    fullAddress: "Suite 250, 139 Cardigan St, Carlton VIC 3053, Australia",
+    isHeadOffice: false,
+  },
+];
+
+export const contactEmails = [
+  {
+    label: "General Enquiries",
+    email: "info@teck-solar.com.au",
+  },
+  {
+    label: "Sales & Support",
+    email: "sales@tecksolar.com.au",
+  },
 ];
 
 export const contactDetails = {
   phone: "+61 1300 134 077",
   phoneRaw: "+611300134077",
-  email: "info@tecksolar.com.au",
-  address: "Lvl 1/5 George St, North Strathfield NSW 2137, Australia",
+  email: "info@teck-solar.com.au",
+  salesEmail: "sales@tecksolar.com.au",
+  address: "Level 1, 5 George St, North Strathfield NSW 2137, Australia",
   hours: "Mon - Fri: 8:00 AM - 6:00 PM AEST",
 };

@@ -44,11 +44,11 @@ export default function CommercialSolarPage() {
   return (
     <ServicePageTemplate
       title="Commercial Solar"
-      bannerImage="/images/banners/commercial-solar.webp"
+      bannerImage="/images/hero/commercial.webp"
       intro="Power your enterprise with clean energy and drastically reduce your operating overheads. Teck Solar engineers high-performance, scalable commercial solar solutions designed specifically for offices, logistics centres, and industrial facilities."
       introDetail="Our dedicated commercial division has a proven track record of delivering complex projects ranging from 10kW precision rooftop systems to massive 500kW+ arrays. We provide a complete end-to-end service: from initial feasibility modelling and structural engineering to seamless installation, grid-connection, and lifetime maintenance."
       benefits={benefits}
-      featureImage="/images/hero/commercial.webp"
+      featureImage="/images/products/commercial.webp"
       faqs={faqs}
     />
   );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useReveal } from "../../../hooks/useReveal";
 import { submitToWeb3Forms } from "@/lib/web3forms";
+import { officeLocations } from "@/data/navigation";
 
 export default function ContactFormSection() {
   const formReveal = useReveal();
@@ -250,8 +251,8 @@ export default function ContactFormSection() {
                 Contact Information
               </h3>
               <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary-500/20 flex items-center justify-center shrink-0">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary-500/20 flex items-center justify-center shrink-0 mt-0.5">
                     <svg
                       className="w-5 h-5 text-primary-400"
                       fill="none"
@@ -272,11 +273,18 @@ export default function ContactFormSection() {
                       />
                     </svg>
                   </div>
-                  <div>
-                    <p className="text-navy-400 text-xs">Head Office</p>
-                    <p className="text-white font-medium text-sm">
-                      Lvl 1/5 George St, North Strathfield NSW 2137, Australia
+                  <div className="space-y-2">
+                    <p className="text-navy-400 text-xs font-semibold uppercase tracking-wider">
+                      Our Offices
                     </p>
+                    <div className="space-y-2 text-xs leading-relaxed">
+                      {officeLocations.map((loc) => (
+                        <div key={loc.id} className="leading-snug">
+                          <span className="text-primary-400 font-semibold">{loc.name}: </span>
+                          <span className="text-white/80">{loc.address}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -296,7 +304,7 @@ export default function ContactFormSection() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-navy-400 text-xs">Call Us</p>
+                    <p className="text-navy-400 text-xs font-semibold uppercase tracking-wider">Call Us</p>
                     <a
                       href="tel:+611300134077"
                       className="text-white font-medium hover:text-primary-400 transition-colors"
@@ -305,8 +313,8 @@ export default function ContactFormSection() {
                     </a>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary-500/20 flex items-center justify-center shrink-0">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary-500/20 flex items-center justify-center shrink-0 mt-0.5">
                     <svg
                       className="w-5 h-5 text-primary-400"
                       fill="none"
@@ -322,13 +330,19 @@ export default function ContactFormSection() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-navy-400 text-xs">Email Us</p>
-                    <a
-                      href="mailto:sales@tecksolar.com.au"
-                      className="text-white font-medium hover:text-primary-400 transition-colors"
-                    >
-                      sales@tecksolar.com.au
-                    </a>
+                    <p className="text-navy-400 text-xs font-semibold uppercase tracking-wider">Email Us</p>
+                    <div className="space-y-1 mt-1">
+                      <a
+                        href="mailto:info@teck-solar.com.au"
+                        className="text-white font-medium hover:text-primary-400 transition-colors block text-sm"
+                      >
+                        info@teck-solar.com.au                         
+                      </a>
+                      <a
+                        href="mailto:sales@tecksolar.com.au"
+                        className="text-white font-medium hover:text-primary-400 transition-colors block text-sm">
+                        sales@tecksolar.com.au</a>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">

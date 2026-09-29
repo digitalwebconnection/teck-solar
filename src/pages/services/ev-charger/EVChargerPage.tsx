@@ -44,11 +44,11 @@ export default function EVChargerPage() {
   return (
     <ServicePageTemplate
       title="EV Chargers"
-      bannerImage="/images/banners/ev-charger.webp"
+      bannerImage="/images/banners/ev-charger-hero.webp"
       intro="Accelerate your transition to electric mobility. Teck Solar provides premium, rapid EV charging stations for homes and businesses, fully integrated with your solar ecosystem."
       introDetail="Say goodbye to public charging queues and range anxiety. Our expert electricians design and install sophisticated charging infrastructure tailored to your exact vehicle and electrical capacity. By bridging the gap between your solar panels and your driveway, we help you slash your transport costs to zero."
       benefits={benefits}
-      featureImage="/images/products/ev-charger.webp"
+      featureImage="/images/services/ev-charger/ev-1.jpg"
       faqs={faqs}
     />
   );

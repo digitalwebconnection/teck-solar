@@ -34,7 +34,10 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
     }
 
     // Ignore hash-only changes or identical pathname
-    if (location.pathname === displayLocation.pathname && location.search === displayLocation.search) {
+    if (
+      location.pathname === displayLocation.pathname &&
+      location.search === displayLocation.search
+    ) {
       return;
     }
 
