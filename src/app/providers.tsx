@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { QuoteModalProvider } from '@/features/quote';
+import { ReactLenis } from 'lenis/react';
 
 export interface ProvidersProps {
   children: ReactNode;
@@ -7,8 +8,14 @@ export interface ProvidersProps {
 
 export function AppProviders({ children }: ProvidersProps) {
   return (
-    <QuoteModalProvider>
-      {children}
-    </QuoteModalProvider>
+    <ReactLenis root options={{ 
+      lerp: 0.05,
+      wheelMultiplier: 0.8,
+      smoothWheel: true
+    }}>
+      <QuoteModalProvider>
+        {children}
+      </QuoteModalProvider>
+    </ReactLenis>
   );
 }

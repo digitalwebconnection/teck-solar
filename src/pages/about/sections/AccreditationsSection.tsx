@@ -12,7 +12,6 @@ interface AccreditationItem {
   title: string;
   role: string;
   summary: string;
-  statusBadge: string;
   statusType: 'emerald' | 'amber' | 'blue' | 'purple' | 'cyan' | 'gold';
   highlights: string[];
   gradient: string;
@@ -31,7 +30,6 @@ const accreditations: AccreditationItem[] = [
     role: 'Approved Solar Retailer',
     summary:
       'Guarantees consumer protection, honest quotes, and a 5-year whole-of-system on-site warranty.',
-    statusBadge: 'Active Retailer #CEC-6490',
     statusType: 'emerald',
     highlights: [
       '5-Year Whole-of-System On-Site Warranty',
@@ -53,7 +51,6 @@ const accreditations: AccreditationItem[] = [
     role: 'Grid-Connect & Battery Storage Certified',
     summary:
       'In-house certified electricians and engineers for rooftop PV and high-voltage battery systems.',
-    statusBadge: 'Grid-Connect & BESS Endorsed',
     statusType: 'amber',
     highlights: [
       'Rooftop PV System Endorsement',
@@ -75,7 +72,6 @@ const accreditations: AccreditationItem[] = [
     role: 'SafetyConnect Accredited Member',
     summary:
       'Annual third-party safety audits and full compliance with AS/NZS 3000 Australian wiring rules.',
-    statusBadge: 'SafetyConnect Member #MEA-8821',
     statusType: 'blue',
     highlights: [
       'Full AS/NZS 3000 Wiring Rules',
@@ -97,7 +93,6 @@ const accreditations: AccreditationItem[] = [
     role: 'Quality Management Certified',
     summary:
       'Certified quality assurance for tier-1 solar panel vetting, inverter testing, and commissioning.',
-    statusBadge: 'ISO 9001:2015 Certified QA',
     statusType: 'purple',
     highlights: [
       'Tier-1 Solar Hardware Vetting',
@@ -119,7 +114,6 @@ const accreditations: AccreditationItem[] = [
     role: 'Electrical Contractor (NSW, VIC & QLD)',
     summary:
       'Government-vetted for residential and commercial solar installations across three states.',
-    statusBadge: 'Tri-State Lic: NSW • VIC • QLD',
     statusType: 'cyan',
     highlights: [
       'NSW Fair Trading Electrical Lic.',
@@ -141,7 +135,6 @@ const accreditations: AccreditationItem[] = [
     role: 'Comprehensive Workmanship Cover',
     summary:
       'Underwritten by QBE Insurance Australia, protecting customer property against any eventuality.',
-    statusBadge: 'QBE Australia: $20,000,000',
     statusType: 'gold',
     highlights: [
       '$20 Million Comprehensive Cover',
@@ -229,29 +222,6 @@ function AccreditationSymbol({ id, className = 'w-7 h-7' }: { id: string; classN
   }
 }
 
-function StatusIndicator({
-  type,
-  label,
-}: {
-  type: AccreditationItem['statusType'];
-  label: string;
-}) {
-  const dotColor = {
-    emerald: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]',
-    amber: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]',
-    blue: 'bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]',
-    purple: 'bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]',
-    cyan: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]',
-    gold: 'bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,0.8)]',
-  }[type];
-
-  return (
-    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/95 text-[11px] sm:text-xs font-mono font-medium tracking-wide">
-      <span className={cn('w-2 h-2 rounded-full animate-pulse', dotColor)} />
-      <span>{label}</span>
-    </div>
-  );
-}
 
 interface StickyAccreditationsDeckProps {
   cards: AccreditationItem[];
@@ -342,7 +312,7 @@ const StickyAccreditationsDeck = ({ cards }: StickyAccreditationsDeckProps) => {
 
   return (
     <section id="accreditations" className="relative w-full bg-white border-b border-slate-100" ref={container}>
-      <div className="sticky-cards relative flex flex-col justify-between items-center h-screen min-h-[680px] lg:min-h-[760px] max-h-[1050px] w-full overflow-hidden px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-14 sm:pb-18 bg-white">
+      <div className="sticky-cards relative flex flex-col justify-between items-center h-screen min-h-[680px] lg:min-h-[760px] max-h-[1050px] w-full overflow-hidden px-4 sm:px-6 lg:px-8 py-18 bg-white">
         
         {/* Subtle Ambient Background Decorative Accents */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-brand-blue-50/70 rounded-full blur-3xl pointer-events-none" />
@@ -351,12 +321,6 @@ const StickyAccreditationsDeck = ({ cards }: StickyAccreditationsDeckProps) => {
 
         {/* ================= MAIN SECTION HEADER ================= */}
         <div className="relative z-10 w-full max-w-4xl mx-auto text-center shrink-0">
-          {/* Section Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-blue-50 border border-brand-blue-200/60 text-brand-blue-700 text-xs font-heading font-semibold uppercase tracking-wider mb-3 shadow-2xs">
-            <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
-            Industry Accreditations & Standards
-          </div>
-
           {/* Heading with Gradient Color */}
           <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-heading font-extrabold tracking-tight leading-tight text-slate-900 pb-0.5">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#081C37] via-[#144E9A] to-[#E56D00]">
@@ -371,9 +335,9 @@ const StickyAccreditationsDeck = ({ cards }: StickyAccreditationsDeckProps) => {
         </div>
 
         {/* ================= THE STACKED CARDS DECK ================= */}
-        <div className="relative z-10 w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl flex items-center justify-center shrink-0">
+        <div className="relative z-10 w-full max-w-sm sm:max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex items-center justify-center shrink-0">
           {/* Card Container Frame with Balanced Height & Premium Floating Shadow */}
-          <div className="relative w-full h-[350px] sm:h-[370px] md:h-[380px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_-15px_rgba(8,28,55,0.28)] border border-slate-800/10">
+          <div className="relative w-full h-[350px] sm:h-[370px] md:h-[380px]">
             {cards.map((card, i) => (
               <div
                 key={card.id}
@@ -405,7 +369,6 @@ const StickyAccreditationsDeck = ({ cards }: StickyAccreditationsDeckProps) => {
                       {card.category}
                     </span>
                   </div>
-                  <StatusIndicator type={card.statusType} label={card.statusBadge} />
                 </div>
 
                 {/* Card Middle Section: Icon Emblem, Title, Role, Description */}

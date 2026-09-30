@@ -1,145 +1,118 @@
 import { useReveal } from "../../../hooks/useReveal";
+import { BlurFade } from "../../../components/ui/blur-fade";
+import { AnimatedShinyText } from "../../../components/ui/animated-shiny-text";
+import { SparklesText } from "../../../components/ui/sparkles-text";
+import { DotPattern } from "../../../components/ui/dot-pattern";
+import { cn } from "../../../lib/utils";
 
 export default function StorySection() {
   const { ref, visible } = useReveal();
 
   return (
-    <section
-      id="our-story"
-      className="py-8 sm:py-10 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white scroll-mt-12 border-b border-slate-100"
+    <section 
+      id="our-story" 
+      className="relative bg-[#FCFBF8] py-12 lg:py-16 overflow-hidden scroll-mt-12"
       ref={ref}
     >
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Content Column (Right on Desktop) */}
-          <div
-            className={`lg:col-span-7 order-2 lg:order-2 transition-all duration-700 ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-          >
-            {/* Section Eyebrow */}
-            <div className="flex items-center gap-2.5 mb-3">
-              <span className="w-8 h-0.5 bg-brand-blue-500 rounded-full" />
-              <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-brand-blue-500">
-                Our Story
-              </span>
-            </div>
+      {/* Premium Background Animation */}
+      <DotPattern
+        className={cn(
+          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+          "inset-0 h-full w-full fill-neutral-300 opacity-60 absolute"
+        )}
+      />
 
-            {/* Headline */}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-slate-900 tracking-tight leading-[1.15]">
-              Powering Australia's Renewable{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#144E9A] to-[#E56D00] font-bold">
-                Future Since 2015
-              </span>
-            </h2>
-
-            {/* Narrative Paragraphs */}
-            <div className="mt-6 space-y-4 text-slate-600 leading-relaxed text-base sm:text-lg">
-              <p className="text-slate-800 font-normal">
-                Founded in 2015, Teck Solar began with a simple vision: to make
-                clean, renewable energy accessible to every Australian. Starting
-                as a small team of passionate engineers and electricians in
-                Sydney, we've grown into one of Australia's most trusted solar
-                energy providers.
-              </p>
-
-              <p className="text-slate-600 text-base">
-                Today, with over 2,500 successful installations across New South
-                Wales, Victoria, and Queensland, we continue to deliver
-                exceptional solar solutions that combine cutting-edge technology
-                with personalised service.
-              </p>
-
-              <p className="text-slate-600 text-base">
-                Our mission is to empower homeowners and businesses to take
-                control of their energy future while contributing to a cleaner
-                planet. Every panel we install is a step towards a more
-                sustainable Australia.
-              </p>
-            </div>
-
-            {/* Key Industry Milestones Ribbon */}
-            <div className="mt-10 pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-6 sm:gap-8">
-              <div>
-                <span className="text-2xl sm:text-3xl font-heading font-bold text-brand-blue-500 block">
-                  2015
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-1 block">
-                  Founded in Sydney
-                </span>
-              </div>
-
-              <div>
-                <span className="text-2xl sm:text-3xl font-heading font-bold text-brand-blue-500 block">
-                  2,500+
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-1 block">
-                  Solar Installs
-                </span>
-              </div>
-
-              <div>
-                <span className="text-2xl sm:text-3xl font-heading font-bold text-brand-blue-500 block">
-                  3 States
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-1 block">
-                  NSW • VIC • QLD
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Image Column (Left on Desktop) */}
-          <div
-            className={`lg:col-span-5 order-1 lg:order-1 transition-all duration-700 delay-150 ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-          >
-            <div className="relative">
-              {/* Main Image Frame */}
-              <div className="rounded-xl overflow-hidden border border-slate-200/90 shadow-lg shadow-slate-900/5 bg-slate-50">
-                <img
-                  src="/images/hero/installation.webp"
-                  alt="Certified solar installation by Teck Solar technicians"
-                  className="w-full h-[400px] sm:h-[460px] object-cover"
-                />
-              </div>
-
-              {/* Discreet Professional Trust Card */}
-              <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-brand-blue-50 text-brand-blue-500 flex items-center justify-center font-bold">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-xs font-heading font-bold text-slate-900 block">
-                      Clean Energy Council Approved
-                    </span>
-                    <span className="text-[11px] text-slate-500 block">
-                      Accredited Solar Retailer & Installers
-                    </span>
+      <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+        
+        {/* Top Row */}
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-12 lg:mb-16">
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+            <BlurFade delay={0.1} inView>
+              <div className="max-w-lg">
+                <div className="mb-4 inline-flex items-center justify-center lg:justify-start">
+                  <div className="group rounded-full border border-black/5 bg-neutral-100 text-sm text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800">
+                    <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
+                      <span>✨ Our Story</span>
+                    </AnimatedShinyText>
                   </div>
                 </div>
-
-                <span className="text-xs font-heading font-semibold text-primary-500 px-2.5 py-1 rounded-md bg-primary-50 border border-primary-200/60">
-                  100% Certified
-                </span>
+                
+                <div className="mt-2">
+                  <SparklesText 
+                    className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#1C1C1C] leading-[1.15] tracking-tight"
+                    sparklesCount={4}
+                    colors={{ first: "#E56D00", second: "#144E9A" }}
+                  >
+                    Powering Australia's Renewable Future Since 2015.
+                  </SparklesText>
+                </div>
               </div>
-            </div>
+            </BlurFade>
+          </div>
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+            <BlurFade delay={0.3} inView className="w-full">
+              <div className="relative group overflow-hidden rounded-[1.5rem] shadow-xl w-full max-w-lg ml-auto h-[200px] lg:h-[280px]">
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                <img 
+                  src="/images/solar-installation.jpg" 
+                  alt="Residential Solar Installation" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            </BlurFade>
           </div>
         </div>
+
+        {/* Bottom Row */}
+        <div className="flex flex-col-reverse lg:flex-row items-center gap-8 lg:gap-16">
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-start relative">
+            <BlurFade delay={0.4} inView className="relative w-full max-w-lg">
+              <div className="relative group overflow-hidden rounded-[1.5rem] shadow-xl w-full h-[260px] lg:h-[360px]">
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                <img 
+                  src="/images/solar-installer.jpg" 
+                  alt="Teck Solar Installer" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+              
+              {/* Animated Circular Badge */}
+              <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/4 lg:translate-x-1/2 w-24 h-24 lg:w-28 lg:h-28 bg-[#1C1C1C] text-white rounded-full flex flex-col items-center justify-center border-[6px] border-[#FCFBF8] shadow-2xl z-20 hover:scale-110 transition-transform duration-500 hover:shadow-brand-blue-500/20">
+                <span className="text-2xl md:text-3xl font-serif mb-0.5">10+</span>
+                <span className="text-[7px] md:text-[8px] text-center px-2 leading-tight font-medium tracking-[0.15em] opacity-90 uppercase">
+                  Years of<br/>Excellence
+                </span>
+              </div>
+            </BlurFade>
+          </div>
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+            <BlurFade delay={0.6} inView className="max-w-md lg:pl-12">
+              <div className="space-y-4 text-[#555555] text-sm md:text-base leading-relaxed font-light relative">
+                <p>
+                  Founded in 2015, Teck Solar began with a simple vision: to make clean, renewable energy accessible to every Australian. Starting as a small team of passionate engineers and electricians in Sydney, we've grown into one of Australia's most trusted solar energy providers.
+                </p>
+                <div className="absolute -left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-brand-blue-500 to-transparent opacity-50 hidden lg:block"></div>
+              </div>
+              
+              {/* Quick Stats Grid */}
+              <div className="mt-8 grid grid-cols-3 gap-4 pt-6 border-t border-gray-200">
+                <div className="text-left group cursor-default">
+                  <div className="font-serif text-xl lg:text-2xl text-[#1C1C1C] group-hover:text-[#144E9A] transition-colors duration-300">2015</div>
+                  <div className="text-[8px] lg:text-[9px] text-gray-500 mt-1 uppercase tracking-[0.1em] font-semibold">Founded in<br/>Sydney</div>
+                </div>
+                <div className="text-left group cursor-default">
+                  <div className="font-serif text-xl lg:text-2xl text-[#1C1C1C] group-hover:text-[#E56D00] transition-colors duration-300">2,500+</div>
+                  <div className="text-[8px] lg:text-[9px] text-gray-500 mt-1 uppercase tracking-[0.1em] font-semibold">Solar<br/>Installs</div>
+                </div>
+                <div className="text-left group cursor-default">
+                  <div className="font-serif text-xl lg:text-2xl text-[#1C1C1C] group-hover:text-[#144E9A] transition-colors duration-300">3</div>
+                  <div className="text-[8px] lg:text-[9px] text-gray-500 mt-1 uppercase tracking-[0.1em] font-semibold">States<br/>NSW/VIC/QLD</div>
+                </div>
+              </div>
+            </BlurFade>
+          </div>
+        </div>
+
       </div>
     </section>
   );

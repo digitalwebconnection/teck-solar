@@ -1,10 +1,7 @@
-import { useReveal } from "../../../hooks/useReveal";
-import { useQuoteModal } from "@/features/quote";
+import { useReveal } from '../../../hooks/useReveal';
+import { useQuoteModal } from '@/features/quote';
 
-const checkpoints = [
-  "SAA Approved Solar Retailer",
-  "25-Year Performance Warranty",
-];
+const checkpoints = ['SAA Approved Solar Retailer', '25-Year Performance Warranty'];
 
 export default function AboutHeroSection() {
   const heroReveal = useReveal();
@@ -22,7 +19,7 @@ export default function AboutHeroSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-center">
             {/* Left Column: Core Narrative */}
             <div
-              className={`lg:col-span-7 lg:pr-8 xl:pr-16 flex flex-col items-center lg:items-start text-center lg:text-left transition-all duration-1000 ease-out ${heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+              className={`lg:col-span-7 lg:pr-8 xl:pr-16 flex flex-col items-center lg:items-start text-center lg:text-left transition-all duration-1000 ease-out ${heroReveal.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
               ref={heroReveal.ref}
             >
               {/* Main Headline */}
@@ -35,10 +32,9 @@ export default function AboutHeroSection() {
 
               {/* Concise Summary */}
               <p className="text-lg sm:text-xl text-slate-500 leading-relaxed max-w-2xl font-light mb-8 w-full">
-                Teck Solar is a Clean Energy Council approved solar retailer
-                delivering high-efficiency rooftop systems, battery storage, and
-                EV charging across Australia. We build systems designed to
-                perform and built to last.
+                Teck Solar is a Clean Energy Council approved solar retailer delivering
+                high-efficiency rooftop systems, battery storage, and EV charging across Australia.
+                We build systems designed to perform and built to last.
               </p>
 
               {/* Premium Checkpoints */}
@@ -94,7 +90,7 @@ export default function AboutHeroSection() {
 
                 <a
                   href="#our-story"
-                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border border-[#144E9A] text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:bg-[#144E9A] hover:text-white hover:-translate-y-1 w-full sm:w-auto cursor-pointer"
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-sm bg-white border border-[#144E9A] text-slate-700 font-heading font-bold text-lg transition-all duration-300 hover:bg-[#144E9A] hover:text-white hover:-translate-y-1 w-full sm:w-auto cursor-pointer"
                 >
                   <span className="relative z-10">Our Story</span>
                   <svg
@@ -116,7 +112,7 @@ export default function AboutHeroSection() {
 
             {/* Right Column: Visual Showcase */}
             <div
-              className={`lg:col-span-5 relative transition-all duration-1000 delay-300 ease-out ${imageReveal.visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+              className={`lg:col-span-5 relative transition-all duration-1000 delay-300 ease-out ${imageReveal.visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}
               ref={imageReveal.ref}
             >
               {/* The offset accent frame */}
@@ -135,17 +131,11 @@ export default function AboutHeroSection() {
               {/* Floating Review Badge */}
               <div className="absolute bottom-12 -left-8 bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-100 flex items-center gap-4 z-20 animate-[float_4s_ease-in-out_infinite]">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E56D00] to-orange-400 flex items-center justify-center shrink-0 shadow-inner">
-                  <span className="text-white font-heading font-black text-2xl">
-                    ★
-                  </span>
+                  <span className="text-white font-heading font-black text-2xl">★</span>
                 </div>
                 <div>
-                  <p className="text-base font-bold text-slate-800 leading-tight">
-                    4.9/5 Rating
-                  </p>
-                  <p className="text-sm text-slate-500 font-medium mt-0.5">
-                    2,500+ Happy Clients
-                  </p>
+                  <p className="text-base font-bold text-slate-800 leading-tight">4.9/5 Rating</p>
+                  <p className="text-sm text-slate-500 font-medium mt-0.5">2,500+ Happy Clients</p>
                 </div>
               </div>
             </div>
