@@ -79,7 +79,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
               y: stage === 'covering' ? '0%' : '-100%',
             }}
             transition={{
-              duration: 0.65,
+              duration: 0.3,
               ease: [0.76, 0, 0.24, 1], // exact dontmatter.eu cinematic cubic-bezier curve
             }}
             onAnimationComplete={handleAnimationComplete}

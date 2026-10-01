@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, type MotionValue, useScroll, useTransform } from "motion/react";
-import Lenis from "lenis";
+
 import { useReveal } from "@/hooks/useReveal";
 import { Sparkles, ArrowDown } from "lucide-react";
 
@@ -83,7 +83,7 @@ const Column = ({ items, y, className = "" }: ColumnProps) => {
         return (
           <div
             key={i}
-            className={`group relative flex flex-col justify-between p-6 sm:p-7 rounded-md ${theme.bg} border border-black/5 shadow-[0_8px_24px_-4px_rgba(20,72,140,0.06)] transition-all duration-300 hover:shadow-[0_16px_36px_-6px_rgba(20,72,140,0.14)] hover:-translate-y-1.5 select-none shrink-0 overflow-hidden`}
+            className={`group relative flex flex-col justify-between p-4 sm:p-7 rounded-md ${theme.bg} border border-black/5 shadow-[0_8px_24px_-4px_rgba(20,72,140,0.06)] transition-all duration-300 hover:shadow-[0_16px_36px_-6px_rgba(20,72,140,0.14)] hover:-translate-y-1.5 select-none shrink-0 overflow-hidden`}
           >
             {/* Ambient corner glow that expands on hover */}
             <div
@@ -91,25 +91,25 @@ const Column = ({ items, y, className = "" }: ColumnProps) => {
             />
 
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <div
-                  className={`w-12 h-12 rounded-full bg-white ${theme.iconColor} shadow-xs flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white ${theme.iconColor} shadow-xs flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}
                 >
                   {item.icon}
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white/90 text-slate-700 shadow-2xs">
+                <span className="px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-mono font-bold bg-white/90 text-slate-700 shadow-2xs">
                   0{itemNumber}
                 </span>
               </div>
-              <h3 className="text-lg sm:text-xl font-heading font-extrabold text-slate-900 group-hover:text-brand-blue-800 transition-colors mb-2.5">
+              <h3 className="text-base sm:text-xl font-heading font-extrabold text-slate-900 group-hover:text-brand-blue-800 transition-colors mb-2 sm:mb-2.5">
                 {item.title}
               </h3>
-              <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed font-normal">
+              <p className="text-xs sm:text-[15px] text-slate-600 leading-relaxed font-normal">
                 {item.description}
               </p>
             </div>
 
-            <div className="relative z-10 mt-5 pt-4 border-t border-black/5 flex items-center justify-between text-xs font-semibold text-slate-500">
+            <div className="relative z-10 mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-black/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 sm:gap-0 text-[10px] sm:text-xs font-semibold text-slate-500">
               <span className="font-bold text-slate-700">Teck Solar Quality</span>
               <span className="text-emerald-700 flex items-center gap-1 font-bold">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -143,32 +143,15 @@ export default function ServiceBenefitsSection({
   const y4 = useTransform(scrollYProgress, [0, 1], [0, h * 1.8]);
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-    });
-
-    let rafId: number;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-
     const resize = () => {
       setDimension({ width: window.innerWidth, height: window.innerHeight });
     };
 
     window.addEventListener("resize", resize);
-    rafId = requestAnimationFrame(raf);
     resize();
 
     return () => {
       window.removeEventListener("resize", resize);
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
     };
   }, []);
 

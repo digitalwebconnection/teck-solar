@@ -1,6 +1,16 @@
+import { useState, useEffect } from "react";
 import ScrollExpand from "./ScrollExpand";
 
 export default function ShowcaseSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <section className="w-full relative">
       <ScrollExpand
@@ -12,6 +22,8 @@ export default function ShowcaseSection() {
         mediaZoom={1.35}
         overlayScrim={0.8}
         startRadius={0}
+        startWidth={isMobile ? 85 : 42}
+        startHeight={isMobile ? 40 : 58}
       >
         <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center px-6 bg-black/50 backdrop-blur-sm">
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-6 drop-shadow-2xl tracking-tight">

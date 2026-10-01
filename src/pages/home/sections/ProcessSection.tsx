@@ -208,7 +208,7 @@ function MobileProcessCardItem({
             isActive ? "scale-100" : "scale-105 group-hover:scale-100"
           }`}
         />
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px]" />
       </div>
       <div className="relative z-10">
         <div

@@ -130,7 +130,7 @@ export default function HeroSlider() {
                 <button
                   type="button"
                   onClick={openModal}
-                  className="group relative inline-flex items-center h-[52px] sm:h-[56px] pl-[68px] sm:pl-[72px] pr-7 sm:pr-8 rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
+                  className="group relative inline-flex items-center justify-center h-[52px] sm:h-[56px] px-[68px] sm:px-[72px] rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
                 >
                   <div className="absolute left-0 top-0 h-full w-full rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:bg-[#14488C] z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(20,72,140,0.5)]"></div>
 
@@ -157,7 +157,7 @@ export default function HeroSlider() {
               ) : (
                 <Link
                   to={activeSlide.primaryLink}
-                  className="group relative inline-flex items-center h-[52px] sm:h-[56px] pl-[68px] sm:pl-[72px] pr-7 sm:pr-8 rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
+                  className="group relative inline-flex items-center justify-center h-[52px] sm:h-[56px] px-[68px] sm:px-[72px] rounded-full font-heading font-bold text-base sm:text-lg text-white transition-all duration-500 w-full sm:w-auto cursor-pointer"
                 >
                   <div className="absolute left-0 top-0 h-full w-full rounded-full bg-[#E56D00] transition-all duration-500 ease-[cubic-bezier(0.5,0,0,1)] group-hover:bg-[#14488C] z-0 shadow-md group-hover:shadow-[0_10px_20px_-10px_rgba(20,72,140,0.5)]"></div>
 
@@ -185,7 +185,7 @@ export default function HeroSlider() {
 
               <Link
                 to={activeSlide.secondaryLink}
-                className="inline-flex items-center justify-center h-[52px] sm:h-[56px] px-8 rounded-full font-heading font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xs hover:-translate-y-0.5 transition-all text-base sm:text-lg cursor-pointer"
+                className="inline-flex items-center justify-center h-[52px] sm:h-[56px] w-full sm:w-auto px-8 rounded-full font-heading font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xs hover:-translate-y-0.5 transition-all text-base sm:text-lg cursor-pointer"
               >
                 <span>{activeSlide.secondaryCta}</span>
               </Link>

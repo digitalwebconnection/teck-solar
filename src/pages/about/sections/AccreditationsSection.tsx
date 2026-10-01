@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ReactLenis, useLenis } from 'lenis/react';
+
 import { cn } from '@/lib/utils';
 
 interface AccreditationItem {
@@ -231,10 +231,7 @@ const StickyAccreditationsDeck = ({ cards }: StickyAccreditationsDeckProps) => {
   const container = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Sync GSAP ScrollTrigger with Lenis
-  useLenis(() => {
-    ScrollTrigger.update();
-  });
+
 
   useGSAP(
     () => {
@@ -437,11 +434,9 @@ const StickyAccreditationsDeck = ({ cards }: StickyAccreditationsDeckProps) => {
 
 export default function AccreditationsSection() {
   return (
-    <ReactLenis root>
-      <div className="w-full">
-        <StickyAccreditationsDeck cards={accreditations} />
-      </div>
-    </ReactLenis>
+    <div className="w-full">
+      <StickyAccreditationsDeck cards={accreditations} />
+    </div>
   );
 }
 

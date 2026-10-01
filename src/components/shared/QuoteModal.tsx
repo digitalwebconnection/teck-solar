@@ -99,7 +99,7 @@ export default function QuoteModal() {
 
       {/* Modal Container */}
       <div
-        className={`relative w-full max-w-4xl max-h-[95vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-300 ${
+        className={`relative w-full max-w-4xl max-h-[95dvh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-300 ${
           isAnimatingOut
             ? "opacity-0 translate-y-8 scale-95"
             : "opacity-100 translate-y-0 scale-100"
@@ -187,7 +187,10 @@ export default function QuoteModal() {
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full md:w-7/12 p-5 sm:p-8 relative overflow-y-auto">
+        <div 
+          className="w-full md:w-7/12 p-5 sm:p-8 relative overflow-y-auto flex-1 min-h-0"
+          data-lenis-prevent="true"
+        >
           {/* Close Button */}
           <button
             type="button"
