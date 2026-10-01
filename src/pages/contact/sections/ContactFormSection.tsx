@@ -24,6 +24,37 @@ export default function ContactFormSection() {
     setIsSubmitting(true);
     setResult(null);
 
+    // Rate Limiting Check (Frontend)
+    const lastSubmitTime = localStorage.getItem("teckSolarContactSubmit");
+    if (lastSubmitTime) {
+      const timeDiff = Date.now() - parseInt(lastSubmitTime, 10);
+      const cooldownMs = 60000; // 1 minute cooldown
+      if (timeDiff < cooldownMs) {
+        const remainingSeconds = Math.ceil((cooldownMs - timeDiff) / 1000);
+        setResult({
+          success: false,
+          message: `Please wait ${remainingSeconds} seconds before submitting another message.`,
+        });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      setResult({ success: false, message: "Please enter a valid email address." });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const phoneRegex = /^(\+61|0)?[2-478]\d{8}$/;
+    const cleanPhone = formData.phone.replace(/[\s-]/g, "");
+    if (!phoneRegex.test(cleanPhone)) {
+      setResult({ success: false, message: "Please enter a valid Australian phone number." });
+      setIsSubmitting(false);
+      return;
+    }
+
     const res = await submitToWeb3Forms(
       {
         name: formData.name,
@@ -48,6 +79,7 @@ export default function ContactFormSection() {
     });
 
     if (res.success) {
+      localStorage.setItem("teckSolarContactSubmit", Date.now().toString());
       setFormData({ name: "", email: "", phone: "", service: "", message: "" });
       setTimeout(() => {
         setResult(null);
@@ -101,9 +133,10 @@ export default function ContactFormSection() {
                     type="text"
                     placeholder="John Smith"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                      setFormData({ ...formData, name: val });
+                    }}
                     className="w-full px-4 py-3 rounded-xl border border-navy-200 text-navy-900 placeholder-navy-400 text-sm transition-all"
                     maxLength={50}
                     minLength={2}
@@ -148,9 +181,10 @@ export default function ContactFormSection() {
                     type="tel"
                     placeholder="0400 000 000"
                     value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d+]/g, "");
+                      setFormData({ ...formData, phone: val });
+                    }}
                     className="w-full px-4 py-3 rounded-xl border border-navy-200 text-navy-900 placeholder-navy-400 text-sm transition-all"
                     maxLength={15}
                     minLength={8}

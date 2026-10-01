@@ -47,6 +47,34 @@ export default function QuoteModal() {
     setIsSubmitting(true);
     setErrorMessage(null);
 
+    // Rate Limiting Check (Frontend)
+    const lastSubmitTime = localStorage.getItem("teckSolarLastSubmit");
+    if (lastSubmitTime) {
+      const timeDiff = Date.now() - parseInt(lastSubmitTime, 10);
+      const cooldownMs = 60000; // 1 minute cooldown
+      if (timeDiff < cooldownMs) {
+        const remainingSeconds = Math.ceil((cooldownMs - timeDiff) / 1000);
+        setErrorMessage(`Please wait ${remainingSeconds} seconds before submitting another request.`);
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const phoneRegex = /^(\+61|0)?[2-478]\d{8}$/;
+    const cleanPhone = formData.phone.replace(/[\s-]/g, "");
+    if (!phoneRegex.test(cleanPhone)) {
+      setErrorMessage("Please enter a valid Australian phone number.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
     const res = await submitToWeb3Forms(
@@ -70,6 +98,7 @@ export default function QuoteModal() {
     setIsSubmitting(false);
     if (res.success) {
       setIsSuccess(true);
+      localStorage.setItem("teckSolarLastSubmit", Date.now().toString());
       setFormData({
         firstName: "",
         lastName: "",
@@ -274,9 +303,10 @@ export default function QuoteModal() {
                       type="text"
                       name="firstName"
                       value={formData.firstName}
-                      onChange={(e) =>
-                        setFormData({ ...formData, firstName: e.target.value })
-                      }
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                        setFormData({ ...formData, firstName: val });
+                      }}
                       required
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm"
                       placeholder="John"
@@ -294,9 +324,10 @@ export default function QuoteModal() {
                       type="text"
                       name="lastName"
                       value={formData.lastName}
-                      onChange={(e) =>
-                        setFormData({ ...formData, lastName: e.target.value })
-                      }
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                        setFormData({ ...formData, lastName: val });
+                      }}
                       required
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm"
                       placeholder="Doe"
@@ -317,9 +348,10 @@ export default function QuoteModal() {
                       type="tel"
                       name="phone"
                       value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^\d+]/g, "");
+                        setFormData({ ...formData, phone: val });
+                      }}
                       required
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm"
                       placeholder="0400 000 000"
@@ -357,9 +389,10 @@ export default function QuoteModal() {
                       type="text"
                       name="postcode"
                       value={formData.postcode}
-                      onChange={(e) =>
-                        setFormData({ ...formData, postcode: e.target.value })
-                      }
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^\d]/g, "");
+                        setFormData({ ...formData, postcode: val });
+                      }}
                       required
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-blue-500/20 focus:border-brand-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm"
                       placeholder="e.g. 2000"
