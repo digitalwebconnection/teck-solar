@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
 import { useLocation, type Location } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { useLenis } from 'lenis/react';
 
 interface PageTransitionContextType {
   displayLocation: Location;
@@ -21,6 +22,7 @@ type TransitionStage = 'idle' | 'covering' | 'revealing';
 
 export function PageTransitionProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const lenis = useLenis();
   const shouldReduceMotion = useReducedMotion();
   const isFirstRender = useRef(true);
   const [displayLocation, setDisplayLocation] = useState(location);
@@ -45,7 +47,11 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
 
     if (shouldReduceMotion) {
       setDisplayLocation(location);
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }
       return;
     }
 
@@ -58,7 +64,11 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
       // 1. Page is 100% covered in black. Swap DOM to new route.
       setDisplayLocation(targetLocationRef.current);
       // 2. Silently reset scroll to top while fully covered
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }
       // 3. Phase 2: Curtain slides up off screen to reveal new page
       setStage('revealing');
     } else if (stage === 'revealing') {
