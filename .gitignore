@@ -1,5 +1,44 @@
-# Logs
-logs
+# ==========================================
+# Teck Solar - Monorepo Root .gitignore
+# Covers Root, Backend & Frontend Workspaces
+# ==========================================
+
+# Dependencies & Package Managers
+node_modules/
+*/node_modules/
+jspm_packages/
+*/jspm_packages/
+.pnpm-store/
+.yarn/
+
+# Environment Variables & Sensitive Secrets
+.env
+.env.*
+!.env.example
+*/.env
+*/.env.*
+!*/.env.example
+.env.sentry-build-plugin
+*/.env.sentry-build-plugin
+*.pem
+*.key
+*.cert
+
+# Production Build Outputs
+dist/
+dist-ssr/
+build/
+out/
+*/dist/
+*/dist-ssr/
+*/build/
+*/out/
+tsconfig.tsbuildinfo
+*/tsconfig.tsbuildinfo
+
+# Logs & Debugging Output
+logs/
+*/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,26 +46,57 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-tsconfig.tsbuildinfo
-.env
-.env.local
-.env.*.local
-.eslintcache
+# Process IDs & Lockfiles
+pids/
+*/pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Editor directories and files
+# Temporary Storage & File Uploads
+tmp/
+temp/
+uploads/
+*/tmp/
+*/temp/
+*/uploads/
+
+# Caches & Tool Artifacts
+.cache/
+*/.cache/
+.vite/
+*/.vite/
+.eslintcache
+*/.eslintcache
+.turbo/
+*/.turbo/
+
+# Testing & Code Coverage
+coverage/
+.nyc_output/
+*/coverage/
+*/.nyc_output/
+
+# IDE & Editor Configuration
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+.idea/
+*/.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.sublime-project
+*.sublime-workspace
 
-# Sentry Config File
-.env.sentry-build-plugin
+# Operating System Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini

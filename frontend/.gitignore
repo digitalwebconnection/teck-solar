@@ -1,0 +1,66 @@
+# ==========================================
+# Teck Solar - Frontend .gitignore
+# React 19 / TypeScript / Vite / Tailwind
+# ==========================================
+
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Production Build Outputs
+dist/
+dist-ssr/
+build/
+tsconfig.tsbuildinfo
+*.local
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+.env.sentry-build-plugin
+
+# Logs & Debug Output
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Caches & Build Tool Caches
+.eslintcache
+.cache/
+.vite/
+.turbo/
+
+# Testing & Code Coverage
+coverage/
+
+# IDE & Text Editor Configuration
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
