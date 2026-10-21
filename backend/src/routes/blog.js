@@ -62,11 +62,55 @@ router.get("/stats", async (_req, res) => {
       }
     );
 
-    const [total, published, draft, scheduled] = await Promise.all([
-      Blog.countDocuments(),
-      Blog.countDocuments({ status: "published" }),
-      Blog.countDocuments({ status: "draft" }),
-      Blog.countDocuments({ status: "scheduled" }),
+    const [
+      total,
+      published,
+      draft,
+      scheduled,
+      trashed,
+      recentUpdated,
+      recentPublished,
+      topViewed,
+    ] = await Promise.all([
+      Blog.countDocuments({ isDeleted: { $ne: true } }),
+      Blog.countDocuments({ status: "published", isDeleted: { $ne: true } }),
+      Blog.countDocuments({ status: "draft", isDeleted: { $ne: true } }),
+      Blog.countDocuments({ status: "scheduled", isDeleted: { $ne: true } }),
+      Blog.countDocuments({ isDeleted: true }),
+      Blog.find({ isDeleted: { $ne: true } })
+        .sort({ updatedAt: -1 })
+        .limit(5)
+        .select("title slug status updatedAt featureImage readTime category isPinned")
+        .lean(),
+      Blog.find({ status: "published", isDeleted: { $ne: true } })
+        .sort({ date: -1, createdAt: -1 })
+        .limit(5)
+        .select("title slug status date featureImage readTime category isPinned")
+        .lean(),
+      Blog.find({ isDeleted: { $ne: true } })
+        .sort({ viewCount: -1, createdAt: -1 })
+        .limit(5)
+        .select("title slug status viewCount date featureImage readTime isPinned")
+        .lean(),
+    ]);
+
+    // 30-day activity timeline
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const activityData = await Blog.aggregate([
+      {
+        $match: {
+          isDeleted: { $ne: true },
+          createdAt: { $gte: thirtyDaysAgo },
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
     ]);
 
     return res.status(200).json({
@@ -76,7 +120,12 @@ router.get("/stats", async (_req, res) => {
         published,
         draft,
         scheduled,
+        trashed,
       },
+      activity: activityData,
+      recentUpdated,
+      recentPublished,
+      topViewed,
     });
   } catch (error) {
     logger.error("Error fetching blog stats:", error);
@@ -254,8 +303,13 @@ const listBlogsHandler = async (req, res) => {
 
     const filter = {};
 
-    if (status && status !== "All") {
-      filter.status = status;
+    if (status === "trash") {
+      filter.isDeleted = true;
+    } else {
+      filter.isDeleted = { $ne: true };
+      if (status && status !== "All") {
+        filter.status = status;
+      }
     }
 
     if (category && category.trim()) {
@@ -275,9 +329,10 @@ const listBlogsHandler = async (req, res) => {
     const skip = (pageNum - 1) * limitNum;
 
     const sortOrder = order === "asc" ? 1 : -1;
-    const sortField = sortBy === "createdAt" ? "createdAt" : sortBy === "title" ? "title" : "date";
+    const sortField = sortBy === "createdAt" ? "createdAt" : sortBy === "title" ? "title" : sortBy === "views" ? "viewCount" : "date";
 
-    const sortCriteria = { [sortField]: sortOrder };
+    // Pinned blogs take precedence unless specific sort chosen
+    const sortCriteria = { isPinned: -1, [sortField]: sortOrder };
     if (sortField !== "createdAt") {
       sortCriteria.createdAt = -1;
     }
@@ -353,6 +408,10 @@ router.get("/:id", async (req, res) => {
         success: false,
         message: "Blog post not found.",
       });
+    }
+
+    if (blog && blog.status === "published") {
+      Blog.findByIdAndUpdate(blog._id, { $inc: { viewCount: 1 } }).exec();
     }
 
     return res.status(200).json({
@@ -587,25 +646,237 @@ router.delete("/:id", protectBlogAdmin, async (req, res) => {
       });
     }
 
-    const deletedBlog = await Blog.findByIdAndDelete(id);
-    if (!deletedBlog) {
+    const { permanent } = req.query;
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
       return res.status(404).json({
         success: false,
         message: "Blog post not found.",
       });
     }
 
-    logger.info(`Blog post deleted: ${deletedBlog.title} (${id})`);
+    if (permanent === "true") {
+      await Blog.findByIdAndDelete(id);
+      logger.info(`Blog post permanently deleted: ${blog.title} (${id})`);
+      return res.status(200).json({
+        success: true,
+        message: "Blog post permanently deleted.",
+      });
+    }
+
+    // Soft delete / Move to trash
+    blog.isDeleted = true;
+    blog.deletedAt = new Date();
+    await blog.save();
+
+    logger.info(`Blog post moved to trash: ${blog.title} (${id})`);
 
     return res.status(200).json({
       success: true,
-      message: "Blog post deleted successfully.",
+      message: "Blog post moved to trash.",
+      blog,
     });
   } catch (error) {
     logger.error("Error deleting blog post:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to delete blog post.",
+    });
+  }
+});
+
+/**
+ * @route   POST /api/blog/:id/restore
+ * @desc    Restore a soft-deleted blog
+ * @access  Private (Blog Admin)
+ */
+router.post("/:id/restore", protectBlogAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog post not found.",
+      });
+    }
+
+    blog.isDeleted = false;
+    blog.deletedAt = null;
+    await blog.save();
+
+    logger.info(`Blog post restored from trash: ${blog.title} (${id})`);
+
+    return res.status(200).json({
+      success: true,
+      message: "Blog post restored successfully.",
+      blog,
+    });
+  } catch (error) {
+    logger.error("Error restoring blog post:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to restore blog post.",
+    });
+  }
+});
+
+/**
+ * @route   POST /api/blog/:id/duplicate
+ * @desc    Duplicate/clone a blog into a new draft
+ * @access  Private (Blog Admin)
+ */
+router.post("/:id/duplicate", protectBlogAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const original = await Blog.findById(id);
+    if (!original) {
+      return res.status(404).json({
+        success: false,
+        message: "Original blog post not found.",
+      });
+    }
+
+    const baseTitle = `${original.title} (Copy)`;
+    const baseSlug = slugify(baseTitle);
+    const newSlug = await getUniqueSlug(baseSlug);
+
+    const duplicate = new Blog({
+      title: baseTitle,
+      slug: newSlug,
+      category: original.category,
+      readTime: original.readTime,
+      date: new Date(),
+      excerpt: original.excerpt,
+      featureImage: original.featureImage,
+      content: original.content,
+      longContent: original.longContent,
+      metaTitle: original.metaTitle,
+      canonicalUrl: original.canonicalUrl,
+      keywords: original.keywords,
+      metaDescription: original.metaDescription,
+      schemaMarkup: original.schemaMarkup,
+      status: "draft",
+      isPinned: false,
+      isDeleted: false,
+    });
+
+    await duplicate.save();
+    logger.info(`Blog duplicated: ${duplicate.title} (${duplicate._id}) from (${original._id})`);
+
+    return res.status(201).json({
+      success: true,
+      message: "Blog duplicated as draft successfully.",
+      blog: duplicate,
+    });
+  } catch (error) {
+    logger.error("Error duplicating blog post:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to duplicate blog post.",
+    });
+  }
+});
+
+/**
+ * @route   POST /api/blog/:id/pin
+ * @desc    Toggle pinned status of a blog
+ * @access  Private (Blog Admin)
+ */
+router.post("/:id/pin", protectBlogAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog post not found.",
+      });
+    }
+
+    blog.isPinned = !blog.isPinned;
+    await blog.save();
+
+    logger.info(`Blog pin toggled: ${blog.title} (isPinned: ${blog.isPinned})`);
+
+    return res.status(200).json({
+      success: true,
+      message: blog.isPinned ? "Blog post pinned to top." : "Blog post unpinned.",
+      isPinned: blog.isPinned,
+      blog,
+    });
+  } catch (error) {
+    logger.error("Error toggling blog pin:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to toggle pin status.",
+    });
+  }
+});
+
+/**
+ * @route   POST /api/blog/bulk-action
+ * @desc    Perform bulk actions on multiple blogs
+ * @access  Private (Blog Admin)
+ */
+router.post("/bulk-action", protectBlogAdmin, async (req, res) => {
+  try {
+    const { ids, action } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No blog IDs provided.",
+      });
+    }
+
+    let modified = 0;
+    if (action === "publish") {
+      const resDb = await Blog.updateMany(
+        { _id: { $in: ids }, isDeleted: { $ne: true } },
+        { $set: { status: "published", scheduledAt: null } }
+      );
+      modified = resDb.modifiedCount;
+    } else if (action === "draft") {
+      const resDb = await Blog.updateMany(
+        { _id: { $in: ids }, isDeleted: { $ne: true } },
+        { $set: { status: "draft" } }
+      );
+      modified = resDb.modifiedCount;
+    } else if (action === "trash") {
+      const resDb = await Blog.updateMany(
+        { _id: { $in: ids } },
+        { $set: { isDeleted: true, deletedAt: new Date() } }
+      );
+      modified = resDb.modifiedCount;
+    } else if (action === "restore") {
+      const resDb = await Blog.updateMany(
+        { _id: { $in: ids } },
+        { $set: { isDeleted: false, deletedAt: null } }
+      );
+      modified = resDb.modifiedCount;
+    } else if (action === "delete") {
+      const resDb = await Blog.deleteMany({ _id: { $in: ids } });
+      modified = resDb.deletedCount;
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid action. Supported: publish, draft, trash, restore, delete",
+      });
+    }
+
+    logger.info(`Bulk action ${action} executed on ${modified} blogs`);
+
+    return res.status(200).json({
+      success: true,
+      message: `Bulk ${action} applied to ${modified} blog post(s).`,
+      count: modified,
+    });
+  } catch (error) {
+    logger.error("Error executing bulk action:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to execute bulk action.",
     });
   }
 });

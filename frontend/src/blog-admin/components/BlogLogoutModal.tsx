@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { LogOut } from "lucide-react";
 
 interface BlogLogoutModalProps {
@@ -10,7 +10,10 @@ interface BlogLogoutModalProps {
 export const BlogLogoutModal: React.FC<BlogLogoutModalProps> = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+      data-lenis-prevent
+    >
       <div className="bg-white rounded-sm shadow-2xl w-full max-w-sm overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
         <div className="p-6 text-center">
           <div className="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4">

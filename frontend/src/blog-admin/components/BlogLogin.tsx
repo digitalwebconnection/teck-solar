@@ -52,8 +52,11 @@ export const BlogLogin: React.FC<BlogLoginProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md border border-slate-100">
+    <div
+      className="h-full w-full min-h-0 bg-slate-50 flex items-center justify-center p-4 overflow-y-auto"
+      data-lenis-prevent
+    >
+      <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md border border-slate-100 my-auto">
         <div className="flex flex-col items-center text-center mb-8">
           <img
             src="/images/logo/logo.svg"

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import ScrollToTop from '@/components/layout/ScrollToTop';
@@ -10,11 +11,25 @@ function AppLayout() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
 
+  useEffect(() => {
+    if (isAdmin) {
+      document.documentElement.classList.add('admin-mode');
+      document.body.classList.add('admin-mode');
+    } else {
+      document.documentElement.classList.remove('admin-mode');
+      document.body.classList.remove('admin-mode');
+    }
+    return () => {
+      document.documentElement.classList.remove('admin-mode');
+      document.body.classList.remove('admin-mode');
+    };
+  }, [isAdmin]);
+
   if (isAdmin) {
     return (
-      <main className="w-full min-h-screen bg-[#F8FAFC]">
+      <div className="w-full h-dvh h-full overflow-hidden bg-[#F8FAFC]" data-lenis-prevent>
         <AppRoutes />
-      </main>
+      </div>
     );
   }
 
@@ -34,11 +49,11 @@ function AppLayout() {
 
 export function App() {
   return (
-    <AppProviders>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AppProviders>
         <AppLayout />
-      </BrowserRouter>
-    </AppProviders>
+      </AppProviders>
+    </BrowserRouter>
   );
 }
 

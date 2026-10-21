@@ -6,24 +6,21 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import logger from "./src/utils/logger.js";
 
-import { initSentry, Sentry } from "./src/config/sentry.js";
 import connectDB from "./src/config/db.js";
 import corsmiddlewares from "./src/config/cors.js";
 
 import blogRoutes from "./src/routes/blog.js";
 import blogAuthRoutes from "./src/routes/blogAuth.js";
 
-// Initialize Sentry
-initSentry();
 
 const app = express();
 
 // ===============================
 // Middlewares
 // ===============================
+app.use(corsmiddlewares);
 app.use(helmet());
 app.use(cookieParser());
-app.use(corsmiddlewares);
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
@@ -59,10 +56,6 @@ app.use((req, res) => {
   });
 });
 
-// ===============================
-// Sentry Error Handler
-// ===============================
-Sentry.setupExpressErrorHandler(app);
 
 // ===============================
 // Global Error Handler

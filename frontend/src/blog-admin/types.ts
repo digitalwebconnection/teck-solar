@@ -1,4 +1,4 @@
-export interface Blog {
+ export interface Blog {
   _id: string;
   title: string;
   slug: string;
@@ -16,6 +16,10 @@ export interface Blog {
   longContent: string;
   status: 'draft' | 'published' | 'scheduled';
   scheduledAt?: string | null;
+  isPinned?: boolean;
+  isDeleted?: boolean;
+  deletedAt?: string | null;
+  viewCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -25,6 +29,20 @@ export interface BlogStats {
   published: number;
   draft: number;
   scheduled: number;
+  trashed?: number;
+}
+
+export interface ActivityItem {
+  _id: string;
+  count: number;
+}
+
+export interface DashboardData {
+  stats: BlogStats;
+  activity: ActivityItem[];
+  recentUpdated: Blog[];
+  recentPublished: Blog[];
+  topViewed: Blog[];
 }
 
 export interface BlogFormData {

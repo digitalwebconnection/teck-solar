@@ -112,7 +112,10 @@ export const BlogFormModal: React.FC<BlogFormModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
+    <div
+      className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150"
+      data-lenis-prevent
+    >
       <div className="bg-white rounded-sm shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col border border-slate-200 overflow-hidden">
         
         {/* Header */}
@@ -169,7 +172,7 @@ export const BlogFormModal: React.FC<BlogFormModalProps> = ({
         </div>
 
         {/* Tab Body (Only active tab is shown) */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto overscroll-contain min-h-0 p-6" data-lenis-prevent>
 
           {/* ════════════════════════════════════════════════════════════
               TAB 1: BLOG INFO

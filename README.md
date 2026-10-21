@@ -42,7 +42,7 @@ Welcome to the **Teck Solar** monorepo codebase. This repository powers the offi
 - **Database & ODM**: [MongoDB Atlas](https://www.mongodb.com/atlas) with [Mongoose 8](https://mongoosejs.com/) (automated public DNS fallback for reliable connection on Windows)
 - **Authentication**: JWT (JSON Web Tokens) with timing-safe credential verification and rate limiting
 - **Media Storage**: [Cloudinary](https://cloudinary.com/) (assets uploaded directly to the `teck-solar-blogs` folder)
-- **Security & Reliability**: [Helmet](https://helmetjs.github.io/), CORS origin validation, [Sentry](https://sentry.io/), Winston logger
+- **Security & Reliability**: [Helmet](https://helmetjs.github.io/), CORS origin validation, Winston logger
 
 ---
 
@@ -61,7 +61,7 @@ teck-solar/
 │   ├── scripts/
 │   │   └── check.js             # 5-point CI/CD validation script
 │   └── src/
-│       ├── config/              # Database (MongoDB), CORS, Env, and Sentry config
+│       ├── config/              # Database (MongoDB), CORS, and Env config
 │       ├── middlewares/         # JWT Admin Auth and error handlers
 │       ├── models/              # Blog Mongoose schema & slug logic
 │       ├── routes/              # Blog CRUD & Admin Auth routes

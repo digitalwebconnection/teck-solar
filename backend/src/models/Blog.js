@@ -49,6 +49,10 @@ const blogSchema = new mongoose.Schema(
       required: [true, "Blog status is required"],
     },
     scheduledAt: { type: Date, default: null },
+    isPinned: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
+    viewCount: { type: Number, default: 0 },
   },
   {
     timestamps: true,

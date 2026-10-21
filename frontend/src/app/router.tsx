@@ -61,10 +61,6 @@ export function AppRoutes() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<BlogAdminPage />} />
-          <Route path="/admin/*" element={<BlogAdminPage />} />
 
           {/* 404 Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

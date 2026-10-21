@@ -1,6 +1,5 @@
 export const WEB3FORMS_ACCESS_KEY =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_WEB3FORMS_ACCESS_KEY) ||
-  "9674244f-e241-475f-84ac-96ba0559d404";
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_WEB3FORMS_ACCESS_KEY) || "";
 
 export interface Web3FormsPayload {
   name?: string;
@@ -62,6 +61,13 @@ export async function submitToWeb3Forms(
     }
 
     if (!formData.has('access_key')) {
+      if (!WEB3FORMS_ACCESS_KEY) {
+        console.warn('Web3Forms access key is missing. Please set VITE_WEB3FORMS_ACCESS_KEY in your .env file.');
+        return {
+          success: false,
+          message: 'Contact form service is not properly configured. Please check environment variables.',
+        };
+      }
       formData.append('access_key', WEB3FORMS_ACCESS_KEY);
     }
     if (options?.from_name && !formData.has('from_name')) {

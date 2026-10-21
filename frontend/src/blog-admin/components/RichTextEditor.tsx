@@ -183,6 +183,7 @@ export default function RichTextEditor({
           min-height: 260px;
           max-height: 48vh;
           overflow-y: auto;
+          overscroll-behavior: contain;
           outline: none;
           color: #0f172a;
           font-size: 0.925rem;
@@ -439,7 +440,7 @@ export default function RichTextEditor({
         )}
 
         {/* Editor content area — Pure White Background */}
-        <div className="bg-white">
+        <div className="bg-white" data-lenis-prevent>
           <EditorContent editor={editor} />
         </div>
       </div>

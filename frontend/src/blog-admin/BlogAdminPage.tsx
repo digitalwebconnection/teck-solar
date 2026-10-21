@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Menu, X, CheckCircle2, Clock } from "lucide-react";
 import { blogFetch, getBlogToken, clearBlogToken } from "./blogApiClient";
-import type { Blog, BlogStats, BlogFormData } from "./types";
+import type { Blog, BlogStats, BlogFormData, DashboardData } from "./types";
 import { EMPTY_FORM } from "./types";
 import { BlogLogin } from "./components/BlogLogin";
 import { BlogSidebar } from "./components/BlogSidebar";
@@ -11,6 +11,7 @@ import { BlogFormModal } from "./components/BlogFormModal";
 import { BlogLogoutModal } from "./components/BlogLogoutModal";
 import { BlogDeleteModal } from "./components/BlogDeleteModal";
 import { BlogScheduleModal } from "./components/BlogScheduleModal";
+import { BlogPreviewModal } from "./components/BlogPreviewModal";
 import { parseLocalDatetimeToISO, getNextMinuteLocalDatetime } from "./dateUtils";
 
 type Tab = "overview" | "blogs";
@@ -36,6 +37,7 @@ const BlogAdminPage: React.FC = () => {
   // Data state
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [stats, setStats] = useState<BlogStats | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Filters / pagination
@@ -55,8 +57,10 @@ const BlogAdminPage: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [isPermanentDelete, setIsPermanentDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const [previewBlog, setPreviewBlog] = useState<Blog | null>(null);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [scheduleModalBlog, setScheduleModalBlog] = useState<Blog | null>(null);
   const [isSavingSchedule, setIsSavingSchedule] = useState(false);
@@ -78,11 +82,15 @@ const BlogAdminPage: React.FC = () => {
     [],
   );
 
-  // Set document title
+  // Set document title and ensure clean scroll state
   useEffect(() => {
     document.title = isLoggedIn
       ? "Blog Admin Dashboard | Teck Solar"
       : "Blog Admin Login | Teck Solar";
+    // Clear any residual scroll locks or Lenis classes when entering admin
+    document.documentElement.classList.remove("lenis", "lenis-smooth", "lenis-stopped");
+    document.body.classList.remove("lenis", "lenis-smooth", "lenis-stopped");
+    document.body.style.overflow = "";
   }, [isLoggedIn]);
 
   // Auth-expiry listener
@@ -156,6 +164,7 @@ const BlogAdminPage: React.FC = () => {
       if (res.ok) {
         const data = await res.json();
         setStats(data.stats);
+        setDashboardData(data);
       }
     } catch {
       /* silent */
@@ -351,19 +360,31 @@ const BlogAdminPage: React.FC = () => {
 
   const handleDelete = useCallback((id: string) => {
     setDeleteId(id);
+    setIsPermanentDelete(false);
+  }, []);
+
+  const handlePermanentDelete = useCallback((id: string) => {
+    setDeleteId(id);
+    setIsPermanentDelete(true);
   }, []);
 
   const confirmDelete = async () => {
     if (!deleteId) return;
     setIsDeleting(true);
     try {
-      const res = await blogFetch(`/api/blog/${deleteId}`, {
+      const url = isPermanentDelete
+        ? `/api/blog/${deleteId}?permanent=true`
+        : `/api/blog/${deleteId}`;
+      const res = await blogFetch(url, {
         method: "DELETE",
       });
       if (res.ok) {
         fetchBlogs();
         fetchStats();
-        showToast("Blog post deleted.", "success");
+        showToast(
+          isPermanentDelete ? "Blog permanently purged." : "Blog moved to trash.",
+          "success"
+        );
       } else {
         showToast("Failed to delete post.", "error");
       }
@@ -372,8 +393,94 @@ const BlogAdminPage: React.FC = () => {
     } finally {
       setIsDeleting(false);
       setDeleteId(null);
+      setIsPermanentDelete(false);
     }
   };
+
+  const handleRestore = useCallback(async (id: string) => {
+    try {
+      const res = await blogFetch(`/api/blog/${id}/restore`, { method: "POST" });
+      if (res.ok) {
+        showToast("Blog post restored from trash!", "success");
+        fetchBlogs();
+        fetchStats();
+      } else {
+        const err = await res.json();
+        showToast(err.message || "Failed to restore post.", "error");
+      }
+    } catch {
+      showToast("Network error restoring post.", "error");
+    }
+  }, [fetchBlogs, fetchStats, showToast]);
+
+  const handleDuplicate = useCallback(async (id: string) => {
+    try {
+      const res = await blogFetch(`/api/blog/${id}/duplicate`, { method: "POST" });
+      if (res.ok) {
+        showToast("Blog post duplicated as draft!", "success");
+        fetchBlogs();
+        fetchStats();
+      } else {
+        const err = await res.json();
+        showToast(err.message || "Failed to duplicate post.", "error");
+      }
+    } catch {
+      showToast("Network error duplicating post.", "error");
+    }
+  }, [fetchBlogs, fetchStats, showToast]);
+
+  const handleTogglePin = useCallback(async (id: string) => {
+    // Optimistic toggle
+    setBlogs((prev) =>
+      prev.map((b) => (b._id === id ? { ...b, isPinned: !b.isPinned } : b))
+    );
+    try {
+      const res = await blogFetch(`/api/blog/${id}/pin`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        showToast(
+          data.message || (data.isPinned ? "Post pinned to top." : "Post unpinned."),
+          "success"
+        );
+        fetchBlogs(true);
+        fetchStats();
+      } else {
+        const err = await res.json();
+        showToast(err.message || "Failed to update pin status.", "error");
+        fetchBlogs(true);
+      }
+    } catch {
+      showToast("Network error updating pin.", "error");
+      fetchBlogs(true);
+    }
+  }, [fetchBlogs, fetchStats, showToast]);
+
+  const handleBulkAction = useCallback(async (action: string, ids: string[]) => {
+    try {
+      const res = await blogFetch("/api/blog/bulk-action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, ids }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        showToast(data.message || `Bulk ${action} completed.`, "success");
+        fetchBlogs();
+        fetchStats();
+      } else {
+        const err = await res.json();
+        showToast(err.message || "Bulk action failed.", "error");
+      }
+    } catch {
+      showToast("Network error running bulk action.", "error");
+    }
+  }, [fetchBlogs, fetchStats, showToast]);
+
+  const handleNavigateToBlogs = useCallback((filter?: string) => {
+    setActiveTab("blogs");
+    if (filter) setStatusFilter(filter);
+    setCurrentPage(1);
+  }, []);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     const currentBlog = blogs.find((b) => b._id === id);
@@ -469,7 +576,10 @@ const BlogAdminPage: React.FC = () => {
 
   // ── Render: dashboard ─────────────────────────────────────
   return (
-    <div className="h-screen bg-[#F8FAFC] flex flex-col md:flex-row font-sans text-slate-800 selection:bg-blue-300 selection:text-black overflow-hidden">
+    <div
+      className="h-full w-full bg-[#F8FAFC] flex flex-col md:flex-row font-sans text-slate-800 overflow-hidden"
+      data-lenis-prevent
+    >
 
       {/* Mobile Header */}
       <div className="md:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-30 shadow-sm shrink-0">
@@ -507,7 +617,7 @@ const BlogAdminPage: React.FC = () => {
       />
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden relative">
+      <div className="flex flex-1 flex-col overflow-hidden relative min-w-0 min-h-0 h-full">
         <header className="hidden md:flex w-full h-16 bg-white border-b border-slate-200 items-center justify-center shrink-0 z-10 relative">
           <h1 className="text-xl font-black tracking-widest text-slate-800 uppercase">
             Blog Admin
@@ -556,9 +666,25 @@ const BlogAdminPage: React.FC = () => {
           </div>
         </div>
 
-        <main className="flex-1 w-full overflow-y-auto bg-slate-50 p-4 sm:p-6 md:p-8">
+        <main
+          id="admin-main-scroll"
+          className="flex-1 w-full overflow-y-auto overscroll-contain bg-slate-50 p-4 sm:p-6 md:p-8 min-h-0"
+          data-lenis-prevent
+        >
           <div className="max-w-[1600px] mx-auto">
-            {activeTab === "overview" && <BlogOverviewTab stats={stats} />}
+            {activeTab === "overview" && (
+              <BlogOverviewTab
+                stats={stats}
+                activity={dashboardData?.activity}
+                recentUpdated={dashboardData?.recentUpdated}
+                recentPublished={dashboardData?.recentPublished}
+                topViewed={dashboardData?.topViewed}
+                onNewBlog={openNew}
+                onNavigateToBlogs={handleNavigateToBlogs}
+                onPreviewBlog={(b) => setPreviewBlog(b)}
+                onEditBlog={openEdit}
+              />
+            )}
             {activeTab === "blogs" && (
               <BlogsTab
                 blogs={blogs}
@@ -574,15 +700,33 @@ const BlogAdminPage: React.FC = () => {
                 onNew={openNew}
                 onEdit={openEdit}
                 onDelete={handleDelete}
+                onPermanentDelete={handlePermanentDelete}
+                onRestore={handleRestore}
                 onStatusChange={handleStatusChange}
                 onAdjustSchedule={(b) => setScheduleModalBlog(b)}
+                onDuplicate={handleDuplicate}
+                onTogglePin={handleTogglePin}
+                onPreview={(b) => setPreviewBlog(b)}
+                onBulkAction={handleBulkAction}
                 dateSort={dateSort}
                 onToggleDateSort={handleToggleDateSort}
+                stats={stats}
               />
             )}
           </div>
         </main>
       </div>
+
+      {/* Blog Preview Modal */}
+      <BlogPreviewModal
+        isOpen={!!previewBlog}
+        blog={previewBlog}
+        onClose={() => setPreviewBlog(null)}
+        onEdit={(b) => {
+          setPreviewBlog(null);
+          openEdit(b);
+        }}
+      />
 
       {/* Blog Schedule Modal */}
       <BlogScheduleModal
@@ -615,7 +759,11 @@ const BlogAdminPage: React.FC = () => {
       <BlogDeleteModal
         isOpen={!!deleteId}
         isDeleting={isDeleting}
-        onClose={() => setDeleteId(null)}
+        isPermanent={isPermanentDelete}
+        onClose={() => {
+          setDeleteId(null);
+          setIsPermanentDelete(false);
+        }}
         onConfirm={confirmDelete}
       />
 
