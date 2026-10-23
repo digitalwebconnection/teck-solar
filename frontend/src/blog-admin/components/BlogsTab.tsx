@@ -15,18 +15,21 @@ import {
   X,
   Download,
   Loader2,
-  Copy,
   Pin,
-  Eye,
   RotateCcw,
   AlertTriangle,
   CheckSquare,
   Square,
   MinusSquare,
   Sparkles,
+  BarChart3,
+  Eye,
+  Tag,
+  Image as ImageIcon,
 } from "lucide-react";
 import type { Blog, BlogStats } from "../types";
 import { blogFetch } from "../blogApiClient";
+import { formatNumber, getCountryName } from "../countryUtils";
 
 interface BlogsTabProps {
   blogs: Blog[];
@@ -35,6 +38,10 @@ interface BlogsTabProps {
   setSearchQuery: (v: string) => void;
   statusFilter: string;
   setStatusFilter: (v: string) => void;
+  categoryFilter: string;
+  setCategoryFilter: (v: string) => void;
+  countryFilter: string;
+  setCountryFilter: (v: string) => void;
   currentPage: number;
   totalPages: number;
   totalBlogs: number;
@@ -46,12 +53,12 @@ interface BlogsTabProps {
   onRestore?: (id: string) => void;
   onStatusChange: (id: string, newStatus: string) => void;
   onAdjustSchedule?: (blog: Blog) => void;
-  onDuplicate?: (id: string) => void;
   onTogglePin?: (id: string) => void;
-  onPreview?: (blog: Blog) => void;
   onBulkAction?: (action: string, ids: string[]) => void;
-  dateSort: "asc" | "desc";
-  onToggleDateSort: () => void;
+  onViewAnalytics?: (blog: Blog) => void;
+  sortBy: "date" | "views";
+  sortOrder: "asc" | "desc";
+  onToggleSort: (field: "date" | "views") => void;
   stats?: BlogStats | null;
 }
 
@@ -62,6 +69,10 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
   setSearchQuery,
   statusFilter,
   setStatusFilter,
+  categoryFilter,
+  setCategoryFilter,
+  countryFilter,
+  setCountryFilter,
   currentPage,
   totalPages,
   totalBlogs,
@@ -73,12 +84,12 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
   onRestore,
   onStatusChange,
   onAdjustSchedule,
-  onDuplicate,
   onTogglePin,
-  onPreview,
   onBulkAction,
-  dateSort,
-  onToggleDateSort,
+  onViewAnalytics,
+  sortBy,
+  sortOrder,
+  onToggleSort,
   stats,
 }) => {
   const [isDownloadingCSV, setIsDownloadingCSV] = useState(false);
@@ -96,6 +107,8 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
       const params = new URLSearchParams();
       if (searchQuery) params.append("search", searchQuery);
       if (statusFilter && statusFilter !== "All") params.append("status", statusFilter);
+      if (categoryFilter && categoryFilter !== "All") params.append("category", categoryFilter);
+      if (countryFilter && countryFilter !== "All") params.append("country", countryFilter);
 
       const response = await blogFetch(`/api/blog/export-csv?${params.toString()}`);
       if (!response.ok) throw new Error("Blog export failed");
@@ -153,54 +166,61 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
       if (a.isPinned && !b.isPinned) return -1;
       if (!a.isPinned && b.isPinned) return 1;
 
+      if (sortBy === "views") {
+        const aViews = Math.max(
+          a.viewCount ?? 0,
+          (a.countries || []).reduce((s, c) => s + (c.count || 0), 0)
+        );
+        const bViews = Math.max(
+          b.viewCount ?? 0,
+          (b.countries || []).reduce((s, c) => s + (c.count || 0), 0)
+        );
+        return sortOrder === "asc" ? aViews - bViews : bViews - aViews;
+      }
+
       const timeA = a.date ? new Date(a.date).getTime() : 0;
       const timeB = b.date ? new Date(b.date).getTime() : 0;
-      return dateSort === "asc" ? timeA - timeB : timeB - timeA;
+      return sortOrder === "asc" ? timeA - timeB : timeB - timeA;
     });
-  }, [blogs, dateSort]);
+  }, [blogs, sortBy, sortOrder]);
 
-  // Floating status menu state with viewport coordinates
-  const [statusMenu, setStatusMenu] = useState<{
-    id: string;
-    currentStatus: string;
-    top: number;
-    left: number;
-    openUpward: boolean;
-  } | null>(null);
+  // Unique categories list
+  const allCategories = React.useMemo(() => {
+    const set = new Set<string>();
+    (stats?.categories || []).forEach((c) => c && set.add(c));
+    blogs.forEach((b) => (b.category || []).forEach((c) => c && set.add(c)));
+    return Array.from(set).sort();
+  }, [stats?.categories, blogs]);
 
-  // Close floating menu on scroll or resize so it doesn't detach
-  useEffect(() => {
-    const handleClose = () => setStatusMenu(null);
-    window.addEventListener("scroll", handleClose, true);
-    window.addEventListener("resize", handleClose);
-    return () => {
-      window.removeEventListener("scroll", handleClose, true);
-      window.removeEventListener("resize", handleClose);
-    };
-  }, []);
+  // Unique countries list
+  const allCountries = React.useMemo(() => {
+    const map = new Map<string, string>();
+    (stats?.topCountries || []).forEach((c) => {
+      if (c.code) map.set(c.code.toUpperCase(), c.country || getCountryName(c.code));
+    });
+    blogs.forEach((b) => {
+      (b.countries || []).forEach((c) => {
+        if (c.code) map.set(c.code.toUpperCase(), c.country || getCountryName(c.code));
+      });
+    });
+    return Array.from(map.entries())
+      .map(([code, country]) => ({ code, country }))
+      .sort((a, b) => a.country.localeCompare(b.country));
+  }, [stats?.topCountries, blogs]);
+
+  const hasActiveFilters =
+    Boolean(searchQuery) ||
+    categoryFilter !== "All" ||
+    countryFilter !== "All";
+
+  const handleClearAllFilters = () => {
+    setSearchQuery("");
+    setCategoryFilter("All");
+    setCountryFilter("All");
+  };
 
   const safeTotal = typeof totalBlogs === "number" && !isNaN(totalBlogs) ? totalBlogs : (blogs?.length ?? 0);
   const safeTotalPages = Math.max(1, totalPages || 1);
-
-  const handleOpenStatusMenu = (blog: Blog, e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    if (statusMenu?.id === blog._id) {
-      setStatusMenu(null);
-      return;
-    }
-    const rect = e.currentTarget.getBoundingClientRect();
-    const menuHeight = 124;
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const openUpward = spaceBelow < menuHeight + 20;
-
-    setStatusMenu({
-      id: blog._id,
-      currentStatus: blog.status,
-      top: openUpward ? rect.top - menuHeight - 4 : rect.bottom + 4,
-      left: rect.left,
-      openUpward,
-    });
-  };
 
   const statusTabs = [
     { id: "All", label: "All Posts", count: stats?.total },
@@ -285,15 +305,16 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
       </div>
 
       {/* Filters & Search Row */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
+      <div className="flex flex-col md:flex-row gap-2.5 items-stretch md:items-center justify-between">
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by blog title or excerpt..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-9 py-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-800 placeholder-slate-400 focus:border-[#155DFC] focus:ring-1 focus:ring-[#155DFC]/20 outline-none transition-all"
+            className="w-full pl-9 pr-9 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-800 placeholder-slate-400 focus:border-[#155DFC] focus:ring-1 focus:ring-[#155DFC]/20 outline-none transition-all shadow-2xs"
           />
           {searchQuery && (
             <button
@@ -303,6 +324,60 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
               title="Clear search"
             >
               <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Filter Dropdowns */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Category Filter */}
+          <div className="relative min-w-[140px] sm:min-w-[160px] flex-1 sm:flex-initial">
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="w-full appearance-none pl-8 pr-7 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:border-[#155DFC] focus:ring-1 focus:ring-[#155DFC]/20 outline-none transition-all cursor-pointer shadow-2xs hover:bg-slate-50"
+              title="Filter by category"
+            >
+              <option value="All">All Categories</option>
+              {allCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+            <Tag className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
+
+          {/* Reader Territory Filter */}
+          <div className="relative min-w-[140px] sm:min-w-[160px] flex-1 sm:flex-initial">
+            <select
+              value={countryFilter}
+              onChange={(e) => setCountryFilter(e.target.value)}
+              className="w-full appearance-none pl-8 pr-7 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:border-[#155DFC] focus:ring-1 focus:ring-[#155DFC]/20 outline-none transition-all cursor-pointer shadow-2xs hover:bg-slate-50"
+              title="Filter by reader territory"
+            >
+              <option value="All">All Territories</option>
+              {allCountries.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.country} ({c.code})
+                </option>
+              ))}
+            </select>
+            <Globe className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={handleClearAllFilters}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-colors cursor-pointer shrink-0"
+              title="Reset all search and filter fields"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset</span>
             </button>
           )}
         </div>
@@ -427,28 +502,76 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
                     </button>
                   </th>
 
+                  {/* Photo Column Header */}
+                  <th className="w-16 px-3 py-3.5 text-center text-[11px] font-black uppercase tracking-wider">
+                    Photo
+                  </th>
+
                   <th className="px-4 py-3.5 text-left text-[11px] font-black uppercase tracking-wider">
                     Title &amp; Info
                   </th>
                   <th className="px-4 py-3.5 text-left text-[11px] font-black uppercase tracking-wider hidden sm:table-cell">
                     <button
                       type="button"
-                      onClick={onToggleDateSort}
+                      onClick={() => onToggleSort("date")}
                       className="inline-flex items-center gap-1.5 hover:text-slate-800 transition-colors cursor-pointer select-none group"
-                      title={`Sort by date (${dateSort === "desc" ? "currently newest first" : "currently oldest first"})`}
+                      title={`Sort by date (${
+                        sortBy === "date"
+                          ? sortOrder === "desc"
+                            ? "currently newest first"
+                            : "currently oldest first"
+                          : "click to sort by publication date"
+                      })`}
                     >
-                      <span>DATE</span>
+                      <span className={sortBy === "date" ? "text-blue-600 font-extrabold" : ""}>
+                        DATE
+                      </span>
                       <span className="inline-flex flex-col -space-y-1">
                         <ChevronUp
                           className={`w-2.5 h-2.5 transition-colors ${
-                            dateSort === "asc"
+                            sortBy === "date" && sortOrder === "asc"
                               ? "text-blue-600 stroke-[3]"
                               : "text-slate-300 group-hover:text-slate-400"
                           }`}
                         />
                         <ChevronDown
                           className={`w-2.5 h-2.5 transition-colors ${
-                            dateSort === "desc"
+                            sortBy === "date" && sortOrder === "desc"
+                              ? "text-blue-600 stroke-[3]"
+                              : "text-slate-300 group-hover:text-slate-400"
+                          }`}
+                        />
+                      </span>
+                    </button>
+                  </th>
+
+                  <th className="px-4 py-3.5 text-center text-[11px] font-black uppercase tracking-wider">
+                    <button
+                      type="button"
+                      onClick={() => onToggleSort("views")}
+                      className="inline-flex items-center gap-1.5 hover:text-slate-800 transition-colors cursor-pointer select-none group mx-auto"
+                      title={`Sort by total views (${
+                        sortBy === "views"
+                          ? sortOrder === "desc"
+                            ? "currently highest first"
+                            : "currently lowest first"
+                          : "click to sort by total views"
+                      })`}
+                    >
+                      <span className={sortBy === "views" ? "text-blue-600 font-extrabold" : ""}>
+                        Views
+                      </span>
+                      <span className="inline-flex flex-col -space-y-1">
+                        <ChevronUp
+                          className={`w-2.5 h-2.5 transition-colors ${
+                            sortBy === "views" && sortOrder === "asc"
+                              ? "text-blue-600 stroke-[3]"
+                              : "text-slate-300 group-hover:text-slate-400"
+                          }`}
+                        />
+                        <ChevronDown
+                          className={`w-2.5 h-2.5 transition-colors ${
+                            sortBy === "views" && sortOrder === "desc"
                               ? "text-blue-600 stroke-[3]"
                               : "text-slate-300 group-hover:text-slate-400"
                           }`}
@@ -489,6 +612,27 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
                         </button>
                       </td>
 
+                      {/* Photo / Thumbnail */}
+                      <td className="px-3 py-3.5 text-center align-middle w-16">
+                        {blog.featureImage ? (
+                          <img
+                            src={blog.featureImage}
+                            alt={blog.title}
+                            className="w-10 h-10 rounded-lg object-cover bg-slate-100 border border-slate-200/90 shadow-2xs mx-auto group-hover:scale-105 transition-transform duration-200 cursor-pointer"
+                            onClick={() => onEdit(blog)}
+                            title="Click to edit post"
+                          />
+                        ) : (
+                          <div
+                            onClick={() => onEdit(blog)}
+                            className="w-10 h-10 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center mx-auto border border-slate-200/80 shadow-2xs cursor-pointer hover:bg-blue-50 hover:text-blue-500 hover:border-blue-200 transition-colors"
+                            title="No photo set - click to edit"
+                          >
+                            <ImageIcon className="w-4 h-4 stroke-[1.5]" />
+                          </div>
+                        )}
+                      </td>
+
                       {/* Title & Info */}
                       <td className="px-4 py-3.5 max-w-[340px]">
                         <div className="flex items-start gap-2.5">
@@ -521,7 +665,7 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
                                 </span>
                               )}
                               <p
-                                onClick={() => onPreview?.(blog)}
+                                onClick={() => onEdit(blog)}
                                 className="font-bold text-slate-800 line-clamp-1 hover:text-blue-600 cursor-pointer"
                                 title={blog.title}
                               >
@@ -582,36 +726,46 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
                         )}
                       </td>
 
-                      {/* Status Dropdown Trigger */}
+                      {/* Views */}
+                      <td className="px-4 py-3 text-center align-middle">
+                        {(() => {
+                          const countrySum = (blog.countries || []).reduce(
+                            (sum, c) => sum + (c.count || 0),
+                            0
+                          );
+                          const tViews = Math.max(blog.viewCount ?? 0, countrySum);
+
+                          return (
+                            <div
+                              className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-slate-50 border border-slate-200/70 text-slate-700 font-mono font-bold text-xs select-none"
+                              title={`${formatNumber(tViews)} total views`}
+                            >
+                              <Eye className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                              <span>{formatNumber(tViews)}</span>
+                            </div>
+                          );
+                        })()}
+                      </td>
+
+                      {/* Status Dropdown */}
                       <td className="px-4 py-3.5">
                         {!isTrashView ? (
-                          <button
-                            type="button"
-                            onClick={(e) => handleOpenStatusMenu(blog, e)}
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold border transition-all duration-200 cursor-pointer select-none ${
+                          <select
+                            value={blog.status}
+                            onChange={(e) => onStatusChange(blog._id, e.target.value)}
+                            className={`px-3 py-1.5 rounded-sm border text-xs font-bold outline-none cursor-pointer uppercase transition-colors shadow-2xs ${
                               blog.status === "published"
-                                ? "bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100/80 shadow-2xs"
+                                ? "bg-emerald-50 text-emerald-700 border-emerald-400 hover:bg-emerald-100/80"
                                 : blog.status === "scheduled"
-                                ? "bg-violet-50 text-violet-700 border-violet-300 hover:bg-violet-100/80 shadow-2xs"
-                                : "bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100/80 shadow-2xs"
+                                ? "bg-violet-50 text-violet-700 border-violet-400 hover:bg-violet-100/80"
+                                : "bg-amber-50 text-amber-700 border-amber-400 hover:bg-amber-100/80"
                             }`}
+                            title="Change publication status"
                           >
-                            {blog.status === "published" ? (
-                              <Globe className="w-3 h-3 text-emerald-600 shrink-0" />
-                            ) : blog.status === "scheduled" ? (
-                              <Clock className="w-3 h-3 text-violet-600 shrink-0" />
-                            ) : (
-                              <FileText className="w-3 h-3 text-amber-600 shrink-0" />
-                            )}
-                            <span className="tracking-wide uppercase">
-                              {blog.status}
-                            </span>
-                            <ChevronDown
-                              className={`w-3 h-3 transition-transform duration-200 opacity-60 ml-0.5 ${
-                                statusMenu?.id === blog._id ? "rotate-180" : ""
-                              }`}
-                            />
-                          </button>
+                            <option value="draft">DRAFT</option>
+                            <option value="published">PUBLISHED</option>
+                            <option value="scheduled">SCHEDULED</option>
+                          </select>
                         ) : (
                           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-black uppercase bg-rose-50 text-rose-700 border border-rose-200">
                             <Trash2 className="w-3 h-3 text-rose-500" />
@@ -625,27 +779,17 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
                         <div className="flex items-center justify-end gap-1">
                           {!isTrashView ? (
                             <>
-                              {/* Preview */}
-                              {onPreview && (
-                                <button
-                                  type="button"
-                                  onClick={() => onPreview(blog)}
-                                  title="Live preview"
-                                  className="p-1.5 rounded text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer"
-                                >
-                                  <Eye className="w-3.5 h-3.5" />
-                                </button>
-                              )}
 
-                              {/* Duplicate */}
-                              {onDuplicate && (
+
+                              {/* Analytics */}
+                              {onViewAnalytics && (
                                 <button
                                   type="button"
-                                  onClick={() => onDuplicate(blog._id)}
-                                  title="Duplicate as new draft"
-                                  className="p-1.5 rounded text-slate-400 hover:bg-purple-50 hover:text-purple-600 transition-colors cursor-pointer"
+                                  onClick={() => onViewAnalytics(blog)}
+                                  title="View Article Analytics & Countries"
+                                  className="p-1.5 rounded text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-colors cursor-pointer"
                                 >
-                                  <Copy className="w-3.5 h-3.5" />
+                                  <BarChart3 className="w-3.5 h-3.5" />
                                 </button>
                               )}
 
@@ -742,40 +886,6 @@ export const BlogsTab: React.FC<BlogsTabProps> = ({
         )}
       </div>
 
-      {/* Floating Status Menu Dropdown */}
-      {statusMenu && (
-        <div
-          style={{
-            position: "fixed",
-            top: `${statusMenu.top}px`,
-            left: `${statusMenu.left}px`,
-          }}
-          className="z-[90] w-36 bg-white rounded-lg shadow-xl border border-slate-200 py-1 text-xs animate-in fade-in zoom-in-95 duration-100"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider">
-            Change Status
-          </div>
-          {(["published", "scheduled", "draft"] as const).map((st) => (
-            <button
-              key={st}
-              type="button"
-              onClick={() => {
-                onStatusChange(statusMenu.id, st);
-                setStatusMenu(null);
-              }}
-              className={`w-full px-3 py-1.5 text-left font-bold flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer ${
-                statusMenu.currentStatus === st ? "text-blue-600 bg-blue-50/50" : "text-slate-700"
-              }`}
-            >
-              <span className="capitalize">{st}</span>
-              {statusMenu.currentStatus === st && (
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

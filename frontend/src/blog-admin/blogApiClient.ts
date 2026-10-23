@@ -10,6 +10,7 @@ export const blogFetch = async (endpoint: string, options: RequestInit = {}): Pr
   const token = getBlogToken();
   const headers = new Headers(options.headers);
   if (token) headers.set("Authorization", `Bearer ${token}`);
+  headers.set("x-admin-request", "true");
 
   const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
 

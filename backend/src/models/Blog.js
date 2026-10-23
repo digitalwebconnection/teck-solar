@@ -53,6 +53,15 @@ const blogSchema = new mongoose.Schema(
     isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date, default: null },
     viewCount: { type: Number, default: 0 },
+    uniqueViewCount: { type: Number, default: 0 },
+    countries: [
+      {
+        country: { type: String, trim: true, default: "International" },
+        code: { type: String, trim: true, default: "XX" },
+        count: { type: Number, default: 1 },
+      },
+    ],
+    visitorHashes: { type: [String], default: [], select: false },
   },
   {
     timestamps: true,

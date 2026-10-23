@@ -35,6 +35,19 @@ const connectDB = async (retries = 5, delay = 3000) => {
           );
           logger.info(`DB Migration: Populated status='published' on ${updateResult.modifiedCount} blog document(s) in MongoDB.`);
         }
+        // Ensure all blogs have uniqueViewCount initialized cleanly without fake numbers
+        try {
+          await Blog.updateMany(
+            { uniqueViewCount: { $exists: false } },
+            { $set: { uniqueViewCount: 0 } }
+          );
+          await Blog.updateMany(
+            { countries: { $exists: false } },
+            { $set: { countries: [] } }
+          );
+        } catch (analyticsMigErr) {
+          logger.warn('DB analytics migration warning:', analyticsMigErr.message);
+        }
       } catch (migErr) {
         logger.warn('DB blog status migration warning:', migErr.message);
       }
@@ -47,8 +60,11 @@ const connectDB = async (retries = 5, delay = 3000) => {
         await new Promise((resolve) => setTimeout(resolve, delay));
         delay *= 1.5;
       } else {
-        logger.error('All MongoDB connection attempts failed. Exiting process.');
-        process.exit(1);
+        logger.error(
+          'MongoDB connection failed. Please ensure your current IP address is whitelisted in MongoDB Atlas (Network Access). Will retry in 15s...'
+        );
+        setTimeout(() => connectDB(3, 5000), 15000);
+        return null;
       }
     }
   }

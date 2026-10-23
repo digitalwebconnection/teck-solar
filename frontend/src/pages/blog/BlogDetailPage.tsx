@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock, Tag, Share2, Check, BookOpen, ArrowRight } from "lucide-react";
 import { API_URL } from "@/config";
 import { SharedCTA } from "@/components/shared";
+import { detectRealtimeCountry } from "@/lib/geoClient";
 
 interface BlogArticle {
   _id: string;
@@ -24,31 +25,63 @@ export default function BlogDetailPage() {
   const [recentBlogs, setRecentBlogs] = useState<BlogArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const viewRecordedRef = useRef<string | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     if (!slug) return;
 
+    let visitorId = "";
+    try {
+      visitorId = localStorage.getItem("teck_solar_vid") || "";
+      if (!visitorId) {
+        visitorId = "vid_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem("teck_solar_vid", visitorId);
+      }
+    } catch {}
+
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+
+    // Guard against React StrictMode immediate double-execution on mount (dev mode)
+    const isStrictModeDuplicate = viewRecordedRef.current === slug;
+    viewRecordedRef.current = slug;
+
     setLoading(true);
-    fetch(`${API_URL}/api/blog/${slug}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Blog not found");
-        return res.json();
+
+    detectRealtimeCountry().then((geo) => {
+      const headers: Record<string, string> = {
+        "x-visitor-id": visitorId,
+        "x-timezone": userTimezone,
+        "x-country-code": geo.code,
+        "x-country-name": geo.country,
+      };
+
+      if (isStrictModeDuplicate) {
+        headers["x-skip-view"] = "true";
+      }
+
+      fetch(`${API_URL}/api/blog/${slug}`, {
+        headers,
       })
-      .then((data) => {
-        if (data.success && data.blog) {
-          setBlog(data.blog);
-          document.title = `${data.blog.metaTitle || data.blog.title} | Teck Solar`;
-        } else {
+        .then((res) => {
+          if (!res.ok) throw new Error("Blog not found");
+          return res.json();
+        })
+        .then((data) => {
+          if (data.success && data.blog) {
+            setBlog(data.blog);
+            document.title = `${data.blog.metaTitle || data.blog.title} | Teck Solar`;
+          } else {
+            setBlog(null);
+          }
+        })
+        .catch(() => {
           setBlog(null);
-        }
-      })
-      .catch(() => {
-        setBlog(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
   }, [slug]);
 
   // Fetch recent articles for the footer recommendations

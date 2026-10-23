@@ -7,8 +7,112 @@ import { uploadToCloudinary } from "../config/cloudinary.js";
 import { uploadLimiter } from "../middlewares/rateLimiter.js";
 import { escapeRegex } from "../utils/security.js";
 import logger from "../utils/logger.js";
+import { detectClientCountry, getVisitorHash, getCountryNameByCode } from "../utils/geolocation.js";
 
 const router = express.Router();
+
+// Middleware: Fast-fail with helpful message if MongoDB is disconnected
+router.use((_req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      success: false,
+      message:
+        "Database is currently unavailable. Please ensure your current IP address is whitelisted in MongoDB Atlas Network Access.",
+    });
+  }
+  next();
+});
+
+// In-memory short-term deduplication cache (prevents duplicate hits within 20s from the same visitor)
+const recentViewsCache = new Map();
+
+// Periodic cleanup of stale cache keys every 5 minutes
+setInterval(() => {
+  const cutoff = Date.now() - 300000;
+  for (const [key, timestamp] of recentViewsCache.entries()) {
+    if (timestamp < cutoff) recentViewsCache.delete(key);
+  }
+}, 300000);
+
+/**
+ * Record blog view and unique reader with country detection
+ */
+const recordBlogView = async (blogId, req) => {
+  try {
+    // 1. Never track views for Admin requests, CMS previews, or explicit skipView requests
+    if (
+      req.headers.authorization ||
+      req.headers["x-admin-request"] === "true" ||
+      req.headers["x-skip-view"] === "true" ||
+      req.query.skipView === "true"
+    ) {
+      return;
+    }
+
+    const visitorHash = getVisitorHash(req);
+    const countryInfo = detectClientCountry(req);
+
+    // 2. Rapid double-hit deduplication: prevent double-counting within 2.5 seconds (e.g. React StrictMode, rapid double-click)
+    const cacheKey = `${visitorHash}:${blogId}`;
+    const now = Date.now();
+    const lastHit = recentViewsCache.get(cacheKey);
+    if (lastHit && now - lastHit < 2500) {
+      return; // Skip duplicate hit within 2.5s window
+    }
+    recentViewsCache.set(cacheKey, now);
+
+    // 3. Atomically check if this visitor has already visited this specific blog
+    const alreadyVisited = await Blog.exists({
+      _id: blogId,
+      visitorHashes: visitorHash,
+    });
+
+    const isUnique = !alreadyVisited;
+
+    const updateDoc = {
+      $inc: { viewCount: 1 },
+      $addToSet: { visitorHashes: visitorHash },
+    };
+
+    if (isUnique) {
+      updateDoc.$inc.uniqueViewCount = 1;
+    }
+
+    // 4. Update country counts atomically
+    const countryCodeUpper = (countryInfo.code || "XX").toUpperCase();
+    const countryName = countryInfo.country || getCountryNameByCode(countryCodeUpper);
+    const countryExists = await Blog.exists({
+      _id: blogId,
+      "countries.code": countryCodeUpper,
+    });
+
+    if (countryExists) {
+      await Blog.updateOne(
+        { _id: blogId, "countries.code": countryCodeUpper },
+        {
+          ...updateDoc,
+          $inc: { ...updateDoc.$inc, "countries.$.count": 1 },
+        }
+      );
+    } else {
+      await Blog.updateOne(
+        { _id: blogId },
+        {
+          ...updateDoc,
+          $push: {
+            countries: {
+              country: countryName,
+              code: countryCodeUpper,
+              count: 1,
+            },
+          },
+        }
+      );
+    }
+  } catch (err) {
+    logger.warn("Non-critical error recording view:", err.message);
+  }
+};
 
 /**
  * Helper to slugify a string
@@ -71,6 +175,7 @@ router.get("/stats", async (_req, res) => {
       recentUpdated,
       recentPublished,
       topViewed,
+      allCategories,
     ] = await Promise.all([
       Blog.countDocuments({ isDeleted: { $ne: true } }),
       Blog.countDocuments({ status: "published", isDeleted: { $ne: true } }),
@@ -80,19 +185,62 @@ router.get("/stats", async (_req, res) => {
       Blog.find({ isDeleted: { $ne: true } })
         .sort({ updatedAt: -1 })
         .limit(5)
-        .select("title slug status updatedAt featureImage readTime category isPinned")
+        .select("title slug status updatedAt featureImage readTime category isPinned viewCount uniqueViewCount countries")
         .lean(),
       Blog.find({ status: "published", isDeleted: { $ne: true } })
         .sort({ date: -1, createdAt: -1 })
         .limit(5)
-        .select("title slug status date featureImage readTime category isPinned")
+        .select("title slug status date featureImage readTime category isPinned viewCount uniqueViewCount countries")
         .lean(),
       Blog.find({ isDeleted: { $ne: true } })
         .sort({ viewCount: -1, createdAt: -1 })
-        .limit(5)
-        .select("title slug status viewCount date featureImage readTime isPinned")
+        .limit(8)
+        .select("title slug status viewCount uniqueViewCount countries date featureImage readTime isPinned")
         .lean(),
+      Blog.distinct("category", { isDeleted: { $ne: true } }),
     ]);
+
+    // Aggregate total views and unique views
+    const viewsAggregate = await Blog.aggregate([
+      { $match: { isDeleted: { $ne: true } } },
+      {
+        $group: {
+          _id: null,
+          totalViews: { $sum: { $ifNull: ["$viewCount", 0] } },
+          totalUniqueViews: { $sum: { $ifNull: ["$uniqueViewCount", 0] } },
+        },
+      },
+    ]);
+
+    const totalViews = viewsAggregate[0]?.totalViews || 0;
+    const totalUniqueViews = viewsAggregate[0]?.totalUniqueViews || 0;
+
+    // Aggregate country views across all blogs
+    const countryAggregate = await Blog.aggregate([
+      { $match: { isDeleted: { $ne: true } } },
+      { $unwind: "$countries" },
+      {
+        $group: {
+          _id: "$countries.code",
+          country: { $first: "$countries.country" },
+          code: { $first: "$countries.code" },
+          count: { $sum: "$countries.count" },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
+    ]);
+
+    let topCountries = [];
+    if (countryAggregate.length > 0) {
+      const totalCountryCounts = countryAggregate.reduce((acc, c) => acc + c.count, 0) || 1;
+      topCountries = countryAggregate.map((c) => ({
+        country: c.country || getCountryNameByCode(c.code),
+        code: (c.code || "XX").toUpperCase(),
+        count: c.count,
+        percentage: Math.max(1, Math.round((c.count / totalCountryCounts) * 100)),
+      }));
+    }
 
     // 30-day activity timeline
     const thirtyDaysAgo = new Date();
@@ -121,6 +269,10 @@ router.get("/stats", async (_req, res) => {
         draft,
         scheduled,
         trashed,
+        totalViews,
+        totalUniqueViews,
+        topCountries,
+        categories: (allCategories || []).flat().filter(Boolean),
       },
       activity: activityData,
       recentUpdated,
@@ -174,11 +326,19 @@ router.post("/publish-scheduled", async (_req, res) => {
  */
 router.get("/export-csv", async (req, res) => {
   try {
-    const { search, status } = req.query;
+    const { search, status, category, country } = req.query;
     const filter = {};
 
     if (status && status !== "All") {
       filter.status = status;
+    }
+
+    if (category && category.trim() && category !== "All") {
+      filter.category = category.trim();
+    }
+
+    if (country && country.trim() && country !== "All") {
+      filter["countries.code"] = country.trim().toUpperCase();
     }
 
     if (search && search.trim()) {
@@ -201,6 +361,9 @@ router.get("/export-csv", async (req, res) => {
       "Title",
       "Slug",
       "Status",
+      "Total Views",
+      "Unique Views",
+      "Top Country",
       "Date",
       "Scheduled At",
       "Categories",
@@ -209,17 +372,28 @@ router.get("/export-csv", async (req, res) => {
       "Feature Image",
     ];
 
-    const rows = blogs.map((b) => [
-      csvEscape(b.title),
-      csvEscape(b.slug),
-      csvEscape(b.status),
-      csvEscape(b.date ? new Date(b.date).toISOString().slice(0, 10) : ""),
-      csvEscape(b.scheduledAt ? new Date(b.scheduledAt).toISOString() : ""),
-      csvEscape((b.category || []).join(", ")),
-      csvEscape(b.readTime || ""),
-      csvEscape(b.excerpt || ""),
-      csvEscape(b.featureImage || ""),
-    ]);
+    const rows = blogs.map((b) => {
+      const topC =
+        b.countries && b.countries.length > 0
+          ? [...b.countries].sort((x, y) => (y.count || 0) - (x.count || 0))[0]
+          : null;
+      const topCountryName = topC ? `${topC.country || topC.code} (${topC.code})` : "Australia (AU)";
+
+      return [
+        csvEscape(b.title),
+        csvEscape(b.slug),
+        csvEscape(b.status),
+        csvEscape(b.viewCount || 0),
+        csvEscape(b.uniqueViewCount || 0),
+        csvEscape(topCountryName),
+        csvEscape(b.date ? new Date(b.date).toISOString().slice(0, 10) : ""),
+        csvEscape(b.scheduledAt ? new Date(b.scheduledAt).toISOString() : ""),
+        csvEscape((b.category || []).join(", ")),
+        csvEscape(b.readTime || ""),
+        csvEscape(b.excerpt || ""),
+        csvEscape(b.featureImage || ""),
+      ];
+    });
 
     const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
 
@@ -288,6 +462,7 @@ const listBlogsHandler = async (req, res) => {
       search,
       status,
       category,
+      country,
     } = req.query;
 
     // Transition overdue scheduled posts
@@ -312,8 +487,12 @@ const listBlogsHandler = async (req, res) => {
       }
     }
 
-    if (category && category.trim()) {
+    if (category && category.trim() && category !== "All") {
       filter.category = category.trim();
+    }
+
+    if (country && country.trim() && country !== "All") {
+      filter["countries.code"] = country.trim().toUpperCase();
     }
 
     if (search && search.trim()) {
@@ -329,7 +508,16 @@ const listBlogsHandler = async (req, res) => {
     const skip = (pageNum - 1) * limitNum;
 
     const sortOrder = order === "asc" ? 1 : -1;
-    const sortField = sortBy === "createdAt" ? "createdAt" : sortBy === "title" ? "title" : sortBy === "views" ? "viewCount" : "date";
+    const sortField =
+      sortBy === "createdAt"
+        ? "createdAt"
+        : sortBy === "title"
+        ? "title"
+        : sortBy === "views"
+        ? "viewCount"
+        : sortBy === "uniqueViews"
+        ? "uniqueViewCount"
+        : "date";
 
     // Pinned blogs take precedence unless specific sort chosen
     const sortCriteria = { isPinned: -1, [sortField]: sortOrder };
@@ -411,7 +599,7 @@ router.get("/:id", async (req, res) => {
     }
 
     if (blog && blog.status === "published") {
-      Blog.findByIdAndUpdate(blog._id, { $inc: { viewCount: 1 } }).exec();
+      recordBlogView(blog._id, req);
     }
 
     return res.status(200).json({
@@ -426,6 +614,93 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+
+/**
+ * @route   POST /api/blog/:id/view
+ * @desc    Record a blog view beacon with country and visitor information
+ * @access  Public
+ */
+router.post("/:id/view", async (req, res) => {
+  try {
+    const { id } = req.params;
+    let blog = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      blog = await Blog.findById(id);
+    }
+    if (!blog) {
+      blog = await Blog.findOne({ slug: id.toLowerCase().trim() });
+    }
+    if (!blog || blog.isDeleted) {
+      return res.status(404).json({ success: false, message: "Blog not found." });
+    }
+
+    await recordBlogView(blog._id, req);
+
+    return res.status(200).json({
+      success: true,
+      message: "View recorded successfully.",
+      viewCount: (blog.viewCount || 0) + 1,
+      uniqueViewCount: blog.uniqueViewCount || 0,
+    });
+  } catch (error) {
+    logger.error("Error recording blog view:", error);
+    return res.status(500).json({ success: false, message: "Failed to record view." });
+  }
+});
+
+/**
+ * @route   GET /api/blog/:id/analytics
+ * @desc    Get detailed view metrics and country breakdown for a blog
+ * @access  Private (Blog Admin)
+ */
+router.get("/:id/analytics", protectBlogAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    let blog = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      blog = await Blog.findById(id);
+    }
+    if (!blog) {
+      blog = await Blog.findOne({ slug: id.toLowerCase().trim() });
+    }
+    if (!blog) {
+      return res.status(404).json({ success: false, message: "Blog not found." });
+    }
+
+    const totalViews = blog.viewCount ?? 0;
+    const uniqueViews = Math.min(totalViews, blog.uniqueViewCount ?? 0);
+    const countries = blog.countries || [];
+
+    const sortedCountries = [...countries].sort((a, b) => b.count - a.count);
+    const countryTotal = sortedCountries.reduce((sum, c) => sum + (c.count || 0), 0) || 1;
+
+    const enrichedCountries = sortedCountries.map((c) => ({
+      country: c.country,
+      code: c.code,
+      count: c.count,
+      percentage: Math.round(((c.count || 0) / countryTotal) * 100),
+    }));
+
+    return res.status(200).json({
+      success: true,
+      analytics: {
+        blogId: blog._id,
+        title: blog.title,
+        slug: blog.slug,
+        status: blog.status,
+        date: blog.date,
+        readTime: blog.readTime,
+        totalViews,
+        uniqueViews,
+        countries: enrichedCountries,
+      },
+    });
+  } catch (error) {
+    logger.error("Error fetching blog analytics:", error);
+    return res.status(500).json({ success: false, message: "Failed to fetch analytics." });
+  }
+});
+
 
 /**
  * @route   POST /api/blog

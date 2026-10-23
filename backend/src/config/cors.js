@@ -44,6 +44,12 @@ const corsOptions = {
     "X-Requested-With",
     "Accept",
     "Origin",
+    "x-visitor-id",
+    "x-timezone",
+    "x-skip-view",
+    "x-admin-request",
+    "x-country-code",
+    "x-country-name",
   ],
 
   optionsSuccessStatus: 204,

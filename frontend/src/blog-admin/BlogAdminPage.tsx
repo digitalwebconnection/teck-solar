@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Menu, X, CheckCircle2, Clock } from "lucide-react";
-import { blogFetch, getBlogToken, clearBlogToken } from "./blogApiClient";
-import type { Blog, BlogStats, BlogFormData, DashboardData } from "./types";
-import { EMPTY_FORM } from "./types";
-import { BlogLogin } from "./components/BlogLogin";
-import { BlogSidebar } from "./components/BlogSidebar";
-import { BlogOverviewTab } from "./components/BlogOverviewTab";
-import { BlogsTab } from "./components/BlogsTab";
-import { BlogFormModal } from "./components/BlogFormModal";
-import { BlogLogoutModal } from "./components/BlogLogoutModal";
-import { BlogDeleteModal } from "./components/BlogDeleteModal";
-import { BlogScheduleModal } from "./components/BlogScheduleModal";
-import { BlogPreviewModal } from "./components/BlogPreviewModal";
-import { parseLocalDatetimeToISO, getNextMinuteLocalDatetime } from "./dateUtils";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Menu, X, CheckCircle2, Clock } from 'lucide-react';
+import { blogFetch, getBlogToken, clearBlogToken } from './blogApiClient';
+import type { Blog, BlogStats, BlogFormData, DashboardData } from './types';
+import { EMPTY_FORM } from './types';
+import { BlogLogin } from './components/BlogLogin';
+import { BlogSidebar } from './components/BlogSidebar';
+import { BlogOverviewTab } from './components/BlogOverviewTab';
+import { BlogsTab } from './components/BlogsTab';
+import { BlogFormModal } from './components/BlogFormModal';
+import { BlogLogoutModal } from './components/BlogLogoutModal';
+import { BlogDeleteModal } from './components/BlogDeleteModal';
+import { BlogScheduleModal } from './components/BlogScheduleModal';
+import { BlogAnalyticsModal } from './components/BlogAnalyticsModal';
+import { parseLocalDatetimeToISO, getNextMinuteLocalDatetime } from './dateUtils';
 
-type Tab = "overview" | "blogs";
-type ToastType = "success" | "error";
+type Tab = 'overview' | 'blogs';
+type ToastType = 'success' | 'error';
 
 interface Toast {
   message: string;
@@ -30,7 +30,7 @@ const BlogAdminPage: React.FC = () => {
   const [isDismissBanner, setIsDismissBanner] = useState(false);
 
   // Layout state
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -40,11 +40,14 @@ const BlogAdminPage: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Filters / pagination
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
-  const [dateSort, setDateSort] = useState<"asc" | "desc">("desc");
+  // Filters / pagination / sorting
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState('All');
+  const [countryFilter, setCountryFilter] = useState('All');
+  const [sortBy, setSortBy] = useState<'date' | 'views'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalBlogs, setTotalBlogs] = useState(0);
@@ -60,9 +63,9 @@ const BlogAdminPage: React.FC = () => {
   const [isPermanentDelete, setIsPermanentDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [previewBlog, setPreviewBlog] = useState<Blog | null>(null);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [scheduleModalBlog, setScheduleModalBlog] = useState<Blog | null>(null);
+  const [analyticsBlog, setAnalyticsBlog] = useState<Blog | null>(null);
   const [isSavingSchedule, setIsSavingSchedule] = useState(false);
 
   // Set to track IDs of posts that have auto-published locally to prevent rapid re-triggering & vibration
@@ -70,27 +73,21 @@ const BlogAdminPage: React.FC = () => {
 
   // Toast
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const showToast = useCallback(
-    (message: string, type: ToastType = "success") => {
-      const id = ++toastIdSeq;
-      setToasts((prev) => [...prev, { message, type, id }]);
-      setTimeout(
-        () => setToasts((prev) => prev.filter((t) => t.id !== id)),
-        4000,
-      );
-    },
-    [],
-  );
+  const showToast = useCallback((message: string, type: ToastType = 'success') => {
+    const id = ++toastIdSeq;
+    setToasts(prev => [...prev, { message, type, id }]);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 4000);
+  }, []);
 
   // Set document title and ensure clean scroll state
   useEffect(() => {
     document.title = isLoggedIn
-      ? "Blog Admin Dashboard | Teck Solar"
-      : "Blog Admin Login | Teck Solar";
+      ? 'Blog Admin Dashboard | Teck Solar'
+      : 'Blog Admin Login | Teck Solar';
     // Clear any residual scroll locks or Lenis classes when entering admin
-    document.documentElement.classList.remove("lenis", "lenis-smooth", "lenis-stopped");
-    document.body.classList.remove("lenis", "lenis-smooth", "lenis-stopped");
-    document.body.style.overflow = "";
+    document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped');
+    document.body.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped');
+    document.body.style.overflow = '';
   }, [isLoggedIn]);
 
   // Auth-expiry listener
@@ -98,8 +95,8 @@ const BlogAdminPage: React.FC = () => {
     const handler = () => {
       setIsLoggedIn(false);
     };
-    window.addEventListener("blog-auth-expired", handler);
-    return () => window.removeEventListener("blog-auth-expired", handler);
+    window.addEventListener('blog-auth-expired', handler);
+    return () => window.removeEventListener('blog-auth-expired', handler);
   }, []);
 
   // Debounce search
@@ -108,59 +105,75 @@ const BlogAdminPage: React.FC = () => {
     return () => clearTimeout(t);
   }, [searchQuery]);
 
-  // Reset page when filters change
+  // Reset page when filters or sorting change
   useEffect(() => {
     setCurrentPage(1);
-  }, [statusFilter, debouncedSearch, dateSort]);
+  }, [statusFilter, debouncedSearch, sortBy, sortOrder, categoryFilter, countryFilter]);
 
   // Fetch blogs (supports silent background revalidation without full table refresh or spinner)
-  const fetchBlogs = useCallback(async (isSilent = false) => {
-    if (!isLoggedIn) return;
-    if (!isSilent) setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: "10",
-        sortBy: "date",
-        order: dateSort,
-      });
-      const queryTrimmed = debouncedSearch.trim();
-      if (queryTrimmed) params.set("search", queryTrimmed);
-      if (statusFilter !== "All") params.set("status", statusFilter);
-      const res = await blogFetch(`/api/blog?${params}`);
-      if (res.ok) {
-        const data = await res.json();
-        const serverBlogs: Blog[] = data.blogs ?? [];
-        setBlogs(serverBlogs.map((sb) => {
-          // If already reached scheduled time or was auto-published locally, keep as published
-          if (
-            sb.status === "scheduled" &&
-            sb.scheduledAt &&
-            (new Date(sb.scheduledAt).getTime() <= Date.now() || autoPublishedIdsRef.current.has(sb._id))
-          ) {
-            return { ...sb, status: "published" };
-          }
-          return sb;
-        }));
-        setTotalPages(data.pagination?.totalPages ?? 1);
-        setTotalBlogs(data.pagination?.total ?? 0);
+  const fetchBlogs = useCallback(
+    async (isSilent = false) => {
+      if (!isLoggedIn) return;
+      if (!isSilent) setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          limit: '10',
+          sortBy: sortBy,
+          order: sortOrder,
+        });
+        const queryTrimmed = debouncedSearch.trim();
+        if (queryTrimmed) params.set('search', queryTrimmed);
+        if (statusFilter !== 'All') params.set('status', statusFilter);
+        if (categoryFilter !== 'All') params.set('category', categoryFilter);
+        if (countryFilter !== 'All') params.set('country', countryFilter);
+        const res = await blogFetch(`/api/blog?${params}`);
+        if (res.ok) {
+          const data = await res.json();
+          const serverBlogs: Blog[] = data.blogs ?? [];
+          setBlogs(
+            serverBlogs.map(sb => {
+              // If already reached scheduled time or was auto-published locally, keep as published
+              if (
+                sb.status === 'scheduled' &&
+                sb.scheduledAt &&
+                (new Date(sb.scheduledAt).getTime() <= Date.now() ||
+                  autoPublishedIdsRef.current.has(sb._id))
+              ) {
+                return { ...sb, status: 'published' };
+              }
+              return sb;
+            })
+          );
+          setTotalPages(data.pagination?.totalPages ?? 1);
+          setTotalBlogs(data.pagination?.total ?? 0);
+        }
+      } catch {
+        /* silent */
+      } finally {
+        if (!isSilent) setLoading(false);
       }
-    } catch {
-      /* silent */
-    } finally {
-      if (!isSilent) setLoading(false);
-    }
-  }, [isLoggedIn, currentPage, debouncedSearch, statusFilter, dateSort]);
+    },
+    [isLoggedIn, currentPage, debouncedSearch, statusFilter, sortBy, sortOrder, categoryFilter, countryFilter]
+  );
 
-  const handleToggleDateSort = useCallback(() => {
-    setDateSort(prev => (prev === "desc" ? "asc" : "desc"));
-  }, []);
+  const handleToggleSort = useCallback(
+    (field: 'date' | 'views') => {
+      if (sortBy === field) {
+        setSortOrder(prev => (prev === 'desc' ? 'asc' : 'desc'));
+      } else {
+        setSortBy(field);
+        setSortOrder('desc');
+      }
+    },
+    [sortBy]
+  );
 
   // Fetch stats
   const fetchStats = useCallback(async () => {
     if (!isLoggedIn) return;
     try {
-      const res = await blogFetch("/api/blog/stats");
+      const res = await blogFetch('/api/blog/stats');
       if (res.ok) {
         const data = await res.json();
         setStats(data.stats);
@@ -184,14 +197,14 @@ const BlogAdminPage: React.FC = () => {
   useEffect(() => {
     if (!isLoggedIn) return;
     const scheduledBlogs = blogs.filter(
-      (b) => b.status === "scheduled" && b.scheduledAt && !autoPublishedIdsRef.current.has(b._id)
+      b => b.status === 'scheduled' && b.scheduledAt && !autoPublishedIdsRef.current.has(b._id)
     );
     if (scheduledBlogs.length === 0) return;
 
     const now = Date.now();
     const upcoming = scheduledBlogs
-      .map((b) => ({ id: b._id, time: new Date(b.scheduledAt!).getTime(), title: b.title }))
-      .filter((item) => !isNaN(item.time));
+      .map(b => ({ id: b._id, time: new Date(b.scheduledAt!).getTime(), title: b.title }))
+      .filter(item => !isNaN(item.time));
 
     if (upcoming.length === 0) return;
 
@@ -204,21 +217,26 @@ const BlogAdminPage: React.FC = () => {
       autoPublishedIdsRef.current.add(dueId);
 
       // 1. Optimistically update locally for immediate feedback with zero flicker
-      setBlogs((prev) =>
-        prev.map((b) => {
-          if (b._id === dueId || (b.status === "scheduled" && b.scheduledAt && new Date(b.scheduledAt).getTime() <= Date.now())) {
+      setBlogs(prev =>
+        prev.map(b => {
+          if (
+            b._id === dueId ||
+            (b.status === 'scheduled' &&
+              b.scheduledAt &&
+              new Date(b.scheduledAt).getTime() <= Date.now())
+          ) {
             autoPublishedIdsRef.current.add(b._id);
-            return { ...b, status: "published" };
+            return { ...b, status: 'published' };
           }
           return b;
         })
       );
 
-      showToast(`Post "${earliest.title}" has been published!`, "success");
+      showToast(`Post "${earliest.title}" has been published!`, 'success');
 
       // 2. Trigger server-side publication check and sync silently in background
       try {
-        await blogFetch("/api/blog/publish-scheduled", { method: "POST" });
+        await blogFetch('/api/blog/publish-scheduled', { method: 'POST' });
       } catch {
         /* silent */
       }
@@ -236,20 +254,17 @@ const BlogAdminPage: React.FC = () => {
       fetchBlogs(true);
       fetchStats();
     };
-    window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
   }, [isLoggedIn, fetchBlogs, fetchStats]);
 
   // ── Form helpers ──────────────────────────────────────────
-  const handleChange = useCallback(
-    (field: keyof BlogFormData, value: string) => {
-      setForm((prev) => ({ ...prev, [field]: value }));
-    },
-    [],
-  );
+  const handleChange = useCallback((field: keyof BlogFormData, value: string) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  }, []);
 
   const openNew = () => {
-    setForm({ ...EMPTY_FORM, date: new Date().toISOString().slice(0, 10), scheduledAt: "" });
+    setForm({ ...EMPTY_FORM, date: new Date().toISOString().slice(0, 10), scheduledAt: '' });
     setIsEditMode(false);
     setEditingId(null);
     setIsFormOpen(true);
@@ -265,37 +280,37 @@ const BlogAdminPage: React.FC = () => {
         setForm({
           title: b.title,
           slug: b.slug,
-          category: (b.category ?? []).join(", "),
-          readTime: b.readTime ?? "",
-          date: b.date ? new Date(b.date).toISOString().slice(0, 10) : "",
-          excerpt: b.excerpt ?? "",
-          featureImage: b.featureImage ?? "",
-          content: b.content ?? "",
-          metaTitle: b.metaTitle ?? "",
-          canonicalUrl: b.canonicalUrl ?? "",
-          keywords: (b.keywords ?? []).join(", "),
-          metaDescription: b.metaDescription ?? "",
-          schema: b.schema ?? (b as any).schemaMarkup ?? "",
-          longContent: b.longContent ?? "",
+          category: (b.category ?? []).join(', '),
+          readTime: b.readTime ?? '',
+          date: b.date ? new Date(b.date).toISOString().slice(0, 10) : '',
+          excerpt: b.excerpt ?? '',
+          featureImage: b.featureImage ?? '',
+          content: b.content ?? '',
+          metaTitle: b.metaTitle ?? '',
+          canonicalUrl: b.canonicalUrl ?? '',
+          keywords: (b.keywords ?? []).join(', '),
+          metaDescription: b.metaDescription ?? '',
+          schema: b.schema ?? (b as any).schemaMarkup ?? '',
+          longContent: b.longContent ?? '',
           status: b.status,
-          scheduledAt: b.scheduledAt ? getNextMinuteLocalDatetime(b.scheduledAt) : "",
+          scheduledAt: b.scheduledAt ? getNextMinuteLocalDatetime(b.scheduledAt) : '',
         });
         setEditingId(b._id);
         setIsEditMode(true);
         setIsFormOpen(true);
       }
     } catch {
-      showToast("Failed to load blog post.", "error");
+      showToast('Failed to load blog post.', 'error');
     }
   };
 
   const handleSave = async () => {
     if (!form.title.trim()) {
-      showToast("Blog title is required.", "error");
+      showToast('Blog title is required.', 'error');
       return;
     }
-    if (form.status === "scheduled" && !form.scheduledAt) {
-      showToast("Please specify a scheduled publication date and time.", "error");
+    if (form.status === 'scheduled' && !form.scheduledAt) {
+      showToast('Please specify a scheduled publication date and time.', 'error');
       return;
     }
 
@@ -303,56 +318,54 @@ const BlogAdminPage: React.FC = () => {
     try {
       const payload = {
         ...form,
-        scheduledAt: form.status === "scheduled" && form.scheduledAt
-          ? parseLocalDatetimeToISO(form.scheduledAt)
-          : null,
+        scheduledAt:
+          form.status === 'scheduled' && form.scheduledAt
+            ? parseLocalDatetimeToISO(form.scheduledAt)
+            : null,
         category:
-          typeof form.category === "string"
+          typeof form.category === 'string'
             ? form.category
-                .split(",")
-                .map((s) => s.trim())
+                .split(',')
+                .map(s => s.trim())
                 .filter(Boolean)
             : form.category || [],
         keywords:
-          typeof form.keywords === "string"
+          typeof form.keywords === 'string'
             ? form.keywords
-                .split(",")
-                .map((s) => s.trim())
+                .split(',')
+                .map(s => s.trim())
                 .filter(Boolean)
             : form.keywords || [],
       };
-      const res = await blogFetch(
-        isEditMode ? `/api/blog/${editingId}` : "/api/blog",
-        {
-          method: isEditMode ? "PUT" : "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
+      const res = await blogFetch(isEditMode ? `/api/blog/${editingId}` : '/api/blog', {
+        method: isEditMode ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
       if (res.ok) {
         setIsFormOpen(false);
         if (!isEditMode) {
           setCurrentPage(1);
-          setSearchQuery("");
+          setSearchQuery('');
         }
         fetchBlogs();
         fetchStats();
         showToast(
           isEditMode
-            ? form.status === "scheduled"
-              ? "Blog post scheduled!"
-              : "Blog post updated!"
-            : form.status === "scheduled"
-            ? "Blog post scheduled successfully!"
-            : "Blog post created!",
-          "success",
+            ? form.status === 'scheduled'
+              ? 'Blog post scheduled!'
+              : 'Blog post updated!'
+            : form.status === 'scheduled'
+              ? 'Blog post scheduled successfully!'
+              : 'Blog post created!',
+          'success'
         );
       } else {
         const d = await res.json();
-        showToast(d.message ?? "Failed to save post.", "error");
+        showToast(d.message ?? 'Failed to save post.', 'error');
       }
     } catch {
-      showToast("Network error.", "error");
+      showToast('Network error.', 'error');
     } finally {
       setIsSaving(false);
     }
@@ -376,20 +389,20 @@ const BlogAdminPage: React.FC = () => {
         ? `/api/blog/${deleteId}?permanent=true`
         : `/api/blog/${deleteId}`;
       const res = await blogFetch(url, {
-        method: "DELETE",
+        method: 'DELETE',
       });
       if (res.ok) {
         fetchBlogs();
         fetchStats();
         showToast(
-          isPermanentDelete ? "Blog permanently purged." : "Blog moved to trash.",
-          "success"
+          isPermanentDelete ? 'Blog permanently purged.' : 'Blog moved to trash.',
+          'success'
         );
       } else {
-        showToast("Failed to delete post.", "error");
+        showToast('Failed to delete post.', 'error');
       }
     } catch {
-      showToast("Network error.", "error");
+      showToast('Network error.', 'error');
     } finally {
       setIsDeleting(false);
       setDeleteId(null);
@@ -397,141 +410,124 @@ const BlogAdminPage: React.FC = () => {
     }
   };
 
-  const handleRestore = useCallback(async (id: string) => {
-    try {
-      const res = await blogFetch(`/api/blog/${id}/restore`, { method: "POST" });
-      if (res.ok) {
-        showToast("Blog post restored from trash!", "success");
-        fetchBlogs();
-        fetchStats();
-      } else {
-        const err = await res.json();
-        showToast(err.message || "Failed to restore post.", "error");
+  const handleRestore = useCallback(
+    async (id: string) => {
+      try {
+        const res = await blogFetch(`/api/blog/${id}/restore`, { method: 'POST' });
+        if (res.ok) {
+          showToast('Blog post restored from trash!', 'success');
+          fetchBlogs();
+          fetchStats();
+        } else {
+          const err = await res.json();
+          showToast(err.message || 'Failed to restore post.', 'error');
+        }
+      } catch {
+        showToast('Network error restoring post.', 'error');
       }
-    } catch {
-      showToast("Network error restoring post.", "error");
-    }
-  }, [fetchBlogs, fetchStats, showToast]);
+    },
+    [fetchBlogs, fetchStats, showToast]
+  );
 
-  const handleDuplicate = useCallback(async (id: string) => {
-    try {
-      const res = await blogFetch(`/api/blog/${id}/duplicate`, { method: "POST" });
-      if (res.ok) {
-        showToast("Blog post duplicated as draft!", "success");
-        fetchBlogs();
-        fetchStats();
-      } else {
-        const err = await res.json();
-        showToast(err.message || "Failed to duplicate post.", "error");
-      }
-    } catch {
-      showToast("Network error duplicating post.", "error");
-    }
-  }, [fetchBlogs, fetchStats, showToast]);
 
-  const handleTogglePin = useCallback(async (id: string) => {
-    // Optimistic toggle
-    setBlogs((prev) =>
-      prev.map((b) => (b._id === id ? { ...b, isPinned: !b.isPinned } : b))
-    );
-    try {
-      const res = await blogFetch(`/api/blog/${id}/pin`, { method: "POST" });
-      if (res.ok) {
-        const data = await res.json();
-        showToast(
-          data.message || (data.isPinned ? "Post pinned to top." : "Post unpinned."),
-          "success"
-        );
-        fetchBlogs(true);
-        fetchStats();
-      } else {
-        const err = await res.json();
-        showToast(err.message || "Failed to update pin status.", "error");
+  const handleTogglePin = useCallback(
+    async (id: string) => {
+      // Optimistic toggle
+      setBlogs(prev => prev.map(b => (b._id === id ? { ...b, isPinned: !b.isPinned } : b)));
+      try {
+        const res = await blogFetch(`/api/blog/${id}/pin`, { method: 'POST' });
+        if (res.ok) {
+          const data = await res.json();
+          showToast(
+            data.message || (data.isPinned ? 'Post pinned to top.' : 'Post unpinned.'),
+            'success'
+          );
+          fetchBlogs(true);
+          fetchStats();
+        } else {
+          const err = await res.json();
+          showToast(err.message || 'Failed to update pin status.', 'error');
+          fetchBlogs(true);
+        }
+      } catch {
+        showToast('Network error updating pin.', 'error');
         fetchBlogs(true);
       }
-    } catch {
-      showToast("Network error updating pin.", "error");
-      fetchBlogs(true);
-    }
-  }, [fetchBlogs, fetchStats, showToast]);
+    },
+    [fetchBlogs, fetchStats, showToast]
+  );
 
-  const handleBulkAction = useCallback(async (action: string, ids: string[]) => {
-    try {
-      const res = await blogFetch("/api/blog/bulk-action", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action, ids }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        showToast(data.message || `Bulk ${action} completed.`, "success");
-        fetchBlogs();
-        fetchStats();
-      } else {
-        const err = await res.json();
-        showToast(err.message || "Bulk action failed.", "error");
+  const handleBulkAction = useCallback(
+    async (action: string, ids: string[]) => {
+      try {
+        const res = await blogFetch('/api/blog/bulk-action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, ids }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          showToast(data.message || `Bulk ${action} completed.`, 'success');
+          fetchBlogs();
+          fetchStats();
+        } else {
+          const err = await res.json();
+          showToast(err.message || 'Bulk action failed.', 'error');
+        }
+      } catch {
+        showToast('Network error running bulk action.', 'error');
       }
-    } catch {
-      showToast("Network error running bulk action.", "error");
-    }
-  }, [fetchBlogs, fetchStats, showToast]);
+    },
+    [fetchBlogs, fetchStats, showToast]
+  );
 
   const handleNavigateToBlogs = useCallback((filter?: string) => {
-    setActiveTab("blogs");
+    setActiveTab('blogs');
     if (filter) setStatusFilter(filter);
     setCurrentPage(1);
   }, []);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    const currentBlog = blogs.find((b) => b._id === id);
+    const currentBlog = blogs.find(b => b._id === id);
     if (!currentBlog || currentBlog.status === newStatus) return;
 
     // If changing to scheduled, open the adjust schedule modal so the user can set exact date/time
-    if (newStatus === "scheduled") {
+    if (newStatus === 'scheduled') {
       setScheduleModalBlog(currentBlog);
       return;
     }
 
-    if (newStatus !== "scheduled") {
+    if (newStatus !== 'scheduled') {
       autoPublishedIdsRef.current.delete(id);
     }
 
     const previousStatus = currentBlog.status;
-    setBlogs((prev) =>
-      prev.map((b) =>
-        b._id === id ? { ...b, status: newStatus as "draft" | "published" | "scheduled" } : b,
-      ),
+    setBlogs(prev =>
+      prev.map(b =>
+        b._id === id ? { ...b, status: newStatus as 'draft' | 'published' | 'scheduled' } : b
+      )
     );
 
     try {
       const payload: any = { status: newStatus };
       const res = await blogFetch(`/api/blog/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        showToast(
-          `Status changed to ${newStatus.toUpperCase()}.`,
-          "success",
-        );
+        showToast(`Status changed to ${newStatus.toUpperCase()}.`, 'success');
         fetchBlogs(true);
         fetchStats();
       } else {
-        setBlogs((prev) =>
-          prev.map((b) =>
-            b._id === id ? { ...b, status: previousStatus } : b,
-          ),
-        );
+        setBlogs(prev => prev.map(b => (b._id === id ? { ...b, status: previousStatus } : b)));
         const data = await res.json();
-        showToast(data.message || "Failed to update status.", "error");
+        showToast(data.message || 'Failed to update status.', 'error');
       }
     } catch {
-      setBlogs((prev) =>
-        prev.map((b) => (b._id === id ? { ...b, status: previousStatus } : b)),
-      );
-      showToast("Network error. Could not update status.", "error");
+      setBlogs(prev => prev.map(b => (b._id === id ? { ...b, status: previousStatus } : b)));
+      showToast('Network error. Could not update status.', 'error');
     }
   };
 
@@ -539,25 +535,25 @@ const BlogAdminPage: React.FC = () => {
     setIsSavingSchedule(true);
     try {
       const res = await blogFetch(`/api/blog/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          status: "scheduled",
+          status: 'scheduled',
           scheduledAt: isoString,
         }),
       });
       if (res.ok) {
         autoPublishedIdsRef.current.delete(id);
-        showToast("Publication schedule updated successfully!", "success");
+        showToast('Publication schedule updated successfully!', 'success');
         setScheduleModalBlog(null);
         fetchBlogs(true);
         fetchStats();
       } else {
         const d = await res.json();
-        showToast(d.message || "Failed to update schedule.", "error");
+        showToast(d.message || 'Failed to update schedule.', 'error');
       }
     } catch {
-      showToast("Network error. Could not update schedule.", "error");
+      showToast('Network error. Could not update schedule.', 'error');
     } finally {
       setIsSavingSchedule(false);
     }
@@ -580,21 +576,14 @@ const BlogAdminPage: React.FC = () => {
       className="h-full w-full bg-[#F8FAFC] flex flex-col md:flex-row font-sans text-slate-800 overflow-hidden"
       data-lenis-prevent
     >
-
       {/* Mobile Header */}
       <div className="md:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-30 shadow-sm shrink-0">
-        <h1 className="text-lg font-black tracking-widest text-slate-800 uppercase">
-          Blog Admin
-        </h1>
+        <h1 className="text-lg font-black tracking-widest text-slate-800 uppercase">Blog Admin</h1>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="p-2 -mr-2 text-slate-500 hover:bg-slate-100 rounded-md"
         >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
@@ -619,8 +608,8 @@ const BlogAdminPage: React.FC = () => {
       {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-hidden relative min-w-0 min-h-0 h-full">
         <header className="hidden md:flex w-full h-16 bg-white border-b border-slate-200 items-center justify-center shrink-0 z-10 relative">
-          <h1 className="text-xl font-black tracking-widest text-slate-800 uppercase">
-            Blog Admin
+          <h1 className="text-sm font-black tracking-widest text-slate-800 uppercase">
+            Blog Admin Dashboard
           </h1>
         </header>
 
@@ -628,8 +617,8 @@ const BlogAdminPage: React.FC = () => {
         <div
           className={`overflow-hidden transition-all duration-500 ease-in-out shrink-0 ${
             stats && stats.scheduled > 0 && !isDismissBanner
-              ? "max-h-20 opacity-100 border-b border-violet-500/30"
-              : "max-h-0 opacity-0 border-b-0 pointer-events-none"
+              ? 'max-h-20 opacity-100 border-b border-violet-500/30'
+              : 'max-h-0 opacity-0 border-b-0 pointer-events-none'
           }`}
         >
           <div className="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-700 text-white px-4 sm:px-6 py-2.5 shadow-sm flex items-center justify-between gap-3 text-xs sm:text-sm">
@@ -640,15 +629,19 @@ const BlogAdminPage: React.FC = () => {
               </span>
               <Clock className="w-4 h-4 text-violet-200 shrink-0" />
               <span>
-                You have <strong className="font-bold underline decoration-violet-300">{stats?.scheduled ?? 0} scheduled {stats?.scheduled === 1 ? "post" : "posts"}</strong> set to publish automatically.
+                You have{' '}
+                <strong className="font-bold underline decoration-violet-300">
+                  {stats?.scheduled ?? 0} scheduled {stats?.scheduled === 1 ? 'post' : 'posts'}
+                </strong>{' '}
+                set to publish automatically.
               </span>
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => {
-                  setActiveTab("blogs");
-                  setStatusFilter("scheduled");
+                  setActiveTab('blogs');
+                  setStatusFilter('scheduled');
                 }}
                 className="px-2.5 py-1 bg-white/20 hover:bg-white/30 text-white font-bold text-xs rounded-sm transition-colors cursor-pointer"
               >
@@ -668,11 +661,11 @@ const BlogAdminPage: React.FC = () => {
 
         <main
           id="admin-main-scroll"
-          className="flex-1 w-full overflow-y-auto overscroll-contain bg-slate-50 p-4 sm:p-6 md:p-8 min-h-0"
+          className="flex-1 w-full overflow-y-auto overscroll-contain bg-slate-50/70 p-4 sm:p-6 md:p-8 min-h-0"
           data-lenis-prevent
         >
           <div className="max-w-[1600px] mx-auto">
-            {activeTab === "overview" && (
+            {activeTab === 'overview' && (
               <BlogOverviewTab
                 stats={stats}
                 activity={dashboardData?.activity}
@@ -681,11 +674,11 @@ const BlogAdminPage: React.FC = () => {
                 topViewed={dashboardData?.topViewed}
                 onNewBlog={openNew}
                 onNavigateToBlogs={handleNavigateToBlogs}
-                onPreviewBlog={(b) => setPreviewBlog(b)}
                 onEditBlog={openEdit}
+                onViewAnalytics={b => setAnalyticsBlog(b)}
               />
             )}
-            {activeTab === "blogs" && (
+            {activeTab === 'blogs' && (
               <BlogsTab
                 blogs={blogs}
                 loading={loading}
@@ -703,30 +696,23 @@ const BlogAdminPage: React.FC = () => {
                 onPermanentDelete={handlePermanentDelete}
                 onRestore={handleRestore}
                 onStatusChange={handleStatusChange}
-                onAdjustSchedule={(b) => setScheduleModalBlog(b)}
-                onDuplicate={handleDuplicate}
+                onAdjustSchedule={b => setScheduleModalBlog(b)}
                 onTogglePin={handleTogglePin}
-                onPreview={(b) => setPreviewBlog(b)}
                 onBulkAction={handleBulkAction}
-                dateSort={dateSort}
-                onToggleDateSort={handleToggleDateSort}
+                onViewAnalytics={b => setAnalyticsBlog(b)}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onToggleSort={handleToggleSort}
+                categoryFilter={categoryFilter}
+                setCategoryFilter={setCategoryFilter}
+                countryFilter={countryFilter}
+                setCountryFilter={setCountryFilter}
                 stats={stats}
               />
             )}
           </div>
         </main>
       </div>
-
-      {/* Blog Preview Modal */}
-      <BlogPreviewModal
-        isOpen={!!previewBlog}
-        blog={previewBlog}
-        onClose={() => setPreviewBlog(null)}
-        onEdit={(b) => {
-          setPreviewBlog(null);
-          openEdit(b);
-        }}
-      />
 
       {/* Blog Schedule Modal */}
       <BlogScheduleModal
@@ -735,6 +721,17 @@ const BlogAdminPage: React.FC = () => {
         isSaving={isSavingSchedule}
         onClose={() => setScheduleModalBlog(null)}
         onSaveSchedule={handleSaveSchedule}
+      />
+
+      {/* Blog Analytics Modal */}
+      <BlogAnalyticsModal
+        isOpen={!!analyticsBlog}
+        blog={analyticsBlog}
+        onClose={() => setAnalyticsBlog(null)}
+        onEdit={b => {
+          setAnalyticsBlog(null);
+          openEdit(b);
+        }}
       />
 
       {/* Blog Form Modal */}
@@ -769,21 +766,17 @@ const BlogAdminPage: React.FC = () => {
 
       {/* Toast Stack */}
       <div className="fixed bottom-4 right-4 z-[110] flex flex-col gap-2 items-end pointer-events-none">
-        {toasts.map((t) => (
+        {toasts.map(t => (
           <div
             key={t.id}
             className={`pointer-events-auto flex items-center gap-2.5 pl-4 pr-3 py-3 rounded-xl shadow-2xl font-bold text-sm animate-in slide-in-from-bottom-5 fade-in duration-300 min-w-[280px] ${
-              t.type === "success"
-                ? "bg-emerald-600 text-white"
-                : "bg-red-600 text-white"
+              t.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
             }`}
           >
             <CheckCircle2 className="w-5 h-5 opacity-80 shrink-0" />
             <span className="flex-1">{t.message}</span>
             <button
-              onClick={() =>
-                setToasts((prev) => prev.filter((x) => x.id !== t.id))
-              }
+              onClick={() => setToasts(prev => prev.filter(x => x.id !== t.id))}
               className="opacity-70 hover:opacity-100 hover:bg-white/20 p-1.5 rounded-lg transition-colors ml-1 cursor-pointer"
               aria-label="Close"
             >

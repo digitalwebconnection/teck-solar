@@ -1,4 +1,17 @@
- export interface Blog {
+export interface BlogCountry {
+  country: string;
+  code: string;
+  count: number;
+}
+
+export interface CountryStat {
+  country: string;
+  code: string;
+  count: number;
+  percentage: number;
+}
+
+export interface Blog {
   _id: string;
   title: string;
   slug: string;
@@ -20,6 +33,8 @@
   isDeleted?: boolean;
   deletedAt?: string | null;
   viewCount?: number;
+  uniqueViewCount?: number;
+  countries?: BlogCountry[];
   createdAt: string;
   updatedAt: string;
 }
@@ -30,6 +45,10 @@ export interface BlogStats {
   draft: number;
   scheduled: number;
   trashed?: number;
+  totalViews?: number;
+  totalUniqueViews?: number;
+  topCountries?: CountryStat[];
+  categories?: string[];
 }
 
 export interface ActivityItem {

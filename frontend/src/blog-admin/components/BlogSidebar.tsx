@@ -79,7 +79,7 @@ export const BlogSidebar: React.FC<BlogSidebarProps> = ({
       `}
     >
       {/* Header */}
-      <div className={`h-16 ${isCollapsed ? "px-3 justify-center" : "px-6 justify-between"} border-b border-slate-100 flex items-center shrink-0`}>
+      <div className={`h-16 ${isCollapsed ? "px-3 justify-center" : "px-6 justify-between"} border-b border-slate-200 flex items-center shrink-0`}>
         {!isCollapsed && (
           <div className="animate-in fade-in zoom-in duration-200 flex items-center h-full">
             <img src="/images/logo/logo.svg" alt="Teck Solar" className="h-8 w-auto object-contain select-none pointer-events-none drop-shadow-sm" />
