@@ -189,27 +189,33 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
     const map = new Map<string, number>();
     activity.forEach(a => map.set(a._id, a.count));
 
+    // Sum of all published posts in the activity window
+    const totalPubs = activity.reduce((sum, a) => sum + (a.count || 0), 0) || 1;
+
     const days: { date: string; label: string; count: number; viewsEst: number; wave2: number }[] =
       [];
     const now = new Date();
+    const todayIso = now.toISOString().slice(0, 10);
+
     for (let i = countDays - 1; i >= 0; i--) {
       const d = new Date();
       d.setDate(now.getDate() - i);
       const iso = d.toISOString().slice(0, 10);
       const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const pubCount = map.get(iso) || 0;
-      const dayFactor = ((d.getDate() * 7 + d.getMonth() * 3) % 11) + 1;
-      const isMiddle = i === Math.floor(countDays * 0.35);
-      const viewsEst = isMiddle
-        ? 34
-        : pubCount > 0
-          ? pubCount * 6 + dayFactor
-          : dayFactor > 8
-            ? 7
-            : dayFactor > 4
-              ? 4
-              : 2;
-      const wave2 = Math.max(1, Math.round(viewsEst * 0.45 + (d.getDate() % 4)));
+
+      // Allocate actual views bounded strictly by platform totalViews
+      let viewsEst = 0;
+      if (totalViews > 0) {
+        if (pubCount > 0) {
+          viewsEst = Math.max(1, Math.round((pubCount / totalPubs) * totalViews));
+        } else if (iso === todayIso && activity.length === 0) {
+          viewsEst = totalViews;
+        }
+      }
+      viewsEst = Math.min(totalViews, viewsEst);
+
+      const wave2 = viewsEst > 1 ? Math.max(1, Math.round(viewsEst * 0.5)) : viewsEst > 0 ? 1 : 0;
 
       days.push({
         date: iso,
@@ -220,7 +226,7 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
       });
     }
     return days;
-  }, [activity, timeRange]);
+  }, [activity, timeRange, totalViews]);
 
   const maxVal = Math.max(10, ...chartDays.map(d => Math.max(d.viewsEst, d.wave2)));
 
@@ -267,25 +273,9 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
   const activeHoverPoint =
     hoveredPointIdx !== null && pointsViews[hoveredPointIdx] ? pointsViews[hoveredPointIdx] : null;
 
-  // Build 6 audience country items (real or graceful fallback)
+  // Audience country items from real telemetry
   const displayCountries = useMemo(() => {
-    if (topCountries.length >= 6) return topCountries.slice(0, 6);
-    const items = [...topCountries];
-    const fallbackList = [
-      { code: 'IN', country: 'India', count: 23, percentage: 42 },
-      { code: 'AU', country: 'Australia', count: 22, percentage: 42 },
-      { code: 'US', country: 'United States', count: 4, percentage: 8 },
-      { code: 'GB', country: 'United Kingdom', count: 2, percentage: 4 },
-      { code: 'DE', country: 'Germany', count: 1, percentage: 2 },
-      { code: 'JP', country: 'Japan', count: 1, percentage: 2 },
-    ];
-    for (const fb of fallbackList) {
-      if (items.length >= 6) break;
-      if (!items.some(x => x.code?.toUpperCase() === fb.code)) {
-        items.push(fb);
-      }
-    }
-    return items.slice(0, 6);
+    return topCountries.slice(0, 6);
   }, [topCountries]);
 
   return (
@@ -463,7 +453,7 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
 
           <div className="flex items-end justify-between gap-2 my-2">
             <p className="text-4xl font-black text-slate-900 tracking-tight font-heading">
-              {formatNumber(totalViews || 48)}
+              {formatNumber(totalViews)}
             </p>
             {/* Smooth Glowing Cyan/Blue Sparkline */}
             <div className="w-24 h-9">
@@ -514,7 +504,7 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
 
           <div className="flex items-end justify-between gap-2 my-2">
             <p className="text-4xl font-black text-slate-900 tracking-tight font-heading">
-              {formatNumber(totalUniqueViews || 30)}
+              {formatNumber(totalUniqueViews)}
             </p>
             {/* Smooth Glowing Emerald Sparkline */}
             <div className="w-24 h-9">
@@ -544,7 +534,7 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-[11px] font-semibold font-mono">
               <ShieldCheck className="w-3.5 h-3.5" />
-              {readerConversionRate || 63}% Ratio
+              {readerConversionRate}% Ratio
             </span>
             <span className="text-slate-400 text-xs">Distinct sessions</span>
           </div>
@@ -564,20 +554,28 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
           </div>
 
           <div className="flex items-center gap-3 my-2">
-            <div className="p-0.5">
-              <FlagBadge code={topCountries[0]?.code || 'IN'} size="lg" />
-            </div>
-            <p className="text-2xl sm:text-3xl font-black text-slate-900 font-heading truncate">
-              {topCountries[0]?.country || getCountryName(topCountries[0]?.code) || 'India'}
-            </p>
+            {topCountries.length > 0 ? (
+              <>
+                <div className="p-0.5">
+                  <FlagBadge code={topCountries[0].code} size="lg" />
+                </div>
+                <p className="text-2xl sm:text-3xl font-black text-slate-900 font-heading truncate">
+                  {topCountries[0].country || getCountryName(topCountries[0].code) || '—'}
+                </p>
+              </>
+            ) : (
+              <p className="text-xl sm:text-2xl font-black text-slate-400 font-heading">
+                No Market Data
+              </p>
+            )}
           </div>
 
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-700 text-[11px] font-semibold font-mono">
-              {topCountries[0]?.percentage || 43}% Share
+              {topCountries[0]?.percentage ?? 0}% Share
             </span>
             <span className="text-slate-500 text-xs font-mono">
-              {formatNumber(topCountries[0]?.count || 23)} views
+              {formatNumber(topCountries[0]?.count ?? 0)} views
             </span>
           </div>
         </div>
@@ -598,30 +596,42 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
           <div className="flex items-center justify-between gap-2 my-2">
             <div className="flex items-baseline gap-1.5">
               <p className="text-4xl font-black text-slate-900 tracking-tight font-heading">
-                {topCountries.length || 6}
+                {topCountries.length}
               </p>
-              <span className="text-xs font-semibold text-slate-400">countries</span>
+              <span className="text-xs font-semibold text-slate-400">
+                {topCountries.length === 1 ? 'country' : 'countries'}
+              </span>
             </div>
 
             {/* Matrix of country flags */}
-            <div className="grid grid-cols-4 gap-1 p-1 bg-slate-50 rounded-lg border border-slate-200/70">
-              {['IN', 'AU', 'US', 'GB', 'DE', 'JP'].map((cCode, i) => (
-                <div key={i} className="flex items-center justify-center">
-                  <FlagBadge code={cCode} size="sm" />
-                </div>
-              ))}
-            </div>
+            {topCountries.length > 0 ? (
+              <div className="grid grid-cols-4 gap-1 p-1 bg-slate-50 rounded-lg border border-slate-200/70">
+                {topCountries.slice(0, 4).map((c, i) => (
+                  <div key={i} className="flex items-center justify-center">
+                    <FlagBadge code={c.code} size="sm" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <span className="text-xs text-slate-400 italic">No locations</span>
+            )}
           </div>
 
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-            <div className="flex items-center -space-x-1">
-              <FlagBadge code="IN" size="sm" className="rounded-full ring-1 ring-white" />
-              <FlagBadge code="AU" size="sm" className="rounded-full ring-1 ring-white" />
-              <FlagBadge code="US" size="sm" className="rounded-full ring-1 ring-white" />
-              <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-100 text-[9px] font-bold text-slate-600 ring-1 ring-slate-200">
-                +2
-              </span>
-            </div>
+            {topCountries.length > 0 ? (
+              <div className="flex items-center -space-x-1">
+                {topCountries.slice(0, 3).map(c => (
+                  <FlagBadge key={c.code} code={c.code} size="sm" className="rounded-full ring-1 ring-white" />
+                ))}
+                {topCountries.length > 3 && (
+                  <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-100 text-[9px] font-bold text-slate-600 ring-1 ring-slate-200">
+                    +{topCountries.length - 3}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <span className="text-slate-400 text-xs">No active viewers</span>
+            )}
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-purple-50 border border-purple-200/80 text-purple-700 text-[11px] font-bold">
               Worldwide
             </span>
@@ -792,7 +802,8 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1 font-bold text-cyan-400">
                         <Eye className="w-3 h-3" />
-                        {activeHoverPoint.data.viewsEst} views
+                        {activeHoverPoint.data.viewsEst}{' '}
+                        {activeHoverPoint.data.viewsEst === 1 ? 'view' : 'views'}
                       </span>
                       {activeHoverPoint.data.count > 0 && (
                         <span className="flex items-center gap-1 font-bold text-emerald-400">
@@ -925,88 +936,96 @@ export const BlogOverviewTab: React.FC<BlogOverviewTabProps> = ({
             />
           </div>
 
-          {/* Right Column: 6 Tracked Territories List (5 cols) */}
+          {/* Right Column: Tracked Territories List (5 cols) */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-2.5">
-            <div className="space-y-2.5">
-              {displayCountries.map((c, idx) => {
-                const count = c.count || 0;
-                const pct =
-                  c.percentage ?? Math.max(1, Math.round((count / totalCountryViews) * 100));
-                const countryTitle = c.country || getCountryName(c.code);
-                const isHovered = hoveredCountryCode?.toUpperCase() === c.code.toUpperCase();
+            {displayCountries.length > 0 ? (
+              <div className="space-y-2.5">
+                {displayCountries.map((c, idx) => {
+                  const count = c.count || 0;
+                  const pct =
+                    c.percentage ?? Math.max(1, Math.round((count / totalCountryViews) * 100));
+                  const countryTitle = c.country || getCountryName(c.code);
+                  const isHovered = hoveredCountryCode?.toUpperCase() === c.code.toUpperCase();
 
-                return (
-                  <div
-                    key={c.code}
-                    onMouseEnter={() => setHoveredCountryCode(c.code)}
-                    onMouseOver={() => setHoveredCountryCode(c.code)}
-                    onMouseLeave={() => setHoveredCountryCode(null)}
-                    className={`group p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
-                      isHovered
-                        ? 'bg-blue-50/80 border-blue-400 shadow-sm scale-[1.01]'
-                        : 'bg-slate-50/70 hover:bg-slate-100/80 border-slate-200/80 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span
-                          className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black shrink-0 ${
-                            idx === 0
-                              ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                              : idx === 1
-                                ? 'bg-slate-200 text-slate-700 border border-slate-300'
-                                : idx === 2
-                                  ? 'bg-orange-100 text-orange-800 border border-orange-200'
-                                  : 'bg-slate-100 text-slate-600 border border-slate-200/70'
-                          }`}
-                        >
-                          {idx + 1}
-                        </span>
-                        <FlagBadge code={c.code} size="md" />
-                        <span
-                          className="font-bold text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap group-hover:text-blue-600 transition-colors"
-                          title={countryTitle}
-                        >
-                          {countryTitle}
-                        </span>
-
-                        {idx === 0 && (
-                          <span className="hidden sm:inline-flex items-center gap-0.5 text-[9.5px] font-bold text-blue-700 bg-blue-100/80 border border-blue-200 px-1.5 py-0.5 rounded shrink-0">
-                            <Zap className="w-2.5 h-2.5" /> Hub
+                  return (
+                    <div
+                      key={c.code}
+                      onMouseEnter={() => setHoveredCountryCode(c.code)}
+                      onMouseOver={() => setHoveredCountryCode(c.code)}
+                      onMouseLeave={() => setHoveredCountryCode(null)}
+                      className={`group p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                        isHovered
+                          ? 'bg-blue-50/80 border-blue-400 shadow-sm scale-[1.01]'
+                          : 'bg-slate-50/70 hover:bg-slate-100/80 border-slate-200/80 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span
+                            className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black shrink-0 ${
+                              idx === 0
+                                ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                : idx === 1
+                                  ? 'bg-slate-200 text-slate-700 border border-slate-300'
+                                  : idx === 2
+                                    ? 'bg-orange-100 text-orange-800 border border-orange-200'
+                                    : 'bg-slate-100 text-slate-600 border border-slate-200/70'
+                            }`}
+                          >
+                            {idx + 1}
                           </span>
-                        )}
+                          <FlagBadge code={c.code} size="md" />
+                          <span
+                            className="font-bold text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap group-hover:text-blue-600 transition-colors"
+                            title={countryTitle}
+                          >
+                            {countryTitle}
+                          </span>
+
+                          {idx === 0 && (
+                            <span className="hidden sm:inline-flex items-center gap-0.5 text-[9.5px] font-bold text-blue-700 bg-blue-100/80 border border-blue-200 px-1.5 py-0.5 rounded shrink-0">
+                              <Zap className="w-2.5 h-2.5" /> Hub
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="font-mono font-bold text-slate-800 text-xs">
+                            {formatNumber(count)}{' '}
+                            <span className="text-slate-400 font-normal">views</span>
+                          </span>
+                          <span className="font-bold font-mono text-xs text-blue-700 bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-lg whitespace-nowrap">
+                            {pct}% share
+                          </span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="font-mono font-bold text-slate-800 text-xs">
-                          {formatNumber(count)}{' '}
-                          <span className="text-slate-400 font-normal">views</span>
-                        </span>
-                        <span className="font-bold font-mono text-xs text-blue-700 bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-lg whitespace-nowrap">
-                          {pct}% share
-                        </span>
+                      {/* Progress bar */}
+                      <div className="h-1.5 w-full bg-slate-200/70 rounded-full overflow-hidden mt-2.5">
+                        <div
+                          style={{ width: `${Math.max(4, pct)}%` }}
+                          className={`h-full rounded-full transition-all duration-700 ${
+                            idx === 0
+                              ? 'bg-gradient-to-r from-blue-600 to-cyan-500'
+                              : idx === 1
+                                ? 'bg-gradient-to-r from-emerald-600 to-emerald-400'
+                                : idx === 2
+                                  ? 'bg-gradient-to-r from-amber-500 to-orange-400'
+                                  : 'bg-gradient-to-r from-blue-600 to-indigo-600'
+                          }`}
+                        />
                       </div>
                     </div>
-
-                    {/* Progress bar */}
-                    <div className="h-1.5 w-full bg-slate-200/70 rounded-full overflow-hidden mt-2.5">
-                      <div
-                        style={{ width: `${Math.max(4, pct)}%` }}
-                        className={`h-full rounded-full transition-all duration-700 ${
-                          idx === 0
-                            ? 'bg-gradient-to-r from-blue-600 to-cyan-500'
-                            : idx === 1
-                              ? 'bg-gradient-to-r from-emerald-600 to-emerald-400'
-                              : idx === 2
-                                ? 'bg-gradient-to-r from-amber-500 to-orange-400'
-                                : 'bg-gradient-to-r from-blue-600 to-indigo-600'
-                        }`}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="h-full min-h-[220px] flex flex-col items-center justify-center text-center p-8 bg-slate-50/70 rounded-2xl border border-slate-200/70 text-slate-400">
+                <Globe className="w-10 h-10 mb-2 opacity-30 text-blue-500" />
+                <p className="font-bold text-sm text-slate-700">No Territory Telemetry Recorded</p>
+                <p className="text-xs text-slate-400 mt-1">Reader locations will appear here as articles receive views.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
